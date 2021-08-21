@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "./server/app.js",
-  
   "scripts": {
     "start": "node server/app",
     "server": "nodemon server/app",
@@ -11,7 +10,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:import": "node server/seeder",
     "data:destroy": "node server/seeder -d",
-    "heroku-postbuild":"NPM_CONFIG_PRODUCTION=false npm install --prefix school-management-system && npm run build --prefix school-management-system"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix school-management-system && npm run build --prefix school-management-system"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +21,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.18",
     "mongoose-auto-increment": "^5.0.1",
     "morgan": "^1.10.0",
