@@ -39,7 +39,7 @@ router.route('/incomeDashboard').get(incomeDashboard)
 router.route('/incomeReport').get(incomeReport)
 
 router.route('/incomeReportRole').get(incomeReportRole)
-const{addExpense,Expenses,deleteExpense,deleteExpenseRecord,updateExpense,getExpense,expenseDashboard,expenseReport,expenseReportRole}=require('../controller/Acadmic/Expense.controller')
+const{addExpense,Expenses,deleteExpense,deleteExpenseRecord,updateExpense,getExpense,expenseDashboard,expenseReport,expenseReportRole}=require('../controller/Acadmic/expense.controller')
 router.route('/addExpense').post(addExpense)
 router.route('/Expenses').get(Expenses)
 router.route('/Expense').get(getExpense)
