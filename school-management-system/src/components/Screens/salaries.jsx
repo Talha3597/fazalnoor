@@ -28,7 +28,7 @@ const handlePrint = useReactToPrint({
 });
 
 const removeData = async(id) => {
-    await axios.delete(`http://localhost:5000/api/salary`, { params: {id} }) 
+    await axios.delete(`/api/salary`, { params: {id} }) 
         .then(res => {
             const del = gdata.filter(gdata => id !== gdata._id)
             setData(del)
@@ -38,7 +38,7 @@ const removeData = async(id) => {
 
 useEffect(()=>{
     async function fetchData(){   
-        await axios.get('http://localhost:5000/api/salaries',{params:{month,status,employeeNo,year}})
+        await axios.get('/api/salaries',{params:{month,status,employeeNo,year}})
         .then(res=>{
             setData(res.data)
             
@@ -53,7 +53,7 @@ useEffect(()=>{
 const generateDefaultFee = async()=>{
  let flag= window.confirm("Generate Default Salary for All Users")
  if(flag)
- { await axios.post('http://localhost:5000/api/generateSalary',{createdBy})
+ { await axios.post('/api/generateSalary',{createdBy})
  }
   
  
@@ -64,7 +64,7 @@ const deleteRecord = async()=>{
   let flag= window.confirm("Delete Paid record of specific month")
   if(flag)
   { 
-    await axios.delete('http://localhost:5000/api/deleteSalary', { params: {month,year} })
+    await axios.delete('/api/deleteSalary', { params: {month,year} })
  
   }
 }else{

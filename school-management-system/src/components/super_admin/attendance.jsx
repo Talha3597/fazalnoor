@@ -13,13 +13,13 @@ function Attendance(){
 
     useEffect(() => {
         
-        axios.get('http://localhost:5000/api/getClasses')
+        axios.get('/api/getClasses')
         .then((res) => {
             console.log(res.data)
             setClassTitle(res.data)
             setClass(res.data[0].title)
             
-            axios.get('http://localhost:5000/api/changeSections/' + res.data[0].title)
+            axios.get('/api/changeSections/' + res.data[0].title)
             .then((res) => {
                 console.log(res.data)
                 setSectionTitle(res.data)
@@ -39,7 +39,7 @@ function Attendance(){
     const changeSections = (e) => {
         setClass( e.target.value )
 
-        axios.get('http://localhost:5000/api/changeSections/' + e.target.value)
+        axios.get('/api/changeSections/' + e.target.value)
         .then((res) => {
             console.log(res.data)
             setSectionTitle(res.data)

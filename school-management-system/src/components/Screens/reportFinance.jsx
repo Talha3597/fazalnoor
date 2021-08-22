@@ -35,7 +35,7 @@ const handlePrint = useReactToPrint({
 useEffect(()=>{
  
     async function fetchIncomeData(){   
-        await axios.get('http://localhost:5000/api/incomeReport', { params: {month,year} })
+        await axios.get('/api/incomeReport', { params: {month,year} })
         .then(res=>{
             if(res.data[0]){setIncomeData(res.data)}
            else
@@ -44,7 +44,7 @@ useEffect(()=>{
         })
        }
        async function fetchFeeData(){   
-        await axios.get('http://localhost:5000/api/feeReport', { params: {month,year} })
+        await axios.get('/api/feeReport', { params: {month,year} })
         .then(res=>{
           if(res.data[0]){setFeeData(res.data)} 
           else
@@ -53,14 +53,14 @@ useEffect(()=>{
         })
        }
        async function fetchExpenseData(){   
-        await axios.get('http://localhost:5000/api/expenseReport', { params: {month,year} })
+        await axios.get('/api/expenseReport', { params: {month,year} })
         .then(res=>{
           if(res.data[0]){ setExpenseData(res.data)}
               else {setExpenseData([0])}
         })
        }
        async function fetchSalaryData(){   
-        await axios.get('http://localhost:5000/api/salaryReport', { params: {month,year} })
+        await axios.get('/api/salaryReport', { params: {month,year} })
         .then(res=>{
            if(res.data[0]){ setSalaryData(res.data) }
             else{setSalaryData([0])}

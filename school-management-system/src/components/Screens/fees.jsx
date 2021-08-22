@@ -35,7 +35,7 @@ const handlePrint = useReactToPrint({
   content: () => componentRef.current,
 });
 const removeData = async(id) => {
-    await axios.delete(`http://localhost:5000/api/fee`, { params: {id} }) 
+    await axios.delete(`/api/fee`, { params: {id} }) 
         .then(res => {
             const del = gdata.filter(gdata => id !== gdata._id)
             setData(del)
@@ -44,7 +44,7 @@ const removeData = async(id) => {
 }
 
 useEffect(()=>{
-  axios.get('http://localhost:5000/api/getClasses')
+  axios.get('/api/getClasses')
   .then((res) => {
      
       setClassData(res.data)
@@ -53,7 +53,7 @@ useEffect(()=>{
 console.log(err)
 })
 
-  axios.get('http://localhost:5000/api/getSections')
+  axios.get('/api/getSections')
   .then((res) => {
       
       setSectionData(res.data)
@@ -65,7 +65,7 @@ console.log(err)
 
     async function fetchData(){ 
           
-        await axios.get('http://localhost:5000/api/fees', { params: {month,Class,section,status,studentNo,year} })
+        await axios.get('/api/fees', { params: {month,Class,section,status,studentNo,year} })
         .then(res=>{
             setData(res.data)
             
@@ -81,7 +81,7 @@ const generateDefaultFee = async()=>{
  let flag= window.confirm("Generate Default Fee for All Students")
  if(flag)
  { 
-   await axios.post('http://localhost:5000/api/generateFee',{createdBy})
+   await axios.post('/api/generateFee',{createdBy})
  }
   
  
@@ -92,7 +92,7 @@ const deleteRecord = async()=>{
   let flag= window.confirm("Delete Paid record of specific month")
   if(flag)
   { 
-    await axios.delete('http://localhost:5000/api/deleteFee', { params: {month,year} })
+    await axios.delete('/api/deleteFee', { params: {month,year} })
   }
 }else{
   window.alert('Select month to delete Paid record')

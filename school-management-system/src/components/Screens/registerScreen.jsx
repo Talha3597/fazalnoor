@@ -27,7 +27,7 @@ const RegisterScreen =({history})=>{
     const [ paidAmount, setPaidAmount ] = useState('')
     
    useEffect(async()=>{
-    await axios.get('http://localhost:5000/api/getClasses')
+    await axios.get('/api/getClasses')
     .then((res) => {
        
         setClassData(res.data)
@@ -36,7 +36,7 @@ const RegisterScreen =({history})=>{
         console.log(err)
     })
 
-    await axios.get('http://localhost:5000/api/getSections')
+    await axios.get('/api/getSections')
     .then((res) => {
         
         setSectionData(res.data)
@@ -83,7 +83,7 @@ const RegisterScreen =({history})=>{
                     return setError("Role is required");
                   }
              
-                      const {data}=await axios.post("http://localhost:5000/api/auth/register",{employeeNo,username,email,password,address,cnic,phoneNo,description,salary,paidAmount,invoiceNo,role,Class,section},config)    
+                      const {data}=await axios.post("/api/auth/register",{employeeNo,username,email,password,address,cnic,phoneNo,description,salary,paidAmount,invoiceNo,role,Class,section},config)    
                   alert(data.data)
                   history.push('/users')
                   history.push('/register')

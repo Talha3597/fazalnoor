@@ -18,7 +18,7 @@ const AddNotice =  ({history})=> {
    const [ sectionData, setSectionData ] = useState([])
   
    useEffect(() => {
-    axios.get('http://localhost:5000/api/getClasses')
+    axios.get('/api/getClasses')
         .then((res) => {
            
             setClassData(res.data)
@@ -27,7 +27,7 @@ const AddNotice =  ({history})=> {
             console.log(err)
         })
 
-        axios.get('http://localhost:5000/api/getSections')
+        axios.get('/api/getSections')
         .then((res) => {
             
             setSectionData(res.data)
@@ -44,7 +44,7 @@ const AddNotice =  ({history})=> {
        
         e.preventDefault()
              
-               const{data} =await axios.post('http://localhost:5000/api/addNotice',{notice,url,Class,section,status,title})
+               const{data} =await axios.post('/api/addNotice',{notice,url,Class,section,status,title})
                  alert(data.token) 
                  history.push(`/notices`)
                  history.push(`/addNotice`)

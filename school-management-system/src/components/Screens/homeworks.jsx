@@ -11,7 +11,7 @@ const sam=''
 let role=localStorage.getItem("role")
 //const  [query ,setQuery ]= useState('')
 const removeData = async(id) => {
-    await axios.delete(`http://localhost:5000/api/homework`, { params: {id} }) 
+    await axios.delete(`/api/homework`, { params: {id} }) 
         .then(res => {
             const del = gdata.filter(gdata => id !== gdata._id)
             setData(del)
@@ -23,7 +23,7 @@ useEffect(()=>{
     async function fetchSelectedData(){ 
         const Class= localStorage.getItem("Class")  
         const section= localStorage.getItem("section")  
-        await axios.get('http://localhost:5000/api/homeworks', { params: {Class,section} })
+        await axios.get('/api/homeworks', { params: {Class,section} })
         .then(res=>{
             setData(res.data)
             
@@ -33,7 +33,7 @@ useEffect(()=>{
         const Class= '' 
         const section= ''
        
-        await axios.get('http://localhost:5000/api/homeworks',{ params: {Class,section} })
+        await axios.get('/api/homeworks',{ params: {Class,section} })
         .then(res=>{
             setData(res.data)
             

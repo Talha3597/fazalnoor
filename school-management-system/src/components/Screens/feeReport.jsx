@@ -42,7 +42,7 @@ const addYear=()=>{
   setYear(year=>year+1)
 }
 useEffect(()=>{
-  axios.get('http://localhost:5000/api/getClasses')
+  axios.get('/api/getClasses')
   .then((res) => {
      
       setClassData(res.data)
@@ -51,7 +51,7 @@ useEffect(()=>{
 console.log(err)
 })
 
-  axios.get('http://localhost:5000/api/getSections')
+  axios.get('/api/getSections')
   .then((res) => {
       
       setSectionData(res.data)
@@ -63,7 +63,7 @@ console.log(err)
 
     async function fetchData(){ 
           
-        await axios.get('http://localhost:5000/api/feeReportExpensive', { params: {month,Class,section,studentNo,year} })
+        await axios.get('/api/feeReportExpensive', { params: {month,Class,section,studentNo,year} })
         .then(res=>{
             setData(res.data)
             

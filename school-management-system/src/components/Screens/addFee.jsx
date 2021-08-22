@@ -18,7 +18,7 @@ const AddFee =  ()=> {
     const [invoiceNo, setInvoiceNo]=useState("")
     const createdBy=localStorage.getItem("username")
     useEffect(() => {
-        axios.get('http://localhost:5000/api/getClasses')
+        axios.get('/api/getClasses')
             .then((res) => {
                
                 setClassData(res.data)
@@ -27,7 +27,7 @@ const AddFee =  ()=> {
                 console.log(err)
             })
     
-            axios.get('http://localhost:5000/api/getSections')
+            axios.get('/api/getSections')
             .then((res) => {
                 
                 setSectionData(res.data)
@@ -42,7 +42,7 @@ const AddFee =  ()=> {
     
     const onSubmit = async(e) => {
         e.preventDefault()
-      const{data}= await axios.post('http://localhost:5000/api/addFee',{Class,section,studentNo,title,amount,invoiceNo,createdBy})
+      const{data}= await axios.post('/api/addFee',{Class,section,studentNo,title,amount,invoiceNo,createdBy})
       alert(data.token)
        window.location='/addFee'
 }

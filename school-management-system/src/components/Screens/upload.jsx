@@ -12,7 +12,7 @@ function Upload(){
      const [photo, setPhoto]=useState("")
      const onSubmit = async() => {
          
-         axios.post('http://localhost:5000/api/uploads',{photo})
+         axios.post('/api/uploads',{photo})
            
 
 }

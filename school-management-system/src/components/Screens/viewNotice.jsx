@@ -14,7 +14,7 @@ const UpdateNotice =  ({match})=> {
    const [ status, setStatus ] = useState('')
    useEffect(()=>{
     async function fetchData(){   
-        await axios.get('http://localhost:5000/api/notice' ,{ params: {id} })
+        await axios.get('/api/notice' ,{ params: {id} })
         .then(res=>{
             
             setTitle(res.data.title)

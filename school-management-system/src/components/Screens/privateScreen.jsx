@@ -91,7 +91,7 @@ const PrivateScreen = ({history}) =>{
     {
        
        try {
-        const {data}= await (await axios.get('http://localhost:5000/api/private',config))
+        const {data}= await (await axios.get('/api/private',config))
         setPrivateData(data.data)
              
         } catch (error) {

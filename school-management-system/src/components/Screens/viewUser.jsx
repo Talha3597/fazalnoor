@@ -24,7 +24,7 @@ const ViewUser =({match})=>{
     
     useEffect(()=>{
         async function fetchData(){   
-            await axios.get('http://localhost:5000/api/auth/user' ,{ params: {id} })
+            await axios.get('/api/auth/user' ,{ params: {id} })
             .then(res=>{
                 
                 setUserName(res.data.username)

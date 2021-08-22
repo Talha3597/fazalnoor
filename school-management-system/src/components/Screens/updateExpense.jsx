@@ -14,7 +14,7 @@ const UpdateExpense =  ({match,history})=> {
     const [note, setNote]=useState("")
    useEffect(()=>{
     async function fetchData(){   
-        await axios.get('http://localhost:5000/api/Expense' ,{ params: {id} })
+        await axios.get('/api/Expense' ,{ params: {id} })
         .then(res=>{
             
             setTitle(res.data.title)
@@ -35,7 +35,7 @@ const UpdateExpense =  ({match,history})=> {
     const onSubmit = async() => {
        
           
-        await axios.put(`http://localhost:5000/api/updateExpense/${id}`,{id,title,ExpenseCategory,amount,note,createdBy})
+        await axios.put(`/api/updateExpense/${id}`,{id,title,ExpenseCategory,amount,note,createdBy})
         history.push('/expense')
         
     }

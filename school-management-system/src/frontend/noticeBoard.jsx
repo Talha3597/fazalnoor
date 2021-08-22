@@ -10,7 +10,7 @@ const NoticeBoard = ()=>{
   const [data,setData] =useState([])
   useEffect(()=>{
     async function fetchData(){   
-        await axios.get('http://localhost:5000/api/notices')
+        await axios.get('/api/notices')
         .then(res=>{
             setData(res.data)
             

@@ -30,7 +30,7 @@ function ViewUser({match}){
       
 useEffect(()=>{
     async function fetchData(){   
-        await axios.get('http://localhost:5000/api/student' ,{ params: {id} })
+        await axios.get('/api/student' ,{ params: {id} })
         .then(res=>{
             
             setStudentName(res.data.studentName)

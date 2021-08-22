@@ -24,7 +24,7 @@ const AddHomework =  ({history})=> {
    
   
    useEffect(() => {
-    axios.get('http://localhost:5000/api/getClasses')
+    axios.get('/api/getClasses')
         .then((res) => {
            
             setClassData(res.data)
@@ -33,7 +33,7 @@ const AddHomework =  ({history})=> {
             console.log(err)
         })
 
-        axios.get('http://localhost:5000/api/getSections')
+        axios.get('/api/getSections')
         .then((res) => {
             
             setSectionData(res.data)
@@ -59,7 +59,7 @@ const AddHomework =  ({history})=> {
         }
           
              
-               const{data} =await axios.post('http://localhost:5000/api/addHomework',{notice,url,Class,section,status,title})
+               const{data} =await axios.post('/api/addHomework',{notice,url,Class,section,status,title})
              alert(data.token) 
             history.push('/homeworks')
             history.push('/addHomework')

@@ -22,7 +22,7 @@ const [ section, setSection ] = useState('')
 const [ sectionData, setSectionData ] = useState([])
 
 const removeData = async(id) => {
-    await axios.delete(`http://localhost:5000/api/student`, { params: {id} }) 
+    await axios.delete(`/api/student`, { params: {id} }) 
         .then(res => {
             const del = gdata.filter(gdata => id !== gdata.studentNo)
             setData(del)
@@ -35,7 +35,7 @@ const handlePrint = useReactToPrint({
 });
 
 useEffect(()=>{
-  axios.get('http://localhost:5000/api/getClasses')
+  axios.get('/api/getClasses')
   .then((res) => {
      
       setClassData(res.data)
@@ -44,7 +44,7 @@ useEffect(()=>{
 console.log(err)
 })
 
-  axios.get('http://localhost:5000/api/getSections')
+  axios.get('/api/getSections')
   .then((res) => {
       
       setSectionData(res.data)
@@ -55,7 +55,7 @@ console.log(err)
 })
 
     async function fetchData(){   
-        await axios.get('http://localhost:5000/api/students', { params: {search,Class,section,studentNo} })
+        await axios.get('/api/students', { params: {search,Class,section,studentNo} })
         .then(res=>{
             setData(res.data)
             

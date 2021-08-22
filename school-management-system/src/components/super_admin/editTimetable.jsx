@@ -12,7 +12,7 @@ function EditTimetable() {
     const [ timetableData, settimetableData ] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/getTimetable')
+        axios.get('/api/getTimetable')
         .then((res) => {
             console.log(res.data)
             res.data.sort((a, b) => (a.day > b.day) ? 1 : -1)
@@ -88,7 +88,7 @@ function EditTimetable() {
                     {manageEndHours(timetable.lecEnd)}
                     <td><Link to={ '/updateTimetable/' + timetable._id }><span className={[styles['Edel'], 'fas fa-pencil-alt'].join(' ')}></span></Link>
                     <button onClick={() =>  {
-                        axios.delete('http://localhost:5000/api/deleteTimetable/' + timetable._id)
+                        axios.delete('/api/deleteTimetable/' + timetable._id)
                         .then(response => { 
                             console.log(response.data)
                             window.location = '/viewTimetable'

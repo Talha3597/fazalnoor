@@ -18,7 +18,7 @@ const SendEmail =  ()=> {
    
     const onSubmit = async() => {
        
-               await axios.post('http://localhost:5000/api/sendEmail',{to,cc,bcc,subject,text})
+               await axios.post('/api/sendEmail',{to,cc,bcc,subject,text})
 
 
     }

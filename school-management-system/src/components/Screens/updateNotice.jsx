@@ -17,7 +17,7 @@ const UpdateNotice =  ({match,history})=> {
    const [ sectionData, setSectionData ] = useState([])
   
    useEffect(() => {
-    axios.get('http://localhost:5000/api/getClasses')
+    axios.get('/api/getClasses')
         .then((res) => {
            
             setClassData(res.data)
@@ -26,7 +26,7 @@ const UpdateNotice =  ({match,history})=> {
             console.log(err)
         })
 
-        axios.get('http://localhost:5000/api/getSections')
+        axios.get('/api/getSections')
         .then((res) => {
             
             setSectionData(res.data)
@@ -39,7 +39,7 @@ const UpdateNotice =  ({match,history})=> {
   
    
     async function fetchData(){   
-        await axios.get('http://localhost:5000/api/notice' ,{ params: {id} })
+        await axios.get('/api/notice' ,{ params: {id} })
         .then(res=>{
             
             setTitle(res.data.title)
@@ -61,7 +61,7 @@ const UpdateNotice =  ({match,history})=> {
     const onSubmit = async() => {
        
           
-       const {data}= await axios.put(`http://localhost:5000/api/updateNotice/${id}`,{id,title,notice,url,Class,section,status})
+       const {data}= await axios.put(`/api/updateNotice/${id}`,{id,title,notice,url,Class,section,status})
       
         history.push(`/notices`)
     }

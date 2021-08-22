@@ -15,7 +15,7 @@ const ViewHomework =  ({match})=> {
    const [ status, setStatus ] = useState('')
    useEffect(()=>{
     async function fetchData(){   
-        await axios.get('http://localhost:5000/api/homework' ,{ params: {id} })
+        await axios.get('/api/homework' ,{ params: {id} })
         .then(res=>{
             
             setTitle(res.data.title)

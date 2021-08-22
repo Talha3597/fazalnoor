@@ -28,7 +28,7 @@ const handlePrint = useReactToPrint({
 useEffect(()=>{
  
        async function fetchSalaryData(){   
-        await axios.get('http://localhost:5000/api/salaryStaffReport', { params: {month,year} })
+        await axios.get('/api/salaryStaffReport', { params: {month,year} })
         .then(res=>{
             if(res.data[0]){  setSalaryData(res.data)}
             else{setSalaryData([0])}

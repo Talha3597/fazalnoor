@@ -33,7 +33,7 @@ content: () => componentRef.current,
 useEffect(()=>{
  
     async function fetchIncomeData(){   
-        await axios.get('http://localhost:5000/api/incomeReportRole', { params: {month,year} })
+        await axios.get('/api/incomeReportRole', { params: {month,year} })
         .then(res=>{
           if(res.data[0]){setIncomeData(res.data) }
             else{setIncomeData([0])} 
@@ -41,7 +41,7 @@ useEffect(()=>{
         })
        }
        async function fetchFeeData(){   
-        await axios.get('http://localhost:5000/api/feeReportRole', { params: {month,year} })
+        await axios.get('/api/feeReportRole', { params: {month,year} })
         .then(res=>{
           if(res.data[0]){ setFeeData(res.data)}
             else{setFeeData([0])}  
@@ -49,7 +49,7 @@ useEffect(()=>{
         })
        }
        async function fetchExpenseData(){   
-        await axios.get('http://localhost:5000/api/expenseReportRole', { params: {month,year} })
+        await axios.get('/api/expenseReportRole', { params: {month,year} })
         .then(res=>{
           if(res.data[0]){ setExpenseData(res.data)}
             else{setExpenseData([0])}  
@@ -57,7 +57,7 @@ useEffect(()=>{
         })
        }
        async function fetchSalaryData(){   
-        await axios.get('http://localhost:5000/api/salaryReportRole', { params: {month,year} })
+        await axios.get('/api/salaryReportRole', { params: {month,year} })
         .then(res=>{
           if(res.data[0]){ setSalaryData(res.data) }
           else{setSalaryData([0])}

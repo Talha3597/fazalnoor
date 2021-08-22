@@ -23,7 +23,7 @@ const SendMessage =  ()=> {
            
     }
    useEffect(async() => {
-    axios.get('http://localhost:5000/api/getClasses')
+    axios.get('/api/getClasses')
         .then((res) => {
            
             setClassData(res.data)
@@ -32,7 +32,7 @@ const SendMessage =  ()=> {
             console.log(err)
         })
 
-        axios.get('http://localhost:5000/api/getSections')
+        axios.get('/api/getSections')
         .then((res) => {
             
             setSectionData(res.data)
@@ -44,7 +44,7 @@ const SendMessage =  ()=> {
        if(role=='Users')
        {
         
-            await axios.get('http://localhost:5000/api/auth/usersData')
+            await axios.get('/api/auth/usersData')
             .then(res=>{
               
                 setData(res.data)
@@ -62,7 +62,7 @@ const SendMessage =  ()=> {
     const onSubmit = async(e) => {
        
         e.preventDefault()
-        const{data}=await axios.post('http://localhost:5000/api/addMessage',{to,text,Class,section,gdata,role})
+        const{data}=await axios.post('/api/addMessage',{to,text,Class,section,gdata,role})
         alert(data.token)
         window.location='/messages' 
 

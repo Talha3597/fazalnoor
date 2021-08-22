@@ -13,7 +13,7 @@ function ManageClassData() {
     const [ timetableData, settimetableData ] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/getClasses')
+        axios.get('/api/getClasses')
         .then((res) => {
             console.log(res.data)
             
@@ -37,7 +37,7 @@ function ManageClassData() {
                     
                     <td><Link to={ '/updateClass/' + timetable._id }><span className={[styles['Edel'], 'fas fa-pencil-alt'].join(' ')}></span></Link>
                     <button onClick={() =>  {
-                        axios.delete('http://localhost:5000/api/deleteClass/' + timetable._id)
+                        axios.delete('/api/deleteClass/' + timetable._id)
                         .then(response => { 
                             console.log(response.data)
                             window.location = '/manageClassData'

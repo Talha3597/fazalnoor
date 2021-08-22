@@ -20,7 +20,7 @@ function ViewAttendance(){
     
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/viewAttendance/' + title_s + '/' + title_c)
+        axios.get('/api/viewAttendance/' + title_s + '/' + title_c)
             .then(res => {
                 var data_len = res.data.length
                 var loop_len = 0

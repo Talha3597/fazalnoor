@@ -14,7 +14,7 @@ const TransferStudent =  ({history})=> {
     const [ sectionData, setSectionData ] = useState([])
     const [error, setError]=useState("")
     useEffect(() => {
-        axios.get('http://localhost:5000/api/getClasses')
+        axios.get('/api/getClasses')
             .then((res) => {
                
                 setClassData(res.data)
@@ -23,7 +23,7 @@ const TransferStudent =  ({history})=> {
 				console.log(err)
 			})
 
-            axios.get('http://localhost:5000/api/getSections')
+            axios.get('/api/getSections')
             .then((res) => {
                 
                 setSectionData(res.data)
@@ -50,7 +50,7 @@ const TransferStudent =  ({history})=> {
         }
        
           
-       const {token}= await axios.post(`http://localhost:5000/api/transfer`,{Class,section,studentNo})
+       const {token}= await axios.post(`/api/transfer`,{Class,section,studentNo})
        
             setError(token)
             history.push(`/transfer`)

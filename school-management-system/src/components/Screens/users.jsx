@@ -13,7 +13,7 @@ const [ employeeNo, setEmployeeNo] = useState('')
 
 //const  [query ,setQuery ]= useState('')
 const removeData = async(id) => {
-    await axios.delete(`http://localhost:5000/api/auth/user`, { params: {id} }) 
+    await axios.delete(`/api/auth/user`, { params: {id} }) 
         .then(res => {
             const del = gdata.filter(gdata => id !== gdata.employeeNo)
             setData(del)
@@ -26,7 +26,7 @@ const handlePrint = useReactToPrint({
 });
 useEffect(()=>{
     async function fetchData(){   
-        await axios.get('http://localhost:5000/api/auth/users', { params: {search,employeeNo} })
+        await axios.get('/api/auth/users', { params: {search,employeeNo} })
         .then(res=>{
             setData(res.data)
             

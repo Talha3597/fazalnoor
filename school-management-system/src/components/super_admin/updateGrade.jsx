@@ -17,7 +17,7 @@ function UpdateGrade() {
     const [ gradesTitles, setGradesTitles ] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/singleGrade/' + id)
+        axios.get('/api/singleGrade/' + id)
         .then((res) => {
             console.log(res.data)
             setGrade(res.data)
@@ -29,7 +29,7 @@ function UpdateGrade() {
             console.log(err)
         })
 
-        axios.get('http://localhost:5000/api/getGradestitles/' + id)
+        axios.get('/api/getGradestitles/' + id)
         .then((res) => {
             console.log(res.data)
             setGradesTitles(res.data)
@@ -72,7 +72,7 @@ function UpdateGrade() {
                 // student_name: student.name,
             }
 
-            axios.post('http://localhost:5000/api/updateGrade/' + id, section)
+            axios.post('/api/updateGrade/' + id, section)
                 .then(res => {
                     console.log(res.data)
                     window.location = '/viewGrades'

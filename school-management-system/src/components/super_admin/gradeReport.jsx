@@ -41,7 +41,7 @@ function GradeReport() {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/singleStudentByRoll/' + admin_no)
+        axios.get('/api/singleStudentByRoll/' + admin_no)
         .then(res => {
             console.log(res.data)
             setStudent(res.data)
@@ -49,7 +49,7 @@ function GradeReport() {
         .catch(err => console.log('error : ' + err))
 
         
-        axios.get('http://localhost:5000/api/getStudentGrades/' + admin_no)
+        axios.get('/api/getStudentGrades/' + admin_no)
             .then(res => {
                 console.log(res.data)
                 setStudentGrades(res.data)

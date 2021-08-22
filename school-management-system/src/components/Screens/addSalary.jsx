@@ -13,7 +13,7 @@ const AddSalary =  ({history})=> {
    
     const createdBy=localStorage.getItem("username")
     const onSubmit = async() => {
-       await axios.post('http://localhost:5000/api/addSalary',{employeeNo,title,amount,createdBy})
+       await axios.post('/api/addSalary',{employeeNo,title,amount,createdBy})
        history.push(`/salaries`)
        history.push(`/addSalary`)
 }

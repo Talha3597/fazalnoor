@@ -15,7 +15,7 @@ const PromoteClass =  ({history})=> {
     const [ sectionData, setSectionData ] = useState([])
     const [error, setError]=useState("")
     useEffect(() => {
-        axios.get('http://localhost:5000/api/getClasses')
+        axios.get('/api/getClasses')
             .then((res) => {
                
                 setClassData(res.data)
@@ -24,7 +24,7 @@ const PromoteClass =  ({history})=> {
 				console.log(err)
 			})
 
-            axios.get('http://localhost:5000/api/getSections')
+            axios.get('/api/getSections')
             .then((res) => {
                 
                 setSectionData(res.data)
@@ -62,7 +62,7 @@ const PromoteClass =  ({history})=> {
                   
         }
 
-        await axios.post(`http://localhost:5000/api/promote`,{tClass,tSection,fClass,fSection})
+        await axios.post(`/api/promote`,{tClass,tSection,fClass,fSection})
         
            history.push('/promote')
       

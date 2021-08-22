@@ -29,7 +29,7 @@ function UpdateStudent({match,history}){
     const [ sectionData, setSectionData ] = useState([])
    
     useEffect(() => {
-        axios.get('http://localhost:5000/api/getClasses')
+        axios.get('/api/getClasses')
             .then((res) => {
                
                 setClassData(res.data)
@@ -38,7 +38,7 @@ function UpdateStudent({match,history}){
 				console.log(err)
 			})
 
-            axios.get('http://localhost:5000/api/getSections')
+            axios.get('/api/getSections')
             .then((res) => {
                 
                 setSectionData(res.data)
@@ -49,7 +49,7 @@ function UpdateStudent({match,history}){
 			})
 
     async function fetchData(){   
-        await axios.get('http://localhost:5000/api/student' ,{ params: {id} })
+        await axios.get('/api/student' ,{ params: {id} })
         .then(res=>{
             
             setStudentName(res.data.studentName)
@@ -74,7 +74,7 @@ function UpdateStudent({match,history}){
 },[id]
 )   
      const onSubmit = async() => {  
-        await axios.put(`http://localhost:5000/api/updateStudent/${id}`,{id,studentNo,studentName,rollNo,Class,section,address,parentName,phoneNo,parentRelation,email,description,fee})
+        await axios.put(`/api/updateStudent/${id}`,{id,studentNo,studentName,rollNo,Class,section,address,parentName,phoneNo,parentRelation,email,description,fee})
         history.push(`/updateStudent/${id}`)
 }
 return( <>

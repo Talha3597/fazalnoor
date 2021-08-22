@@ -19,7 +19,7 @@ const ClassVar = props => (
             <td>{props.classIns.testGrade}</td>
             <td><Link to={'/updateGrade/' + props.classIns._id}><span className={[styles['Edel'], 'fas fa-pencil-alt'].join(' ')}></span></Link>
             <button onClick={() =>  {
-                   axios.delete('http://localhost:5000/api/deleteGrade/'+props.classIns._id)
+                   axios.delete('/api/deleteGrade/'+props.classIns._id)
                    .then(response => { 
                        console.log(response.data)
                        window.location = '/viewGrades'
@@ -50,20 +50,20 @@ function ViewGradesBySection() {
 
     useEffect(() => {
         
-        axios.get('http://localhost:5000/api/getClasses')
+        axios.get('/api/getClasses')
         .then((res) => {
             console.log(res.data)
             setClassTitle(res.data)
             setClass(res.data[0].title)
             
-            axios.get('http://localhost:5000/api/changeSections/' + res.data[0].title)
+            axios.get('/api/changeSections/' + res.data[0].title)
             .then((res) => {
                 console.log(res.data)
                 setSectionTitle(res.data)
                 setSection(res.data[0].title)
 
 
-                axios.get('http://localhost:5000/api/GradeTitles/' + res.data[0].title)
+                axios.get('/api/GradeTitles/' + res.data[0].title)
                     .then((res) => {
                         console.log(res.data)
                         setGrades(res.data)
@@ -90,7 +90,7 @@ function ViewGradesBySection() {
     const changeSections = (e) => {
         setClass( e.target.value )
 
-        axios.get('http://localhost:5000/api/changeSections/' + e.target.value)
+        axios.get('/api/changeSections/' + e.target.value)
         .then((res) => {
             console.log(res.data)
             setSectionTitle(res.data)
@@ -104,7 +104,7 @@ function ViewGradesBySection() {
 
     const changeExams = (e) => {
         setSection( e.target.value )
-        axios.get('http://localhost:5000/api/GradeTitles/' + e.target.value)
+        axios.get('/api/GradeTitles/' + e.target.value)
         .then((res) => {
             console.log(res.data)
             if(res.data.length == 0){
@@ -123,7 +123,7 @@ function ViewGradesBySection() {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        axios.get('http://localhost:5000/api/classGradesBySection/' + classTitle + '/' + examTitle + '/' + sectionTitle)
+        axios.get('/api/classGradesBySection/' + classTitle + '/' + examTitle + '/' + sectionTitle)
         .then(res => {
             console.log(res.data)
             setStudentGrades(res.data)

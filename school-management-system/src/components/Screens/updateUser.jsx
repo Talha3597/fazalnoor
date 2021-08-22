@@ -26,7 +26,7 @@ const UpdateUser =({match,history})=>{
     
     
    useEffect(async()=>{
-    await axios.get('http://localhost:5000/api/getClasses')
+    await axios.get('/api/getClasses')
     .then((res) => {
        
         setClassData(res.data)
@@ -35,7 +35,7 @@ const UpdateUser =({match,history})=>{
         console.log(err)
     })
 
-    await axios.get('http://localhost:5000/api/getSections')
+    await axios.get('/api/getSections')
     .then((res) => {
         
         setSectionData(res.data)
@@ -47,7 +47,7 @@ const UpdateUser =({match,history})=>{
 
    
         async function fetchData(){   
-            await axios.get('http://localhost:5000/api/auth/user' ,{ params: {id} })
+            await axios.get('/api/auth/user' ,{ params: {id} })
             .then(res=>{
                 
                 setUserName(res.data.username)
@@ -75,10 +75,10 @@ const UpdateUser =({match,history})=>{
     const onSubmit=async(e)=>{
     if(role==='teacher' || role==='adminTeacher' || role==='financeTeacher' && Class!=''&& section!=''){
 
-        await axios.put(`http://localhost:5000/api/auth/updateUser/${id}`,{id,employeeNo,username,email,address,cnic,phoneNo,description,salary,role,Class,section})
+        await axios.put(`/api/auth/updateUser/${id}`,{id,employeeNo,username,email,address,cnic,phoneNo,description,salary,role,Class,section})
         history.push(`/updateUser/${id}`) 
     }  else{
-        await axios.put(`http://localhost:5000/api/auth/updateUser/${id}`,{id,employeeNo,username,email,address,cnic,phoneNo,description,salary,role})
+        await axios.put(`/api/auth/updateUser/${id}`,{id,employeeNo,username,email,address,cnic,phoneNo,description,salary,role})
         history.push(`/updateUser/${id}`)  
     }        }
                         

@@ -19,7 +19,7 @@ function UpdateTimetable() {
 
     useEffect(() => {
 
-        axios.get('http://localhost:5000/api/singleTimetable/' + id)
+        axios.get('/api/singleTimetable/' + id)
         .then((res) => {
             console.log(res.data)
             //setGrade(res.data)
@@ -34,7 +34,7 @@ function UpdateTimetable() {
         })
 
 
-        axios.get('http://localhost:5000/api/getTimetable')
+        axios.get('/api/getTimetable')
             .then(res => {
                 setTimetable(res.data)
             })
@@ -85,7 +85,7 @@ function UpdateTimetable() {
                 }
                 
     
-                axios.post('http://localhost:5000/api/updateTimetable/' + id, lecture)
+                axios.post('/api/updateTimetable/' + id, lecture)
                     .then(res => {
                         console.log(res.data)
                         window.location = '/viewTimetable'

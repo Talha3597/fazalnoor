@@ -15,7 +15,7 @@ const AddIncome =  ({history})=> {
     const [note, setNote]=useState("")
     const receivedBy=localStorage.getItem("username")
     const onSubmit = async() => {
-        await axios.post('http://localhost:5000/api/addIncome',{incomeCategory,title,amount,note,receivedBy})
+        await axios.post('/api/addIncome',{incomeCategory,title,amount,note,receivedBy})
         history.push('/income')
         
 

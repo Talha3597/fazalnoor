@@ -17,7 +17,7 @@ function UpdateSection(){
     const [ currentClass, setClass ] = useState('')
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/singleClass/' + id_2)
+        axios.get('/api/singleClass/' + id_2)
             .then((res) => {
                 console.log(res.data)
                 setSectionClass(res.data)
@@ -26,7 +26,7 @@ function UpdateSection(){
 				console.log(err)
 			})
 
-            axios.get('http://localhost:5000/api/singleSection/' + id_1)
+            axios.get('/api/singleSection/' + id_1)
             .then((res) => {
                 console.log(res.data)
                 setTitle(res.data.title)
@@ -37,7 +37,7 @@ function UpdateSection(){
 				console.log(err)
 			})
 
-            axios.get('http://localhost:5000/api/getClasses')
+            axios.get('/api/getClasses')
             .then((res) => {
                 console.log(res.data)
                 setClassTitle(res.data)
@@ -70,7 +70,7 @@ function UpdateSection(){
                 currentClass
             }
 
-            axios.post('http://localhost:5000/api/updateSection/' + id_1 , section)
+            axios.post('/api/updateSection/' + id_1 , section)
                 .then(res => {
                     console.log(res.data)
                     //window.location = '/addSection/' + id

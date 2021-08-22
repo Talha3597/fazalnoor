@@ -28,7 +28,7 @@ const addYear=()=>{
 useEffect(()=>{
    function fetchSalaryData(){ 
      
-     axios.get('http://localhost:5000/api/salaryGeneralReport', { params: {month,year} })
+     axios.get('/api/salaryGeneralReport', { params: {month,year} })
     .then(res=>{
         
       setSalaryData(res.data)
@@ -37,20 +37,20 @@ useEffect(()=>{
     
    }
     function fetchFeeData(){   
-     axios.get('http://localhost:5000/api/feeGeneralReport', { params: {month,year} })
+     axios.get('/api/feeGeneralReport', { params: {month,year} })
     .then(res=>{
         setFeeData(res.data)
         
     })
    } function fetchIncomeData(){   
-     axios.get('http://localhost:5000/api/incomeDashboard', { params: {month,year} })
+     axios.get('/api/incomeDashboard', { params: {month,year} })
     .then(res=>{
         setIncomeData(res.data)
         
     })
    }
     function fetchFineData(){   
-     axios.get('http://localhost:5000/api/feeFineReport', { params: {month,year} })
+     axios.get('/api/feeFineReport', { params: {month,year} })
     .then(res=>{
         setFineData(res.data)
         
@@ -58,7 +58,7 @@ useEffect(()=>{
    } 
    
     function fetchExpenseData(){   
-     axios.get('http://localhost:5000/api/expenseDashboard', { params: {month,year} })
+     axios.get('/api/expenseDashboard', { params: {month,year} })
     .then(res=>{
         setExpenseData(res.data)
         

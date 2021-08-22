@@ -17,7 +17,7 @@ const ClassVar = props => (
             <td>{props.classIns.testGrade}</td>
             <td><Link to={'/updateGrade/' + props.classIns._id}><span className={[styles['Edel'], 'fas fa-pencil-alt'].join(' ')}></span></Link>
             <button onClick={() =>  {
-                   axios.delete('http://localhost:5000/api/deleteGrade/'+props.classIns._id)
+                   axios.delete('/api/deleteGrade/'+props.classIns._id)
                    .then(response => { 
                        console.log(response.data)
                        window.location = '/viewGrades'
@@ -45,7 +45,7 @@ function ViewGrades() {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        axios.get('http://localhost:5000/api/singleStudentByRoll/' + admin_no)
+        axios.get('/api/singleStudentByRoll/' + admin_no)
         .then(res => {
             console.log(res.data)
             setStudent(res.data)
@@ -53,7 +53,7 @@ function ViewGrades() {
         .catch(err => console.log('error : ' + err))
 
         
-        axios.get('http://localhost:5000/api/getStudentGrades/' + admin_no)
+        axios.get('/api/getStudentGrades/' + admin_no)
             .then(res => {
                 console.log(res.data)
                 setStudentGrades(res.data)

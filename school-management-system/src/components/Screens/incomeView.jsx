@@ -19,7 +19,7 @@ const ViewIncome =  ({match})=> {
     });
    useEffect(()=>{
     async function fetchData(){   
-        await axios.get('http://localhost:5000/api/income' ,{ params: {id} })
+        await axios.get('/api/income' ,{ params: {id} })
         .then(res=>{
             
             setTitle(res.data.title)

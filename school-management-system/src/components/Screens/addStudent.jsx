@@ -33,7 +33,7 @@ const AddStudent =  ({history})=> {
     const [error, setError]=useState("")
    
     useEffect(() => {
-        axios.get('http://localhost:5000/api/getClasses')
+        axios.get('/api/getClasses')
             .then((res) => {
                
                 setClassData(res.data)
@@ -42,7 +42,7 @@ const AddStudent =  ({history})=> {
 				console.log(err)
 			})
 
-            axios.get('http://localhost:5000/api/getSections')
+            axios.get('/api/getSections')
             .then((res) => {
                 
                 setSectionData(res.data)
@@ -65,7 +65,7 @@ const AddStudent =  ({history})=> {
                     return setError(" Select Class and Section");
                   
         }
-               const{data} =await axios.post('http://localhost:5000/api/addStudent',{studentNo,name,rollNo,Class,section,dob,address,parentName,phoneNo,parentRelation,email,description,schoolFee,cnic,createdBy,admissionFee})
+               const{data} =await axios.post('/api/addStudent',{studentNo,name,rollNo,Class,section,dob,address,parentName,phoneNo,parentRelation,email,description,schoolFee,cnic,createdBy,admissionFee})
                  alert(data.token) 
                  history.push('/students')
                  history.push('/addStudent')

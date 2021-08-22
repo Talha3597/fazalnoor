@@ -29,7 +29,7 @@ const addYear=()=>{
 
     useEffect(()=>{
         async function fetchData(){   
-            await axios.get('http://localhost:5000/api/expenseDashboard', { params: {month,year} })
+            await axios.get('/api/expenseDashboard', { params: {month,year} })
             .then(res=>{
                 setData(res.data)
                 

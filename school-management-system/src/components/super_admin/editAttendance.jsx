@@ -33,7 +33,7 @@ function EditAttendance(){
         setAbsents([])
         settotalStudents([])
 
-        axios.get('http://localhost:5000/api/getDayAttendance/' + title_s + '/' + title_c + '/' + date)
+        axios.get('/api/getDayAttendance/' + title_s + '/' + title_c + '/' + date)
             .then(res => {
                 
                 if(res.data.presentStudents){
@@ -200,7 +200,7 @@ function EditAttendance(){
 
         console.log(attendanceIns)
 
-        axios.post('http://localhost:5000/api/editAttendance/' + date, attendanceIns)
+        axios.post('/api/editAttendance/' + date, attendanceIns)
             .then(res => {console.log(res)
                 window.location = '/viewAttendance/' + title_s + '/' + title_c
             })

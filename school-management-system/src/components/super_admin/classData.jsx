@@ -26,7 +26,7 @@ function ClassData() {
     const [ classData, setClassData ] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/classData')
+        axios.get('/api/classData')
         .then((res) => {
             console.log(res.data)
             setClassData(res.data)

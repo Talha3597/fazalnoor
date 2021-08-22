@@ -15,7 +15,7 @@ const UpdateHomework =  ({match,history})=> {
    const [ status, setStatus ] = useState('')
    useEffect(()=>{
     async function fetchData(){   
-        await axios.get('http://localhost:5000/api/homework' ,{ params: {id} })
+        await axios.get('/api/homework' ,{ params: {id} })
         .then(res=>{
             
             setTitle(res.data.title)
@@ -37,7 +37,7 @@ const UpdateHomework =  ({match,history})=> {
     const onSubmit = async() => {
        
           
-        await axios.put(`http://localhost:5000/api/updateHomework/${id}`,{id,title,notice,url,Class,section,status})
+        await axios.put(`/api/updateHomework/${id}`,{id,title,notice,url,Class,section,status})
         history.push(`/homeworks`)
     }
 

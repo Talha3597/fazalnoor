@@ -17,7 +17,7 @@ function ManageTimetable() {
     const [ timetableData, setTimetable ] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/getTimetable')
+        axios.get('/api/getTimetable')
             .then(res => {
                 setTimetable(res.data)
             })
@@ -68,7 +68,7 @@ function ManageTimetable() {
                 }
                 
     
-                axios.post('http://localhost:5000/api/addLecture', lecture)
+                axios.post('/api/addLecture', lecture)
                     .then(res => {
                         console.log(res.data)
                         window.location = '/viewTimetable'

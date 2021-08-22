@@ -37,7 +37,7 @@ const PayFee =  ( {match})=> {
     useEffect(()=>{
         async function fetchFeeData(){   
             //let data
-           await axios.get(`http://localhost:5000/api/fee`,{ params: {id} } )
+           await axios.get(`/api/fee`,{ params: {id} } )
            .then(res=>{
             setData(res.data)
            setStudentNo(res.data[0].studentNo) 
@@ -55,7 +55,7 @@ const PayFee =  ( {match})=> {
         
         async function fetchStudentData(){  
             
-            await axios.get('http://localhost:5000/api/findstudent' ,{ params: {studentNo} })
+            await axios.get('/api/findstudent' ,{ params: {studentNo} })
             .then(res=>{
                if(res.data[0]){ 
                 setName(res.data[0].studentName)
@@ -74,7 +74,7 @@ const PayFee =  ( {match})=> {
            
            }
            async function fetchDepositeData(){   
-            await axios.get(`http://localhost:5000/api/feeDeposite`,{ params: {key} } )
+            await axios.get(`/api/feeDeposite`,{ params: {key} } )
             .then(res=>{
              setData1(res.data)
             })
@@ -90,7 +90,7 @@ const PayFee =  ( {match})=> {
     const onSubmit = async(e) => {
         e.preventDefault()
        
-     const{data}=await axios.post('http://localhost:5000/api/payFee',{id,discount,studentNo,title,amount,invoiceNo,payAmount,pending,receivedBy,Class ,section,key})
+     const{data}=await axios.post('/api/payFee',{id,discount,studentNo,title,amount,invoiceNo,payAmount,pending,receivedBy,Class ,section,key})
      
      alert(data.message) 
     window.location=`/payFee/${id}`

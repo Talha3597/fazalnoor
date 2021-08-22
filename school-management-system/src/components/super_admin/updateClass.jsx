@@ -17,7 +17,7 @@ function UpdateClass(){
     const [ currentClass, setClass ] = useState('')
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/singleClass/' + id_1)
+        axios.get('/api/singleClass/' + id_1)
             .then((res) => {
                 console.log(res.data)
                 setTitle(res.data.title)
@@ -54,7 +54,7 @@ function UpdateClass(){
                 
             }
 
-            axios.post('http://localhost:5000/api/updateCLass/' + id_1 , section)
+            axios.post('/api/updateCLass/' + id_1 , section)
                 .then(res => {
                     console.log(res.data)
                     window.location = '/manageClassData'

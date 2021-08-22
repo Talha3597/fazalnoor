@@ -11,7 +11,7 @@ let[gdata,setData] =useState([])
 const sam=''
 
 const removeData = async(id) => {
-    await axios.delete(`http://localhost:5000/api/message`, { params: {id} }) 
+    await axios.delete(`/api/message`, { params: {id} }) 
         .then(res => {
             const del = gdata.filter(gdata => id !== gdata._id)
             setData(del)
@@ -21,7 +21,7 @@ const removeData = async(id) => {
 
 useEffect(()=>{
     async function fetchData(){   
-        await axios.get('http://localhost:5000/api/messages')
+        await axios.get('/api/messages')
         .then(res=>{
             setData(res.data)
             

@@ -17,7 +17,7 @@ function ManageGrades() {
     const [ gradesTitles, setGradesTitles ] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/singleStudent/' + id)
+        axios.get('/api/singleStudent/' + id)
         .then((res) => {
             console.log(res.data)
             setStudent(res.data)
@@ -26,7 +26,7 @@ function ManageGrades() {
             console.log(err)
         })
 
-        axios.get('http://localhost:5000/api/getGradestitles/' + id)
+        axios.get('/api/getGradestitles/' + id)
         .then((res) => {
             console.log(res.data)
             setGradesTitles(res.data)
@@ -74,7 +74,7 @@ function ManageGrades() {
             }
             
             console.log(section)
-            axios.post('http://localhost:5000/api/addStudentGrade', section)
+            axios.post('/api/addStudentGrade', section)
                 .then(res => {
                     console.log(res.data)
                     window.location = '/manageGrades/' + id

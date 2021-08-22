@@ -17,7 +17,7 @@ function ViewTimetable() {
 
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/getTimetable')
+        axios.get('/api/getTimetable')
         .then((res) => {
             console.log(res.data)
             setTimetable(res.data)

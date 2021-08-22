@@ -34,7 +34,7 @@ function SAdashboard() {
                 incharge
             }
 
-            axios.post('http://localhost:5000/api/addClass', classObj)
+            axios.post('/api/addClass', classObj)
                 .then(res => {
                     console.log(res.data)
                     window.location = '/classData'

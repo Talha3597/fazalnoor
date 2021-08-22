@@ -15,7 +15,7 @@ const ClassVar = props => (
             <td><Link to={'/manageGrades/' + props.classIns._id}>Manage Grade</Link></td>
             <td><Link to={'/updateStudents/' + props.classIns._id + '/' + props.classIns.class_id }><span className={[styles['Edel'], 'fas fa-pencil-alt'].join(' ')}></span></Link>
             <button onClick={() =>  {
-                   axios.delete('http://localhost:5000/api/deleteSection/'+props.classIns._id)
+                   axios.delete('/api/deleteSection/'+props.classIns._id)
                    .then(response => { 
                        console.log(response.data)
                        window.location = '/sectionData/' + props.classIns.class_id
@@ -34,7 +34,7 @@ function ViewStudents() {
     const [ classSectionData, setclassSectionData ] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/getStudents/' + title)
+        axios.get('/api/getStudents/' + title)
         .then((res) => {
             console.log(res.data)
             setclassSectionData(res.data)

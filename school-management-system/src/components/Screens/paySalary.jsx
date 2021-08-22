@@ -32,7 +32,7 @@ const PaySalary =  ( {match})=> {
     useEffect(()=>{
         async function fetchSalaryData(){   
             //let data
-           await axios.get(`http://localhost:5000/api/salary`,{ params: {id} } )
+           await axios.get(`/api/salary`,{ params: {id} } )
            .then(res=>{
             setData(res.data)
            setEmployeeNo(res.data[0].employeeNo)
@@ -50,7 +50,7 @@ const PaySalary =  ( {match})=> {
         
         
            async function fetchDepositeData(){   
-            await axios.get(`http://localhost:5000/api/salaryDeposite`,{ params: {key} } )
+            await axios.get(`/api/salaryDeposite`,{ params: {key} } )
             .then(res=>{
              setData1(res.data)
             })
@@ -66,7 +66,7 @@ const PaySalary =  ( {match})=> {
     const onSubmit = async(e) => {
         e.preventDefault()
        
-     const{data}=await axios.post('http://localhost:5000/api/paySalary',{id,name,employeeNo,title,salary,payAmount,pending,receivedBy,key})
+     const{data}=await axios.post('/api/paySalary',{id,name,employeeNo,title,salary,payAmount,pending,receivedBy,key})
      
      alert(data.message) 
     window.location=`/paySalary/${id}`

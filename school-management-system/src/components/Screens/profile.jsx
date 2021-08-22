@@ -22,7 +22,7 @@ const Profile =()=>{
     
     useEffect(()=>{
         async function fetchData(){   
-            await axios.get('http://localhost:5000/api/auth/user' ,{ params: {id} })
+            await axios.get('/api/auth/user' ,{ params: {id} })
             .then(res=>{
                 
                 setUserName(res.data.username)
@@ -47,7 +47,7 @@ const Profile =()=>{
     const onSubmit=async(e)=>{
   
    if(password && password === confirmPassword){
-    await axios.put(`http://localhost:5000/api/auth/updateProfile/${id}`,{id,employeeNo,username,address,cnic,phoneNo,description,password})
+    await axios.put(`/api/auth/updateProfile/${id}`,{id,employeeNo,username,address,cnic,phoneNo,description,password})
     .then(
         window.location = '/profile'
     )     
@@ -55,7 +55,7 @@ const Profile =()=>{
    else if(password !== confirmPassword){
     alert('password and confirm password not match')}
     else{
-        await axios.put(`http://localhost:5000/api/auth/updateProfile/${id}`,{id,employeeNo,username,address,cnic,phoneNo,description})
+        await axios.put(`/api/auth/updateProfile/${id}`,{id,employeeNo,username,address,cnic,phoneNo,description})
         .then(
             window.location = '/profile'
         )     

@@ -22,7 +22,7 @@ function SectionAttendance(){
     useEffect(() => {
         var classTitle = '' 
 
-        axios.get('http://localhost:5000/api/singleClass/' + id_c)
+        axios.get('/api/singleClass/' + id_c)
         .then(res => {
             console.log(res)
             setClass(res.data)
@@ -42,7 +42,7 @@ function SectionAttendance(){
         setStudents([])
 
         
-        axios.get('http://localhost:5000/api/singleSection/' + id_s)
+        axios.get('/api/singleSection/' + id_s)
             .then((res) => {
                 var sectionData = res.data
                 setSection(res.data)
@@ -50,7 +50,7 @@ function SectionAttendance(){
                 var title = res.data.title
                 console.log('title : ' + title)
                 console.log('date : ' + date)
-                axios.get('http://localhost:5000/api/getDayAttendance/' + title + '/' + classTitle + '/' + date)
+                axios.get('/api/getDayAttendance/' + title + '/' + classTitle + '/' + date)
                 .then((res) => {
                     console.log('res data : ' + JSON.stringify(res.data))
                     // var flag = true
@@ -68,7 +68,7 @@ function SectionAttendance(){
                     }else{
                          setToday(false)
                          setSection(sectionData)
-                         axios.get('http://localhost:5000/api/getStudents/' + title)
+                         axios.get('/api/getStudents/' + title)
                             .then((res) => {
                                 res.data.sort((a, b) => (a.studentNo > b.studentNo) ? 1 : -1)
                                 setStudents(res.data)
@@ -181,7 +181,7 @@ function SectionAttendance(){
             console.log(attendanceIns)
 
 
-            axios.post('http://localhost:5000/api/submitAttendance', attendanceIns)
+            axios.post('/api/submitAttendance', attendanceIns)
                 .then(res => {
                     console.log(res)
                     window.location = '/sectionAttendance/' + id_s + '/' + id_c
@@ -197,10 +197,10 @@ function SectionAttendance(){
 
         var empty = []
 
-        axios.get('http://localhost:5000/api/singleSection/' + id_s)
+        axios.get('/api/singleSection/' + id_s)
             .then((res) => {                
                 
-                axios.get('http://localhost:5000/api/getStudents/' + res.data.title)
+                axios.get('/api/getStudents/' + res.data.title)
                 .then((res) => {
                     
                     var full = []
@@ -236,7 +236,7 @@ function SectionAttendance(){
                     }
                     
                     
-                    axios.post('http://localhost:5000/api/submitAttendance', attendanceIns)
+                    axios.post('/api/submitAttendance', attendanceIns)
                     .then(res => {
                         console.log(res)
                         window.location = '/sectionAttendance/' + id_s + '/' + id_c

@@ -16,7 +16,7 @@ function AddSection(){
     const [ sectionClass, setClass ] = useState({})
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/singleClass/' + id)
+        axios.get('/api/singleClass/' + id)
             .then((res) => {
                 console.log(res.data)
                 setClass(res.data)
@@ -50,7 +50,7 @@ function AddSection(){
                 classTitle: sectionClass.title
             }
 
-            axios.post('http://localhost:5000/api/addSection', section)
+            axios.post('/api/addSection', section)
                 .then(res => {
                     console.log(res.data)
                     window.location = '/classData'

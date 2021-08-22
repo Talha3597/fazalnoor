@@ -10,7 +10,7 @@ const AddIncomeCategories =  ()=> {
     const [ incomeCategories, setIncomeCategories ] = useState('')
     
     const onSubmit = async() => {
-        await axios.post('http://localhost:5000/api/addIncomeCategory',{incomeCategories})
+        await axios.post('/api/addIncomeCategory',{incomeCategories})
         
 
 }

@@ -15,7 +15,7 @@ const AddExpense =  ({history})=> {
     const [note, setNote]=useState("")
     const createdBy=localStorage.getItem("username")
     const onSubmit = async() => {
-        await axios.post('http://localhost:5000/api/addExpense',{ExpenseCategory,title,amount,note,createdBy})
+        await axios.post('/api/addExpense',{ExpenseCategory,title,amount,note,createdBy})
         history.push('/expense')
         history.push('/addExpense')
 

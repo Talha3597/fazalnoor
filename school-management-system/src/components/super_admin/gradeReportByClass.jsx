@@ -42,7 +42,7 @@ function GradeReportByClass() {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/classGrades/' + classTitle + '/' + examTitle)
+        axios.get('/api/classGrades/' + classTitle + '/' + examTitle)
         .then(res => {
             console.log(res.data)
             setStudentGrades(res.data)

@@ -29,7 +29,7 @@ const handlePrint = useReactToPrint({
    
     useEffect(()=>{
         async function fetchData(){   
-            await axios.get('http://localhost:5000/api/incomeDashboard', { params: {month,year} })
+            await axios.get('/api/incomeDashboard', { params: {month,year} })
             .then(res=>{
                 setData(res.data)
                 

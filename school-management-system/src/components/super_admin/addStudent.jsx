@@ -22,7 +22,7 @@ function AddStudent(){
     const [ sectionData, setSectionTitle ] = useState([])
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/getClasses')
+        axios.get('/api/getClasses')
             .then((res) => {
                 console.log(res.data)
                 setClassTitle(res.data)
@@ -32,7 +32,7 @@ function AddStudent(){
 				console.log(err)
 			})
 
-            axios.get('http://localhost:5000/api/getSections')
+            axios.get('/api/getSections')
             .then((res) => {
                 console.log(res.data)
                 setSectionTitle(res.data)
@@ -80,7 +80,7 @@ function AddStudent(){
                 login_email,
             }
 
-            axios.post('http://localhost:5000/api/addStudent', student)
+            axios.post('/api/addStudent', student)
                 .then(res => console.log(res.data))
                 .catch(err => console.log('error : ' + err))
         }else{
