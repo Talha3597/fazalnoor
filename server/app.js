@@ -13,10 +13,10 @@ require('./model/db');
 
 
 app.use(express.json());
-// if(process.env.NODE_ENV === 'development'){
-   
-// }
-app.use(morgan('dev'));
+if(process.env.NODE_ENV === 'development'){
+    app.use(morgan('dev'));   
+}
+
 app.use(cors());
 
 
@@ -27,18 +27,18 @@ app.use('/api/private',require("./routes/private"))
 app.use("/api", Router);
 
 
-// if (process.env.NODE_ENV === 'production'){
-//     app.use(express.static(path.join(__dirname,'../school-management-system/build')))
+if (process.env.NODE_ENV === 'production'){
+    app.use(express.static(path.join(__dirname,'../school-management-system/build')))
 
-//     app.get('*',(req,res)=>{
-//         res.sendFile(path.resolve(__dirname,'school-management-system','build','index.html'))
-//     })
-// }
-// else{
-//     app.get('/',(req,res)=>{
-//         res.send("API is running ....")
-//     })
-// }
+    app.get('*',(req,res)=>{
+        res.sendFile(path.resolve(__dirname,'school-management-system','build','index.html'))
+    })
+}
+else{
+    app.get('/',(req,res)=>{
+        res.send("API is running ....")
+    })
+}
 
 //Error Handler should be last peice of code
 app.use(errorHandler)
