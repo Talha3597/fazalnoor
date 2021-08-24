@@ -27,6 +27,8 @@ const addYear=()=>{
   setYear(year=>year+1)
 }
 
+const expense=Number(data.toString().split('+')[0])+Number(data.toString().split('+')[1])
+
     useEffect(()=>{
         async function fetchData(){   
             await axios.get('/api/expenseDashboard', { params: {month,year} })
@@ -85,7 +87,7 @@ return (
                   <br/>
                          <form className={styles.formMargin} >
                              
-                              <div className={styles.box}><h3>Amount:{data}</h3></div> 
+                              <div className={styles.box}><h3>Amount:{expense}</h3></div> 
                                  
                               
                          </form>

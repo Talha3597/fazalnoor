@@ -23,7 +23,7 @@ app.use(cors());
 
 app.use( '/public',express.static('public'))
 app.use('/api/auth',require('./routes/auth'))
-app.use("/api/private",require("./routes/private"))
+app.use('/api/private',require("./routes/private"))
 app.use("/api", Router);
 
 

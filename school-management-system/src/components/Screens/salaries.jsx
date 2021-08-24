@@ -162,7 +162,7 @@ return (
                             <td>{item.status}</td>
                             <td>
                            {role=='superAdmin'? 
-                            <Button className='btn btn-outline-danger bg-light ' onClick={() => removeData(item._id)}>
+                            <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
                              Delete
                             </Button>:''}
                            <Link to={`/paySalary/${item._id}` } > <Button className={styles.sideButton1}  >

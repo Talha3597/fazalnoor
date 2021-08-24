@@ -143,13 +143,13 @@ return(
                             <td>{item.address}</td>
                               {role=='superAdmin'?
                           <td><Link  to={`/updateStudent/${item._id}`}>  
-                            <Button className='btn btn-outline-info bg-light'   >
+                            <Button className={styles.sideButton1}  >
                             Edit</Button></Link></td>
                             :''}
-                           <td> <Button className='btn btn-outline-danger bg-light'  onClick={() => removeData(item.studentNo)}>
+                           <td> <Button className={styles.sideButton2}  onClick={() => removeData(item.studentNo)}>
                              Delete
                             </Button></td>
-                            <td> <Link to={ `/viewStudent/${item._id}` }> <Button className='btn btn-outline-warning bg-light'  >
+                            <td> <Link to={ `/viewStudent/${item._id}` }> <Button className={styles.sideButton3}  >
                             View</Button></Link></td>
                         </tr>  
                     })}  

@@ -135,13 +135,13 @@ return (
             
                             <td>
                             {role=='superAdmin'?
-                            <Link to={`/updateIncome/${item._id}` } ><Button className='btn btn-outline-info bg-light '  >
+                            <Link to={`/updateIncome/${item._id}` } ><Button className={styles.sideButton1}  >
                             Edit</Button></Link> :''}</td>
                             <td>   {role=='superAdmin'? 
-                            <Button className='btn btn-outline-danger bg-light ' onClick={() => removeData(item._id)}>
+                            <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
                              Delete
                             </Button>:''}</td> 
-                            <td> <Link to={`/incomeView/${item._id}` } ><Button className='btn btn-outline-warning bg-light '  >
+                            <td> <Link to={`/incomeView/${item._id}` } ><Button className={styles.sideButton3}  >
                             View</Button></Link></td> 
                         </tr>  
                     })}  

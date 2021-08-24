@@ -115,31 +115,29 @@ module.exports.expenseDashboard=async(req,res)=>{
     const month=req.query.month
     const year=req.query.year
     
-    await Expense.find({date: { $regex: month+'.*'+year }})
-    .then((data)=>{
-           
-            
-            let sum =data.map(item=>item.amount).reduce((a,item)=>item+a)
-             Salary.find({date: { $regex: month },type:type})
-    .then((sdata)=>{
-           if(sdata[0]){
-            const sum3=sdata.map(item=>item.pending).reduce((a,item)=>item+a)
-            return res.send((sum+sum3).toString())}
-            else{
-                return res.send((sum).toString())
+    let data =await Expense.find({date: { $regex: month+'.*'+year }})
+    let sdata=await Salary.find({date: { $regex: month+'.*'+year },type:type}) 
+    if(data[0] && sdata[0]){
+        let sum =data.map(item=>item.amount).reduce((a,item)=>item+a)
+        let sum3=sdata.map(item=>item.pending).reduce((a,item)=>item+a)
+            return res.send((sum+"+"+sum3).toString())}
+    else if(data[0] && !sdata[0]){
+        let sum =data.map(item=>item.amount).reduce((a,item)=>item+a)
+        return res.send((sum+"+0").toString())
+        }
+    else if(!data[0] && sdata[0]){
+        let sum3=sdata.map(item=>item.pending).reduce((a,item)=>item+a)
+        return res.send(("0+"+sum3).toString())
+        }
+    else{
+                return res.send(("0+0").toString())
             }
-        })
-            
-        .catch( (err)=>{
-       return res.send('')
-    })
     
+   
            
-        })
             
-        .catch( (err)=>{
-            return res.send('')
-    })
+            
+             
     }
     module.exports.expenseReport=async(req,res)=>{
         const month=req.query.month
@@ -172,4 +170,5 @@ module.exports.expenseDashboard=async(req,res)=>{
         })
     
     }
-    
+   
+         

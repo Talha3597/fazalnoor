@@ -15,8 +15,8 @@ const ReportFinance =  ()=> {
 let[idata,setIncomeData] =useState(0) 
 let[fdata,setFeeData] =useState(0) 
 let[finedata,setFineData] =useState(0) 
-let[edata,setExpenseData] =useState(0) 
-let[salaryData,setSalaryData] =useState(0) 
+let[edata,setExpenseData] =useState('0+0') 
+
 let[month,setMonth] =useState('') 
 const minusYear=()=>{
   setYear(year=>year-1)
@@ -24,25 +24,20 @@ const minusYear=()=>{
 const addYear=()=>{
   setYear(year=>year+1)
 }
- 
+
+let expense=parseInt(edata.toString().split('+')[0])
+let salary=parseInt(edata.toString().split('+')[1])
+
 useEffect(()=>{
-   function fetchSalaryData(){ 
-     
-     axios.get('/api/salaryGeneralReport', { params: {month,year} })
-    .then(res=>{
-        
-      setSalaryData(res.data)
-           
-    })
-    
-   }
+
     function fetchFeeData(){   
      axios.get('/api/feeGeneralReport', { params: {month,year} })
     .then(res=>{
         setFeeData(res.data)
         
     })
-   } function fetchIncomeData(){   
+   } 
+   function fetchIncomeData(){   
      axios.get('/api/incomeDashboard', { params: {month,year} })
     .then(res=>{
         setIncomeData(res.data)
@@ -69,8 +64,7 @@ useEffect(()=>{
   fetchExpenseData()
    fetchIncomeData()
    fetchFeeData()
-   fetchSalaryData()
-  
+   
 },[month,year]
 )
 
@@ -163,10 +157,10 @@ return (
   <tbody>
   <tr><td>Fees Collections(+)</td><td>{fdata-finedata}</td></tr>
  <tr><td>Fines(+)</td><td>{finedata}</td> </tr>
- <tr><td>Expense(-)</td><td>{edata}</td> </tr>
- <tr><td>Salary(-)</td><td>{salaryData}</td> </tr>
+ <tr><td>Expense(-)</td><td>{expense+salary}</td> </tr>
+ <tr><td>Salary(-)</td><td>{salary}</td> </tr>
  <tr><td>Income(+)</td><td>{idata}</td></tr>
- <tr><td>Grand Total(PKR)</td><td>{idata-edata}</td></tr>
+ <tr><td>Grand Total(PKR)</td><td>{idata-(expense+salary)}</td></tr>
   </tbody>
 </Table>
 </td>
@@ -191,7 +185,7 @@ return (
   <tbody>
   <tr><td>Every school have several area of expenses,this part shows the Total
       sum of expenses spend over a time range</td></tr>
- <tr><td>Total(PKR)</td><td>{edata}</td></tr> 
+ <tr><td>Total(PKR)</td><td>{expense+salary}</td></tr> 
   </tbody>
 </Table>
 <Table  bordered  size='sm'>
@@ -202,7 +196,7 @@ return (
   </thead>
   <tbody>
   <tr> <td>Total sum of salary given to employees,teacher and other staffs over the time range</td></tr>
- <tr><td>Total(PKR)</td><td>{salaryData}</td></tr> 
+ <tr><td>Total(PKR)</td><td>{salary}</td></tr> 
   </tbody>
 </Table> 
 </td>

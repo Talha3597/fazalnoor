@@ -270,6 +270,7 @@ module.exports.updateProfile=async(req,res)=>
   }
   
 }
+
 module.exports.updateUser=(req,res)=>
 {
     

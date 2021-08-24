@@ -102,40 +102,37 @@ module.exports.updateIncome=(req,res)=>
     }); 
 }
 module.exports.incomeDashboard=async(req,res)=>{
-    
+    let type='deposite'
     const month=req.query.month
     const year=req.query.year
     
-  let type='deposite'
-    await Income.find({date: { $regex: month+'.*'+year }})
-    .then((data)=>{
+    let data =await Income.find({date: { $regex: month+'.*'+year }})
+    let fdata=await Fee.find({date: { $regex: month+'.*'+year },type:type}) 
+    if(data[0] && fdata[0]){
+        let sum =data.map(item=>item.amount).reduce((a,item)=>item+a)
+        let sum3=fdata.map(item=>item.pending).reduce((a,item)=>item+a)
+            return res.send((sum+sum3).toString())}
+    else if(data[0] && !fdata[0]){
+        let sum =data.map(item=>item.amount).reduce((a,item)=>item+a)
+        return res.send((sum).toString())
+        }
+    else if(!data[0] && fdata[0]){
+        let sum3=fdata.map(item=>item.pending).reduce((a,item)=>item+a)
+        return res.send((sum3).toString())
+        }
+    else{
+                return res.send(("0").toString())
+            }
+    
+   
            
             
-            let sum4=data.map(item=>item.amount).reduce((a,item)=>item+a)
-             Fee.find({date: { $regex: month+'.*'+year },type:type})
-    .then((sdata)=>{
-           
-           if(sdata[0]){
-           const sum3=sdata.map(item=>item.pending).reduce((a,item)=>item+a)
-          
-           return res.send((sum4+sum3).toString())
-           }
-           else{
-            return res.send((sum4).toString())
-           }
-        })
             
-        .catch( (err)=>{
-       return res.send('')
-    })  
-               
-})        
-           
-            
-        .catch( (err)=>{
-       return res.send('')
-    })
+             
     }
+
+           
+    
     module.exports.incomeReport=async(req,res)=>{
         const month=req.query.month
         const year=req.query.year

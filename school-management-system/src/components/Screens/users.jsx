@@ -87,15 +87,15 @@ return(
                             <td>{item.address}</td>
                               
                             {role=='superAdmin'?
-                            <td><Link to={ `/updateUser/${item._id}` }><Button className='btn btn-outline-info bg-light'  >
+                            <td><Link to={ `/updateUser/${item._id}` }><Button className={styles.sideButton1}  >
                             Edit</Button></Link></td>
                             :''}
                             {role=='superAdmin'?
-                            <td>  <Button className='btn btn-outline-danger bg-light' onClick={() => removeData(item.employeeNo)}>
+                            <td>  <Button className={styles.sideButton2} onClick={() => removeData(item.employeeNo)}>
                              Delete
                             </Button></td> :''}
             
-                            <td><Link to={`/viewUser/${item._id}`}>  <Button className='btn btn-outline-warning bg-light'   >
+                            <td><Link to={`/viewUser/${item._id}`}>  <Button className={styles.sideButton3}   >
                             View</Button></Link></td>
                         </tr>  
                     })}  

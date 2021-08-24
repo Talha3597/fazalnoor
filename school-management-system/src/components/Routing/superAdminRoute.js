@@ -287,11 +287,7 @@ import * as RiIcons from 'react-icons/ri';
 const i='true'
 export const SidebarData2 = 
 [
-  {
-    title: 'Dashboard',
-    path: '#',
-    icon: <FaIcons.FaSchool />
-  },
+ 
     { 
       title: 'Student',
       path: '#',
@@ -300,11 +296,7 @@ export const SidebarData2 =
       iconOpened: <RiIcons.RiArrowUpSFill />,
        
       subNav: [
-        {
-          title: 'Dashboard',
-          path: '/students',
-          icon: <AiIcons.AiOutlineDashboard />
-        },
+        
         {
           
           title: 'Students',
