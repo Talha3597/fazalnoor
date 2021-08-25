@@ -2,10 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "./server/app.js",
+  "main": "app.js",
   "scripts": {
     "start": "node server/app",
-    "server": "nodemon server/app",
+    "server": "nodemon server/app --ignore client",
     "client": "npm start --prefix school-management-system",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:import": "node server/seeder",

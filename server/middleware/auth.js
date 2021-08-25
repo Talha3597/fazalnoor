@@ -5,15 +5,15 @@ const ErrorResponse = require('../utils/errorResponse')
 
 exports.protect = async(req,res,next)=>
 {
-    
+        
     if(req.headers.authorization && req.headers.authorization.startsWith("Bearer"))
     {
         
        const  token = req.headers.authorization.split(" ")[1]
-    
+       
      if(!token)
-    {      console.log("Not authorized to access this route at 1")
-        return next(new ErrorResponse("Not authorized to access this route",401))
+    {   
+        next( new ErrorResponse("Not authorized to access this route",404))
 
     }
     try {
@@ -24,17 +24,21 @@ exports.protect = async(req,res,next)=>
         if(!user)
         {
            
-            return next(new ErrorResponse("No user found with this id", 404))
+             next( new ErrorResponse("No user found with this id"),401)
         }
         if(user.role!==role)
         {
-            return next(new ErrorResponse("You are not authorized to accesss this page", 404))
+            next( new ErrorResponse("You are not authorized to accesss this page",401))
         }
         req.user=user
         next()
     } catch (error) {
-        console.log("Not authorized to access this route at 3")
-        return next(new ErrorResponse("Not authorized to access this route",401))
+       
+        next( new ErrorResponse("Not authorized to access this route",404))
     }
+ }
+ else{
+    
+    next( new ErrorResponse("You are not authorized to accesss this page",500))
  }
 }

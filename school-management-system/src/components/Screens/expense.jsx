@@ -10,11 +10,12 @@ import {Link} from 'react-router-dom'
 
 
 import axios from 'axios'
-import  Sidebar  from './privateScreen';
-const Expense =  ()=> {
+
+const Expense =({history})=> {
    // const [message, setMessage]=useState("")
    const today=new Date()
-   let[year,setYear] =useState( today.getFullYear()) 
+   let[year,setYear] =useState( today.getFullYear())
+   
 let[gdata,setData] =useState([]) 
 let [month,setMonth]=useState('')
 let role=localStorage.getItem("role") 
@@ -38,21 +39,25 @@ const removeData = async(id) => {
            
         }) 
 }
-
 useEffect(()=>{
-    async function fetchData(){   
-        await axios.get('/api/Expenses',{params:{month,year}})
-        .then(res=>{
-            setData(res.data)
-            
-        })
-       }
-       
- fetchData()
+  
  
 
-},[month,year]
-)
+  async function fetchData(){ 
+    
+      await axios.get('/api/Expenses',{params:{month,year}})
+      .then(res=>{
+        setData(res.data)
+      })
+     
+      
+   
+     
+   }
+   
+  fetchData()
+
+},[month, year])
 const deleteRecord = async()=>{
   if(month && year){
   let flag= window.confirm("Delete Paid record of specific month")
@@ -76,7 +81,7 @@ return (
     
         <div className={styles.margLeftRowTable }>
         
-    <br/>
+    <br/> 
                     <div className="text-center">
                     <button className={styles.formButton} onClick={() => window.location="/addExpense"}>
                     

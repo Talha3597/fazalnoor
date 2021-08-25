@@ -11,14 +11,14 @@ const LoginScreen =({history})=>{
     const [email, setEmail]=useState("")
     const [password, setPassword]=useState("")
     const [error, setError]=useState("")
-    useEffect(()=>{
-        if(localStorage.getItem('authToken'))
-        {
-            window.location='/'
-        }
-    },[history])
-
-    const loginHandler=async(e)=>
+   
+useEffect(()=>{
+  if(!localStorage.getItem("authToken") && !localStorage.getItem("role"))
+  {  
+     setError("You Are Not authorized Please Login Again ")
+  }
+},[history])
+     const loginHandler=async(e)=>
     {
         e.preventDefault()
         const config ={
@@ -37,13 +37,13 @@ const LoginScreen =({history})=>{
                 localStorage.setItem("Class",data.Class)
                 localStorage.setItem("section",data.section)
                 localStorage.setItem("id",data.id)
-                   window.location='/'
+                history.push('/')
                 }
                 else{
                 localStorage.setItem("role",data.role)
                 localStorage.setItem("username",data.username)
                 localStorage.setItem("id",data.id)
-                window.location='/'
+                history.push('/')
                 }}
                 
             } catch (error) {

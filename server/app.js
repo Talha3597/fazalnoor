@@ -21,14 +21,14 @@ app.use(cors());
 
 
 
-app.use( '/public',express.static('public'))
+
 app.use('/api/auth',require('./routes/auth'))
 app.use('/api/private',require("./routes/private"))
 app.use("/api", Router);
 
 
 if (process.env.NODE_ENV === 'production'){
-    app.use(express.static(path.join(__dirname,'../school-management-system/build')))
+    app.use(express.static(path.join(__dirname,'/school-management-system/build')))
 
     app.get('*',(req,res)=>{
         res.sendFile(path.resolve(__dirname,'school-management-system','build','index.html'))

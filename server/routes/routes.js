@@ -1,4 +1,6 @@
 const express = require('express')
+const {protect}=require('../middleware/auth')
+
 const router = express.Router();
 const{addStudent,students,deleteStudent,updateStudent,getStudent,promote,findStudent,transfer,studentsData}=require('../controller/Acadmic/student.controller')
 router.route('/addStudent').post(addStudent)

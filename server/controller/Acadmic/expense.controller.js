@@ -56,11 +56,13 @@ module.exports.Expenses = async(req,res)=>
 {        
     const month=req.query.month
     const year=req.query.year
-   
+   console.log(month)
        await Expense.find({date: { $regex: month+'.*'+year }}).sort({_id:-1}).limit(200)
         .then((data)=>{
-            
-            return res.send(data)})
+            console.log(data)
+        return res.send(data)
+           
+        })
         .catch( (err)=>{
             return res.status(200).json({success:true, token:'Error Loading Data'})
         })

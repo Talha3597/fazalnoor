@@ -71,19 +71,18 @@ const PrivateScreen = ({history}) =>{
  const [error, setError]= useState('')
  const [privateData, setPrivateData]= useState("")
 
-
-
+ 
  
  useEffect(()=>{
     if(!localStorage.getItem("authToken") && !localStorage.getItem("role"))
-    {   window.location='/login'
-        history.push("/login")
+    {  
+        window.location="/login"
     }
     
     const config= {
-        header:{
-            "Content-Type":"application/json",
-            Authorization:`Bearer${localStorage.getItem("authToken")}`,
+        headers:{
+            
+            Authorization:`Bearer ${localStorage.getItem("authToken")}`,
             role:localStorage.getItem("role")
         }
    }
@@ -96,7 +95,7 @@ const PrivateScreen = ({history}) =>{
              
         } catch (error) {
             localStorage.removeItem("authToken")
-             setError("You are not authorized please login")
+             setError("You are not authorized Please Login")
         }
     }
     
@@ -113,10 +112,7 @@ const PrivateScreen = ({history}) =>{
     <span className="error-message">{error}</span>):
      (
          <>
-         <div style={{backgorund:"green", color:"weight"}}>
-             {privateData}
-         </div>
-        
+         
         
          <IconContext.Provider value={{ color: '#fff' }}>
         <Nav>
