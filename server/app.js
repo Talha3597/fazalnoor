@@ -25,7 +25,6 @@ app.use(cors());
 app.use('/api/auth',require('./routes/auth'))
 app.use('/api/private',require("./routes/private"))
 app.use("/api", Router);
-const __dirname = path.resolve()
 
 if (process.env.NODE_ENV === 'production'){
     app.use(express.static(path.join(__dirname,'/school-management-system/build')))
