@@ -37,11 +37,14 @@ function ManageClassData() {
                     
                     <td><Link to={ '/updateClass/' + timetable._id }><span className={[styles['Edel'], 'fas fa-pencil-alt'].join(' ')}></span></Link>
                     <button onClick={() =>  {
+                        let flag= window.confirm("Delete  record!")
+                        if(flag)
+                        {
                         axios.delete('/api/deleteClass/' + timetable._id)
                         .then(response => { 
                             console.log(response.data)
                             window.location = '/manageClassData'
-                            });
+                            });}
                     }} className={styles.Edel2}><span className={[styles['Edel3'], 'fas fa-trash'].join(' ')}></span></button></td>
                 </tr>
         

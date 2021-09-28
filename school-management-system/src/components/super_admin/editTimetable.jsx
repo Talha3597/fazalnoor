@@ -87,12 +87,14 @@ function EditTimetable() {
         
                     {manageEndHours(timetable.lecEnd)}
                     <td><Link to={ '/updateTimetable/' + timetable._id }><span className={[styles['Edel'], 'fas fa-pencil-alt'].join(' ')}></span></Link>
-                    <button onClick={() =>  {
+                    <button onClick={() =>  {let flag= window.confirm("Delete  record!")
+  if(flag)
+  {
                         axios.delete('/api/deleteTimetable/' + timetable._id)
                         .then(response => { 
                             console.log(response.data)
                             window.location = '/viewTimetable'
-                            });
+                            });}
                     }} className={styles.Edel2}><span className={[styles['Edel3'], 'fas fa-trash'].join(' ')}></span></button></td>
                 </tr>
         

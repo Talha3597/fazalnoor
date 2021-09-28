@@ -153,13 +153,11 @@ return(
                             View</Button></Link></td>
                             {role=='superAdmin'? <td>
                             <Link to={`/addFeeStudent/${item.studentNo}`}>
-                        <Button className={styles.sideButton1}>
-                         Add Fee
-                        </Button></Link></td> :''}
+                        <Button className={styles.sideButton1}>Fee</Button></Link></td> :''}
                         <td>
                           <Link to={`/viewGradesStudent/${item.studentNo}`}>
                         <Button className={styles.sideButton3} >
-                         View Grades
+                         Grades
                         </Button></Link></td>  
                         </tr>  
                     })}  

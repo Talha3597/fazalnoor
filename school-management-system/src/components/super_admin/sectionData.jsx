@@ -16,11 +16,14 @@ const ClassVar = props => (
             <td><Link to = {'/viewStudents/' + props.classIns.title}>view</Link></td>
             <td><Link to={'/updateSection/' + props.classIns._id + '/' + props.classIns.class_id }><span className={[styles['Edel'], 'fas fa-pencil-alt'].join(' ')}></span></Link>
             <button onClick={() =>  {
+                   let flag= window.confirm("Delete  record!")
+                   if(flag)
+                   {
                    axios.delete('/api/deleteSection/'+props.classIns._id)
                    .then(response => { 
                        console.log(response.data)
                        window.location = '/sectionData/' + props.classIns.class_id
-                    });
+                    });}
             }} className={styles.Edel2}><span className={[styles['Edel3'], 'fas fa-trash'].join(' ')}></span></button></td>
         </tr>
 

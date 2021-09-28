@@ -18,12 +18,14 @@ const ClassVar = props => (
             <td>{props.classIns.percentage}</td>
             <td>{props.classIns.testGrade}</td>
             <td><Link to={'/updateGrade/' + props.classIns._id}><span className={[styles['Edel'], 'fas fa-pencil-alt'].join(' ')}></span></Link>
-            <button onClick={() =>  {
+            <button onClick={() =>  {let flag= window.confirm("Delete  record!")
+  if(flag)
+  {
                    axios.delete('/api/deleteGrade/'+props.classIns._id)
                    .then(response => { 
                        console.log(response.data)
                        window.location = '/viewGrades'
-                    });
+                    });}
             }} className={styles.Edel2}><span className={[styles['Edel3'], 'fas fa-trash'].join(' ')}></span></button></td>
         </tr>
 

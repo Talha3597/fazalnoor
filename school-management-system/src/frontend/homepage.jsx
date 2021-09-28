@@ -7,6 +7,7 @@ import * as FaIcons from 'react-icons/fa';
 
 const HomePage =  ({history})=> {
   
+  // Hey, a popstate event happened!
 
       return (
         

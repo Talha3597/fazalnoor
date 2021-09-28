@@ -33,7 +33,7 @@ try{
             } else {
            const title="Admission Fee"
            const date= new Date
-           let studentNo=data.studentNo
+           let studentNo=data[0].studentNo
            console.log(data)
 
            let status="Unpaid"
