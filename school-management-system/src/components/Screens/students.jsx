@@ -4,10 +4,6 @@ import { Row, Col,Table,Button} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Link } from 'react-router-dom'
 import { useReactToPrint } from 'react-to-print';
-
- 
-
-
 import axios from 'axios';
 let role=localStorage.getItem("role") 
 
@@ -22,13 +18,16 @@ const [ section, setSection ] = useState('')
 const [ sectionData, setSectionData ] = useState([])
 
 const removeData = async(id) => {
-    await axios.delete(`/api/student`, { params: {id} }) 
+  let flag= window.confirm("Delete  record!")
+  if(flag)
+  {   await axios.delete(`/api/student`, { params: {id} }) 
         .then(res => {
-            const del = gdata.filter(gdata => id !== gdata.studentNo)
+            const del = gdata.filter(gdata => id !== gdata._id)
             setData(del)
            
-        }) 
+        }) }
 }
+
 const componentRef = useRef();
 const handlePrint = useReactToPrint({
   content: () => componentRef.current,
@@ -141,16 +140,27 @@ return(
                             <td>{item.section}</td>  
                             <td>{item.phoneNo}</td>  
                             <td>{item.address}</td>
-                              {role=='superAdmin'?
+                              {role=='superAdmin'&&
                           <td><Link  to={`/updateStudent/${item._id}`}>  
                             <Button className={styles.sideButton1}  >
-                            Edit</Button></Link></td>
-                            :''}
-                           <td> <Button className={styles.sideButton2}  onClick={() => removeData(item.studentNo)}>
+                            Edit</Button></Link></td>}
+                            {role=='superAdmin'&&  <td>
+                           <Button className={styles.sideButton2}  onClick={() => removeData(item._id)}>
                              Delete
-                            </Button></td>
+                            </Button></td>}
+                            
                             <td> <Link to={ `/viewStudent/${item._id}` }> <Button className={styles.sideButton3}  >
                             View</Button></Link></td>
+                            {role=='superAdmin'? <td>
+                            <Link to={`/addFeeStudent/${item.studentNo}`}>
+                        <Button className={styles.sideButton1}>
+                         Add Fee
+                        </Button></Link></td> :''}
+                        <td>
+                          <Link to={`/viewGradesStudent/${item.studentNo}`}>
+                        <Button className={styles.sideButton3} >
+                         View Grades
+                        </Button></Link></td>  
                         </tr>  
                     })}  
     

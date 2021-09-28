@@ -27,12 +27,15 @@ const handlePrint = useReactToPrint({
 });
 //const  [query ,setQuery ]= useState('')
 const removeData = async(id) => {
+  let flag= window.confirm("Delete  record!")
+  if(flag)
+  { 
     await axios.delete(`/api/income`, { params: {id} }) 
         .then(res => {
             const del = gdata.filter(gdata => id !== gdata._id)
             setData(del)
            
-        }) 
+        }) }
 }
 const deleteRecord = async()=>{
   if(month && year){

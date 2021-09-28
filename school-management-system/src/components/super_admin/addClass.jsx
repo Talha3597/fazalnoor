@@ -25,7 +25,7 @@ function SAdashboard() {
         
 
 
-        if(title !== '' && description !== '' && incharge !== ''){
+        if(title !== '' ){
 
 
             const classObj = {
@@ -46,13 +46,7 @@ function SAdashboard() {
                 $('#title').fadeIn(100)
             }
 
-            if(description === ''){
-                $('#description').fadeIn(100)
-            }
-
-            if(incharge === ''){
-                $('#incharge').fadeIn(100)
-            }
+           
             
             
         }
@@ -83,7 +77,7 @@ function SAdashboard() {
 
                                     <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Description</Form.Label>
-                                        <Form.Control className={styles.formField} as="textarea" placeholder="Description" value={description} onChange={ e => setDescription(e.target.value) } required/>
+                                        <Form.Control className={styles.formField} as="textarea" placeholder="Description" value={description} onChange={ e => setDescription(e.target.value) } />
                                         <Form.Text id="description" className={styles.authtextF2}  style={{display: 'none'}}>
                                             Please provide description for Class.
                                         </Form.Text>
@@ -91,7 +85,7 @@ function SAdashboard() {
 
                                     <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Class Incharge</Form.Label>
-                                        <Form.Control className={styles.formField} as="textarea" placeholder="Class Incharge" value={incharge} onChange={ e => setIncharge(e.target.value) } required/>
+                                        <Form.Control className={styles.formField} as="textarea" placeholder="Class Incharge" value={incharge} onChange={ e => setIncharge(e.target.value) } />
                                         <Form.Text id="incharge" className={styles.authtextF2}  style={{display: 'none'}}>
                                             Please provide Class Incharge name for Class.
                                         </Form.Text>

@@ -181,7 +181,7 @@
   border:none;
 }
 .sideButton1{
-    background-color:#fff!important;
+    background-color:rgb(255, 255, 255) !important;
     border-color: #46B6B1;
     color: #46B6B1;
     min-width: 80px;
@@ -190,7 +190,7 @@
 }
 
 .sideButton2{
-    background-color:#fff !important;
+    background-color:#fff!important;
     border-color:#9E3535;
     color: #9E3535;
     min-width: 80px;
@@ -207,17 +207,23 @@
     
 }
 .sideButton1:hover {
-    background-color: #46B6B1;;
+    background-color:#fff;
+    border-color: #46B6B1;
     color: #46B6B1;
+    font-size: 1.1rem;
   }
 
 .sideButton3:hover {
-    background-color: #2A9539;
-    color: #2A9539;
+    background-color:#fff;
+    border-color:#2A9539;
+    color: #2A9539 ;
+    font-size: 1.1rem;
   }
 .sideButton2:hover {
-    background-color: #9E3535;
-    color: #2A9539;
+    background-color:#fff;
+    border-color:#9E3535;
+    color: #9E3535;
+    font-size: 1.1rem;
   }
 .formButton{
     background-color:#808080 !important;
@@ -236,7 +242,22 @@
 .respNav{
     display: none !important;
 }
-
+.box1{
+    flex:1;
+    padding:10px;
+    margin:25%;
+    background-color: #fff;
+  }
+  .box2{
+    flex:1;
+    padding:10px;
+    background-color: #fff;
+  }
+  @media screen and (min-width: 760px) {
+    .container1{
+    display:flex;
+   }
+}
 /**************** class page ********************/
 
 @media (max-width: 320px){

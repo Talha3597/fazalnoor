@@ -7,21 +7,10 @@ const Fee =require('../../model/feeSchema');
 module.exports.addStudent=async (req,res)=>{
     
         
-       let isExist= await StudentSchema.findOne({studentNo: req.body.studentNo});
+       
 try{ 
-
-       if(isExist)
-       {       
-            
-           return res.status(200).json({success:true, token:'Student Number Already Exist'})
-       }
-       
-       
-       
-      
-           const studentNo=req.body.studentNo
            const studentName=req.body.name
-           const rollNo=req.body.rollNo
+           
            const Class=req.body.Class
            const section=req.body.section
            const address=req.body.address
@@ -36,12 +25,17 @@ try{
            const amount=req.body.admissionFee
            const person=req.body.createdBy
            
-           const newStudent=  StudentSchema.create({studentNo,studentName,Class,section,dob,address,rollNo,parentName,cnic,phoneNo,parentRelation,email,description,fee})
-           
+           const newStudent= await StudentSchema.create({studentName,Class,section,dob,address,parentName,cnic,phoneNo,parentRelation,email,description,fee})
+           StudentSchema.find({studentName:studentName,Class:Class,section:section,address:address,}, (error, data) => {
+            if (error) {
+                
+                throw error;
+            } else {
            const title="Admission Fee"
-           
            const date= new Date
-           
+           let studentNo=data.studentNo
+           console.log(data)
+
            let status="Unpaid"
            let type='fee'
           const discount=0
@@ -53,6 +47,10 @@ try{
                 token: "Student add successfully",
             })
         
+                
+            }
+        })
+           
    }
     catch(error){
         return res.status(200).json({success:true, token:'Invalid Information'})
@@ -157,17 +155,17 @@ module.exports.studentsData = async(req,res)=>
             return res.status(200).json({success:true, token:'Error Loading Data'})
         })
        }}
-module.exports.deleteStudent=(req,res)=>{
+module.exports.deleteStudent=async(req,res)=>{
     
-    const studentNo=req.query.id
+    const id=req.query.id
   
-    
-    StudentSchema.deleteOne({studentNo:studentNo}, (error, data) => {
+    await StudentSchema.findByIdAndDelete(id, (error, data) => {
         if (error) {
             
             throw error;
         } else {
-            res.status(200)
+            
+            res.status(204).json(data);
             
         }
     });

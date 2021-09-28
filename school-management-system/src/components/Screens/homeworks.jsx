@@ -11,12 +11,15 @@ const sam=''
 let role=localStorage.getItem("role")
 //const  [query ,setQuery ]= useState('')
 const removeData = async(id) => {
+    let flag= window.confirm("Delete  record!")
+  if(flag)
+  { 
     await axios.delete(`/api/homework`, { params: {id} }) 
         .then(res => {
             const del = gdata.filter(gdata => id !== gdata._id)
             setData(del)
            
-        }) 
+        }) }
 }
 
 useEffect(()=>{

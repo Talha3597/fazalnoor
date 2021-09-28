@@ -7,10 +7,10 @@ import axios from 'axios'
 
 const AddStudent =  ({history})=> {
    // const [message, setMessage]=useState("")
-    const [ studentNo, setStudentNo ] = useState('')
+    
     const [ name, setName ] = useState('')
     const [ address, setAddress ] = useState('')
-    const [ rollNo, setRollNo ] = useState('')
+   
     const [ Class, setClass ] = useState('')
     const [ section, setSection ] = useState('')
     const [ parentName, setParentName ] = useState('')
@@ -65,7 +65,7 @@ const AddStudent =  ({history})=> {
                     return setError(" Select Class and Section");
                   
         }
-               const{data} =await axios.post('/api/addStudent',{studentNo,name,rollNo,Class,section,dob,address,parentName,phoneNo,parentRelation,email,description,schoolFee,cnic,createdBy,admissionFee})
+               const{data} =await axios.post('/api/addStudent',{name,Class,section,dob,address,parentName,phoneNo,parentRelation,email,description,schoolFee,cnic,createdBy,admissionFee})
                  alert(data.token) 
                  history.push('/students')
                  history.push('/addStudent')
@@ -88,7 +88,7 @@ const AddStudent =  ({history})=> {
                             <div className={styles.Border}>
                                 <br/>
                                  
-                                <form className={styles.formMargin} onSubmit={onSubmit} >
+                                <form className={styles.formMargin} onSubmit={onSubmit} autoComplete="off" >
                                 {/* <Form.Group controlId="formBasicEmail">
                                    
                                     <input type="file" id="myFile" name="filename"/>
@@ -97,21 +97,15 @@ const AddStudent =  ({history})=> {
                                   </Form.Group> */}
                                  {error && <span className='error-message'>{error}</span>}             
                                  
-                                  <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>Student Number *</Form.Label>
-                                        <Form.Control className={styles.formField} type="number" placeholder="Enter Unique Student Number" value={studentNo} onChange={ e => setStudentNo(e.target.value) } required />
-                                    </Form.Group>
+                                 
                                     <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Name *</Form.Label>
                                         <Form.Control className={styles.formField} type="text" placeholder="Enter Name" value={name} onChange={ e => setName(e.target.value) } required />
                                     </Form.Group>
-                                    <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>ID</Form.Label>
-                                        <Form.Control className={styles.formField} type="number" placeholder="Enter Roll Number" value={rollNo} onChange={ e => setRollNo(e.target.value) }/>
-                                    </Form.Group>
+                                   
                                     
                                     <Form.Group controlId="formBasicstudentClass">
-                                        <Form.Label>Class</Form.Label>
+                                        <Form.Label>Class *</Form.Label>
                                         <Form.Control required className={styles.formField} as="select" value={Class} onChange={ e => setClass(e.target.value) } >
                                           <option defaultValue>Select Class</option>
                                             {   
@@ -127,7 +121,7 @@ const AddStudent =  ({history})=> {
                                     </Form.Group>
 
                                     <Form.Group controlId="formBasicstudentClass">
-                                        <Form.Label>Section</Form.Label>
+                                        <Form.Label>Section *</Form.Label>
                                         <Form.Control className={styles.formField} as="select" value={section} onChange={ e => setSection(e.target.value) } required >
                                         <option defaultValue>Select Section</option>
                                             {

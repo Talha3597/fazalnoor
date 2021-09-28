@@ -58,11 +58,13 @@ import ViewExpense from "../Screens/expenseView"
 import FeeDashboard from "../Screens/feeDashboard"
 import Fee from "../Screens/fees"
 import AddFee from "../Screens/addFee"
+import AddFeeStudent from "../Screens/addFeeStudent"
 import PayFee from "../Screens/payFee"
 //
 import SalaryDashboard from "../Screens/salaryDashboard"
 import Salary from "../Screens/salaries"
 import AddSalary from "../Screens/addSalary"
+import AddSalaryUser from "../Screens/addSalaryUser"
 import PaySalary from "../Screens/paySalary"
 
 //User
@@ -95,6 +97,7 @@ import EditAttendance from '../super_admin/editAttendance'
 import ViewStudents from '../super_admin/viewStudents'
 import ManageGrades from '../super_admin/manageGrades'
 import ViewGrades from '../super_admin/viewGrades'
+import ViewGradesStudent from '../super_admin/viewGradesStudent'
 // import ViewGradesByClass from '../super_admin/viewGradesByClass'
 // import ViewGradesBySection from '../super_admin/viewGradesBySection'
 // import GradeReport from '../super_admin/gradeReport'
@@ -177,9 +180,11 @@ import * as RiIcons from 'react-icons/ri';
       <Route  path="/expenseDashboard" component={ExpenseDashboard}/>
      
       <Route  path="/addFee" component={AddFee}/>
+      <Route  path="/addFeeStudent/:id" component={AddFeeStudent}/>
       <Route  path="/payFee/:id" component={PayFee}/>
         <Route  path="/salaries" component={Salary}/>
       <Route  path="/addSalary" component={AddSalary}/>
+      <Route  path="/addSalaryUser/:id" component={AddSalaryUser}/>
       <Route  path="/paySalary/:id" component={PaySalary}/>
        
     <Route  path="/users" component={Users}/>
@@ -236,6 +241,9 @@ import * as RiIcons from 'react-icons/ri';
           </Route>
           <Route exact path="/viewGrades">
             <ViewGrades />
+          </Route>
+          <Route exact path="/viewGradesStudent/:id">
+            <ViewGradesStudent />
           </Route>
           <Route exact path="/viewGradesBySection">
             <ViewGradesBySection />

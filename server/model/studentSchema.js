@@ -1,9 +1,10 @@
 const mongoose=require('mongoose');
+var autoIncrement = require('mongoose-auto-increment');
+autoIncrement.initialize(mongoose.connection); 
 
 const StudentSchema=mongoose.Schema({
     studentNo:{
         type:Number,
-        unique:true,
          trim:true,
         
     },
@@ -86,5 +87,9 @@ const StudentSchema=mongoose.Schema({
     },
 },
 { timestamps: true });
-const Student=mongoose.model('student',StudentSchema);
+StudentSchema.plugin(autoIncrement.plugin, { model: 'Student', field: 'studentNo',startAt: 1,  });
+
+const Student=mongoose.model('Student',StudentSchema);
 module.exports=Student
+
+

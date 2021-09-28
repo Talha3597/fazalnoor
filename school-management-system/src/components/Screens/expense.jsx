@@ -32,12 +32,15 @@ const addYear=()=>{
 }
 //const  [query ,setQuery ]= useState('')
 const removeData = async(id) => {
-    await axios.delete(`/api/Expense`, { params: {id} }) 
+  let flag= window.confirm("Delete  record!")
+  if(flag)
+  {  
+  await axios.delete(`/api/Expense`, { params: {id} }) 
         .then(res => {
             const del = gdata.filter(gdata => id !== gdata._id)
             setData(del)
            
-        }) 
+        }) }
 }
 useEffect(()=>{
   
@@ -60,7 +63,7 @@ useEffect(()=>{
 },[month, year])
 const deleteRecord = async()=>{
   if(month && year){
-  let flag= window.confirm("Delete Paid record of specific month")
+  let flag= window.confirm("Delete  record of specific month")
   if(flag)
   { 
     await axios.delete('/api/deleteExpense', { params: {month,year} })

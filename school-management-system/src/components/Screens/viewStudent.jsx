@@ -1,9 +1,12 @@
 import React, { useEffect, useState,useRef} from 'react';
 import axios from 'axios';
-import { Row, Col, Form } from 'react-bootstrap'
+import { Row, Col, Form,Button,Table } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../../assets/style.module.css'
 import { useReactToPrint } from 'react-to-print';
+import * as AiIcons from 'react-icons/ai';
+import {Link} from 'react-router-dom'
+
 function ViewUser({match}){
     const id=match.params.id
      
@@ -22,11 +25,50 @@ function ViewUser({match}){
    const [ cnic, setCnic ] = useState('')
     let [ email, setEmail ] = useState('')
     let [ description, setDescription ] = useState('')
-    const componentRef = useRef();
-    const handlePrint = useReactToPrint({
-      content: () => componentRef.current,
-    });
-     
+    let[gdata,setData] =useState([]) 
+let[month,setMonth] =useState('') 
+let[status,setStatus] =useState('') 
+
+let createdBy=localStorage.getItem("username")
+let role=localStorage.getItem("role")
+let today=new Date()
+let[year,setYear] =useState( today.getFullYear())
+const minusYear=()=>{
+  setYear(year=>year-1)
+  }
+const addYear=()=>{
+  setYear(year=>year+1)
+}
+const componentRef = useRef();
+const handlePrint = useReactToPrint({
+  content: () => componentRef.current,
+});
+const removeData = async(id) => {
+    await axios.delete(`/api/fee`, { params: {id} }) 
+        .then(res => {
+            const del = gdata.filter(gdata => id !== gdata._id)
+            setData(del)
+           
+        }) 
+}
+
+useEffect(()=>{
+
+    async function fetchData(){ 
+          
+        await axios.get('/api/fees', { params: {month,Class,section,status,studentNo,year} })
+        .then(res=>{
+            setData(res.data)
+            
+        })
+       }
+       
+ fetchData()
+
+
+},[month,status,studentNo,year]
+)
+
       
 useEffect(()=>{
     async function fetchData(){   
@@ -61,23 +103,51 @@ return( <>
   <div className={styles.margLeftRow}>
       <Row>
           <Col md={12}>
-<div ref={componentRef} >
+
               <div className={styles.backBar}>
                   <h1>View Student</h1>
               </div>
               
-              <div className={styles.formStyle}>
-                  <div className={styles.Border}>
-                     
-                      <br/>
-                    &nbsp;  &nbsp;<button  onClick={handlePrint} className={styles.formButton} type="submit">
-                                        
-                                        Print
-                                       </button> 
-                      <form className={styles.formMargin}  >
-                     
-                        
-                        <Form.Group controlId="formBasicEmail">
+              <div className="text-center">
+                   
+                   <select required  as="select" value={month} onChange={ e => setMonth(e.target.value) } >
+                   <option value=''defaultValue>Select Month</option>
+                   <option value='Jan'>January</option>
+                   <option value='Feb'>Februry</option>
+                   <option value='Mar'>March</option>
+                   <option value='Apr'>April</option>
+                   <option value='May'>May</option>
+                   <option value='Jun'>June</option>
+                   <option value='Jul'>July</option>
+                   <option value='Aug'>August</option>
+                   <option value='Sep'>September</option>
+                   <option value='Oct'>October</option>
+                   <option value='Nov'>November</option>
+                   <option value='Dec'>December</option>
+                 </select>&nbsp;&nbsp;<AiIcons.AiFillPlusCircle onClick={ addYear}/>&nbsp;
+                 <AiIcons.AiFillMinusCircle onClick={minusYear}/> &nbsp;
+                  <select required  as="select" value={status} onChange={ e => setStatus(e.target.value) } >
+                  <option value=''defaultValue>Select status</option>
+                  <option value='Paid'>Paid</option>
+                  <option value='Unpaid'>Unpaid</option>
+                  </select></div>
+                  <br/>
+                              &nbsp; &nbsp; <button  onClick={handlePrint} className={styles.formButton} type="submit">
+                                       
+                                       Print
+                                      </button>
+                                      <div ref={componentRef} >
+                  <div className={styles.formHeading}>
+                    <h3> Al Khidmat Fazal Noor Campus </h3>
+                    <h3> Employee {studentName} </h3>
+                     </div>
+                              
+                               <form  >
+                               
+                                     
+                                          <div className="container1">
+                                              <div className="box2">
+                                    <Form.Group controlId="formBasicEmail">
                               <Form.Label>Student Number 
                               
                               </Form.Label>
@@ -100,6 +170,8 @@ return( <>
                               <Form.Label>Section</Form.Label>
                               <Form.Control readOnly disabled className={styles.formField} type="text"  value={section} onChange={ e => setSection(e.target.value)} required />
                           </Form.Group>
+                         
+                          
                                       <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Date Of Birth  Format: XX-XX-XXXX</Form.Label>
                                         <Form.Control readOnly disabled pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"  className={styles.formField} type="text" placeholder="Enter Date of Birth" value={dob} onChange={ e => setDob(e.target.value) }/>
@@ -109,7 +181,8 @@ return( <>
                                         <Form.Label>Address</Form.Label>
                                         <Form.Control readOnly disabled className={styles.formField} type="text" placeholder="Enter Address" value={address} onChange={ e => setAddress(e.target.value) } required />
                                     </Form.Group>
-                                    
+                                    </div>
+                                    <div className="box2">       
                            <Form.Group controlId="formBasicEmail">
                               <Form.Label>Guardian name </Form.Label>
                               <Form.Control readOnly disabled  className={styles.formField} type="text"  value={parentName} onChange={ e => setParentName(e.target.value) }/>
@@ -121,7 +194,7 @@ return( <>
                                      
                           <Form.Group controlId="formBasicEmail">
                               <Form.Label>Phone Number</Form.Label>
-                              <Form.Control readOnly disabledclassName={styles.formField} type="number"  value={phoneNo} onChange={ e => setPhoneNo(e.target.value) }/>
+                              <Form.Control readOnly disabled className={styles.formField} type="number"  value={phoneNo} onChange={ e => setPhoneNo(e.target.value) }/>
                           </Form.Group>
                           <Form.Group controlId="formBasicEmail">
                               <Form.Label>Email</Form.Label>
@@ -139,15 +212,62 @@ return( <>
                               <Form.Label>Description</Form.Label>
                               <Form.Control readOnly disabled className={styles.formField} as="textarea"  value={description} onChange={ e => setDescription(e.target.value) } />
                           </Form.Group>
-
+                          </div>
+                          </div>
                           
                       </form>
-                      
                       <br/>
+                      <div className='container1'>
+                      <div className='box2'>
+       <Table striped bordered hover size='sm'>
+  <thead>
+    <tr>
+      
+      <th> Title</th>
+      <th>Invoice Number</th>
+      <th>Amount</th>
+      <th>Discount</th>
+      <th>Class</th>
+      <th>section</th>
+      <th>Date</th>
+      <th>Paid</th>
+      <th>person</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+  {gdata.map(item => {  
+                        return <tr key={item._id}> 
+                           
+                            <td>{item.title}</td>  
+                            <td>{item.invoiceNo}</td>  
+                            <td>{item.amount}</td>  
+                            <td>{item.discount}</td>
+                            <td>{item.Class}</td>  
+                            <td>{item.section}</td>  
+                            <td>{item.date}</td> 
+                            <td>{item.pending}</td>
+                            <td>{item.person}</td>
+                            <td>{item.status}</td>
+                            <td>  {role=='superAdmin'?
+                        <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
+                         Delete
+                        </Button>:''}
+                        {role=='superAdmin'|| role=='finance'|| role=='financeTeacher'||role=='adminFinance'? 
+                        <Link to={`/payFee/${item._id}` } ><Button className={styles.sideButton1}  >
+                        Pay</Button></Link>:''} </td>
+                         
+                        </tr> 
+                        
+                    })}  
+    
+  </tbody>
+</Table>
+       </div>
+       </div>
                   </div>
                   
-              </div>
-              </div>
+              
           </Col>
 
       </Row>

@@ -11,7 +11,6 @@ const RegisterScreen =({history})=>{
     const [password, setPassword]=useState("")
     const [cPassword, setCpassword]=useState("")
     const [error, setError]=useState("")
-    const [ employeeNo, setEmployeeNo ] = useState('')
    const [ address, setAddress ] = useState('')
     const [ phoneNo, setPhoneNo ] = useState('')
     const [ invoiceNo, setInvoiceNo ] = useState('')
@@ -83,7 +82,7 @@ const RegisterScreen =({history})=>{
                     return setError("Role is required");
                   }
              
-                      const {data}=await axios.post("/api/auth/register",{employeeNo,username,email,password,address,cnic,phoneNo,description,salary,paidAmount,invoiceNo,role,Class,section},config)    
+                      const {data}=await axios.post("/api/auth/register",{username,email,password,address,cnic,phoneNo,description,salary,paidAmount,invoiceNo,role,Class,section},config)    
                   alert(data.data)
                   history.push('/users')
                   history.push('/register')
@@ -110,10 +109,7 @@ const RegisterScreen =({history})=>{
                                  
                                 <form className={styles.formMargin} onSubmit={onSubmit} >
                                 {error && <span className='error-message'>{error}</span>}             
-                                  <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>Employee Number *</Form.Label>
-                                        <Form.Control className={styles.formField} type="number" placeholder="Enter Unique Employee Number" value={employeeNo} onChange={ e => setEmployeeNo(e.target.value) } required />
-                                    </Form.Group>
+                                 
                                     <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Employee Name *</Form.Label>
                                         <Form.Control className={styles.formField} type="text" placeholder="Enter Name" value={username} onChange={ e => setUserName(e.target.value) } required />

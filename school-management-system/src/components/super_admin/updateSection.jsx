@@ -21,6 +21,7 @@ function UpdateSection(){
             .then((res) => {
                 console.log(res.data)
                 setSectionClass(res.data)
+                setClass(res.data.title)
             })
             .catch(err => {
 				console.log(err)
@@ -41,7 +42,7 @@ function UpdateSection(){
             .then((res) => {
                 console.log(res.data)
                 setClassTitle(res.data)
-                setClass(res.data[0].title)
+                
             })
             .catch(err => {
 				console.log(err)
@@ -61,7 +62,7 @@ function UpdateSection(){
             $('#Class').fadeOut(100)
 
 
-        if(title !== '' && description !== '' && teacher !== ''){
+        if(title !== '' ){
 
             const section = {
                 title,
@@ -73,7 +74,7 @@ function UpdateSection(){
             axios.post('/api/updateSection/' + id_1 , section)
                 .then(res => {
                     console.log(res.data)
-                    //window.location = '/addSection/' + id
+                    window.location = `/classData`
                 })
                 .catch(err => console.log('error : ' + err))
         }else{
@@ -145,6 +146,7 @@ function UpdateSection(){
                                     <Form.Group controlId="formBasicstudentClass">
                                         <Form.Label>Class</Form.Label>
                                         <Form.Control className={styles.formField} as="select" value={currentClass} onChange={ e => setClass(e.target.value) } required>
+                                        <option selected>Select Class</option>
                                             {
                                                  stclassData.map((classIns) => {
                                                      return <option 

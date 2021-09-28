@@ -2,6 +2,9 @@ const mongoose = require('mongoose')
 const bcrypt =require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const crypto = require("crypto");
+var autoIncrement = require('mongoose-auto-increment');
+autoIncrement.initialize(mongoose.connection); 
+
 const UserSchema = new mongoose.Schema({
 employeeNo:{
         type:Number,
@@ -104,5 +107,7 @@ UserSchema.methods.getResetPasswordToken= function()
     this.resetPasswordExpire= Date.now()+10 *(60*1000)
     return resetToken
 }
-const user= mongoose.model("user",UserSchema)
-module.exports=user;
+UserSchema.plugin(autoIncrement.plugin, { model: 'User', field: 'employeeNo',startAt: 1,});
+
+const User= mongoose.model("User",UserSchema)
+module.exports=User;

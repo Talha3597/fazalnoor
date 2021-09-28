@@ -9,33 +9,26 @@ require('dotenv').config({path: '../.env'})
 exports.register=async (req,res,next)=>
 {
    
-    const {employeeNo,username,email,password,cnic,address,phoneNo,salary,invoiceNo,paidAmount,description,role,Class,section}=req.body
+    const {username,email,password,cnic,address,phoneNo,salary,invoiceNo,paidAmount,description,role,Class,section}=req.body
     const user1=await  User.findOne({email})
-    const user2=await  User.findOne({employeeNo})
+   
     let joiningDate=new Date()
     if(user1)
     {    
         return res.status(200).json({success:true,data:'This email is Already Registered'})
     }
-    if(user2)
-    {    
-        return res.status(200).json({success:true,data:'This EmployeeNo is Already Registered'})
-    }
-    if(password.length<4)
-    {
-        return res.status(200).json({success:true,data:'Password is too short'})
-    }
+   
     try {
        
         if(Class=='' && section==''){
         const user =  User.create({
-           employeeNo ,username,email,password,cnic,address,phoneNo,salary,description,role,joiningDate
+           username,email,password,cnic,address,phoneNo,salary,description,role,joiningDate
         })
        .then(res.status(200).json({success:true,data:"Successfully registerd" }))
         }
         else if(Class!='' && section!='') {
             const user =  User.create({
-                employeeNo ,username,email,password,cnic,address,phoneNo,salary,description,role,Class,section,joiningDate
+                username,email,password,cnic,address,phoneNo,salary,description,role,Class,section,joiningDate
              })
              .then(res.status(200).json({success:true,data:"Successfully registerd" }))
              
@@ -83,7 +76,7 @@ exports.forgotpassword=async(req,res,next) =>{
         const resetToken= await user.getResetPasswordToken()
         
         await user.save();
-        const resetUrl = `https://fazal-school.herokuapp.com/passwordreset/${resetToken}`
+        const resetUrl = `https://fazalnoorschool.herokuapp.com/passwordreset/${resetToken}`
         const message = `
         <h1> You have requested a password reset <h1/>
         <p>Please go to this link to reset your password<p/>
@@ -109,24 +102,32 @@ exports.forgotpassword=async(req,res,next) =>{
     }
 }
 exports.resetpassword=async(req,res,next) =>{
-    const resetPasswordToken= crypto.createHash(sha256).update(req.params.resetToken).digest
-    ('hex')
+    const resetPasswordToken= crypto.createHash("sha256").update(req.params.resetToken).digest
+    ("hex")
     try {
-        const user = await User.find({
+        let user = await User.find({
             resetPasswordToken,
-            resetPasswordExpire:{$gt:Date.now()}
+            //resetPasswordExpire:{$gt:Date.now()}
         })
+       console.log(user)
         if(!user)
         {
             return next(new ErrorResponse("Invlid reset token",400))
 
         }
-        user.password=req.body.password
-        user.resetPasswordToken=undefined
-        user.resetPasswordExpire=undefined
-
-        await user.save()
-        res.status(201).json({success:true,data:"Password reset successs"})
+        const salt =await bcrypt.genSalt(10)
+        const pass =await bcrypt.hash(req.body.password,salt)
+        
+        User.updateOne({_id: user._id}, {$set:{password:pass,resetPasswordToken:"undefined"}}, {upsert: false}, function(err, data) {
+            if (err) {
+                res.status(500).send({error: "Could not modify student info..."});
+            } else {           
+               console.log(data)
+                res.status(201).json({success:true,data:"Password reset successs"})
+               
+            }
+        }); 
+        
     } catch (error) {
         next(error)
     }
@@ -225,20 +226,21 @@ module.exports.usersData = async(req,res)=>
        
 }
 
-module.exports.deleteUser=(req,res)=>{
+module.exports.deleteUser=async(req,res)=>{
     
-    const employeeNo=req.query.id
-  console.log(employeeNo)
-    
-    User.deleteOne({employeeNo:employeeNo}, (error, data) => {
+    const id=req.query.id
+  
+    await User.findByIdAndDelete(id, (error, data) => {
         if (error) {
             
             throw error;
         } else {
-            res.status(200)
-           
+            
+            res.status(204).json(data);
+            
         }
     });
+
 }
 
 module.exports.updateProfile=async(req,res)=>

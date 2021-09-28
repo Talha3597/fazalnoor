@@ -136,7 +136,7 @@ module.exports.deleteSalaryRecord=async(req,res)=>{
     const month=req.query.month
     const year=req.query.year
     
-   await Salary.deleteMany({date: { $regex: month+'.*'+year },status:'Paid'},(error, data) => {
+   await Salary.deleteMany({date: { $regex: month+'.*'+year }},(error, data) => {
         if (error) {
             
             throw error;

@@ -13,13 +13,17 @@ const [ employeeNo, setEmployeeNo] = useState('')
 
 //const  [query ,setQuery ]= useState('')
 const removeData = async(id) => {
+    let flag= window.confirm("Delete  record!")
+  if(flag)
+  { 
     await axios.delete(`/api/auth/user`, { params: {id} }) 
         .then(res => {
-            const del = gdata.filter(gdata => id !== gdata.employeeNo)
+            const del = gdata.filter(gdata => id !== gdata._id)
             setData(del)
            
-        }) 
+        })} 
 }
+
 const componentRef = useRef();
 const handlePrint = useReactToPrint({
   content: () => componentRef.current,
@@ -91,12 +95,16 @@ return(
                             Edit</Button></Link></td>
                             :''}
                             {role=='superAdmin'?
-                            <td>  <Button className={styles.sideButton2} onClick={() => removeData(item.employeeNo)}>
+                            <td>  <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
                              Delete
                             </Button></td> :''}
             
                             <td><Link to={`/viewUser/${item._id}`}>  <Button className={styles.sideButton3}   >
                             View</Button></Link></td>
+                            {role=='superAdmin'?
+                            <td><Link to={ `/addSalaryUser/${item.employeeNo}` }><Button className={styles.sideButton1}  >
+                            Add Salary</Button></Link></td>
+                            :''}
                         </tr>  
                     })}  
     

@@ -12,12 +12,7 @@ const LoginScreen =({history})=>{
     const [password, setPassword]=useState("")
     const [error, setError]=useState("")
    
-useEffect(()=>{
-  if(!localStorage.getItem("authToken") && !localStorage.getItem("role"))
-  {  
-     setError("You Are Not authorized Please Login Again ")
-  }
-},[history])
+
      const loginHandler=async(e)=>
     {
         e.preventDefault()

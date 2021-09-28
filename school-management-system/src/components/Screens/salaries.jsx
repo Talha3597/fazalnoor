@@ -28,12 +28,15 @@ const handlePrint = useReactToPrint({
 });
 
 const removeData = async(id) => {
+  let flag= window.confirm("Delete  record!")
+  if(flag)
+  { 
     await axios.delete(`/api/salary`, { params: {id} }) 
         .then(res => {
             const del = gdata.filter(gdata => id !== gdata._id)
             setData(del)
-           
-        }) 
+          }) 
+  }     
 }
 
 useEffect(()=>{
@@ -61,7 +64,7 @@ const generateDefaultFee = async()=>{
 }
 const deleteRecord = async()=>{
   if(month && year){
-  let flag= window.confirm("Delete Paid record of specific month")
+  let flag= window.confirm("Delete  record of specific month")
   if(flag)
   { 
     await axios.delete('/api/deleteSalary', { params: {month,year} })

@@ -39,7 +39,7 @@ function AddSection(){
             $('#Class').fadeOut(100)
 
 
-        if(title !== '' && description !== '' && teacher !== ''){
+        if(title !== '' ){
 
 
             const section = {
@@ -98,7 +98,7 @@ function AddSection(){
 
                                     <Form.Group>
                                         <Form.Label>Title</Form.Label>
-                                        <Form.Control className={styles.formField} type="text" placeholder="Enter Title" value={title} onChange={ e => setTitle(e.target.value) }/>
+                                        <Form.Control className={styles.formField} type="text" placeholder="Enter Title" value={title} onChange={ e => setTitle(e.target.value) } required/>
                                         <Form.Text id="title" className={styles.authtextF1} style={{display: 'none'}}>
                                             Please provide title for Section.
                                         </Form.Text>
