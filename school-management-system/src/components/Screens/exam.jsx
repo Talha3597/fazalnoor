@@ -106,7 +106,7 @@ const Exam =  ({history})=> {
                                     </Form.Group>
                                         <Form.Label>Class</Form.Label>
                                         <Form.Control required className={styles.formField} as="select" value={Class} onChange={ e => setClass(e.target.value) } >
-                                          <option defaultValue>Select Class</option>
+                                          <option defaultValue>Select Exam</option>
                                             {   
                                                  classData.map((classIns,idx) => {
                                                      return <option 

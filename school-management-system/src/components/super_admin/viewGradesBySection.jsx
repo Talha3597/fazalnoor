@@ -50,9 +50,9 @@ function ViewGradesBySection() {
         })
     }
 
-    useEffect(() => {
+    useEffect(async() => {
         
-        axios.get('/api/getClasses')
+       await axios.get('/api/getClasses')
         .then((res) => {
             console.log(res.data)
             setClassTitle(res.data)
@@ -89,10 +89,10 @@ function ViewGradesBySection() {
     }, [])
 
 
-    const changeSections = (e) => {
+    const changeSections = async(e) => {
         setClass( e.target.value )
 
-        axios.get('/api/changeSections/' + e.target.value)
+       await axios.get('/api/changeSections/' + e.target.value)
         .then((res) => {
             console.log(res.data)
             setSectionTitle(res.data)
@@ -104,9 +104,9 @@ function ViewGradesBySection() {
 
     }
 
-    const changeExams = (e) => {
+    const changeExams = async(e) => {
         setSection( e.target.value )
-        axios.get('/api/GradeTitles/' + e.target.value)
+       await axios.get('/api/GradeTitles/' + e.target.value)
         .then((res) => {
             console.log(res.data)
             if(res.data.length == 0){
