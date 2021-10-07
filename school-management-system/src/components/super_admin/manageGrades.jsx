@@ -17,7 +17,7 @@ function ManageGrades() {
     const [ gradesTitles, setGradesTitles ] = useState([])
     const [ examData, setExamData] = useState([])
     const [ Class, setClass ] = useState('')
-    const [ section, setSection ] = useState('')
+    const [ section, setSection ] = useState(' ')
     
     useEffect(() => {
         axios.get('/api/singleStudent/' + id)
