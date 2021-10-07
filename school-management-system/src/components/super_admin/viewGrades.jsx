@@ -145,9 +145,10 @@ function ViewGrades() {
                                 </div>
                                 
                                 <br/>
-                                <h1 className={styles.credStyle}>Name : {student.studentName}</h1>
-                                <h1 className={styles.credStyle}>Admin No : {student.studentNo}</h1>
+                                {student && <div> <h1 className={styles.credStyle}>Name : {student.studentName}</h1>
+                                <h1 className={styles.credStyle}>Admin No : {student.studentNo}</h1> </div>}
 
+                               
                                 <br/>
 
 

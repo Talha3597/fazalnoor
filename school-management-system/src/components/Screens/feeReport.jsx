@@ -1,6 +1,6 @@
 import React, { useState,useEffect,useRef } from 'react'
 import styles from '../../assets/style.module.css'
-import { Button,Table} from 'react-bootstrap'
+import { Table,Image} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as AiIcons from 'react-icons/ai';
 import axios from 'axios'
@@ -155,7 +155,9 @@ return (
 <div ref={componentRef} >
 <div className={styles.formHeading}>
                      <h3> Al Khidmat Fazal Noor Campus </h3>
-                     <h3> Fee Report</h3>
+                     <h3> Fee Report</h3><div className='fakeimg4' >
+        <Image src='/images/fn.jpeg' alt='Fazal Noor School' fluid />
+     </div>
                   </div>
  <h5>&nbsp; {Class ? "Class:"+Class:''}&nbsp; {section ? "Section:"+section:''}&nbsp; {studentNo ? "Student No:"+studentNo:''}&nbsp; {month ? "Month:"+month:''}&nbsp;{"Year:"+year}</h5>
                             

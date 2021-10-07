@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import styles from '../../assets/css/style.module.css'
-import { Row, Col, Navbar, Nav, Table, Form, Button } from 'react-bootstrap'
+import { Row, Col, Table, Form, Button } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link, Redirect, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios'
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -265,30 +265,8 @@ function SectionAttendance(){
         
     <>
 
-    <Navbar className={styles.respNav} expand="lg">
-        
-        <Navbar.Toggle aria-controls="basic-navbar-nav" style={{color: '#ffffff'}}/>
-        <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-                <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-            
-            </Nav>
-            
-        </Navbar.Collapse>
-    </Navbar>
-
-    <div className={styles.overflow}>
-        <div className={styles.background}>
-            <div className={styles.topSet}>
-                <Link to='#' className={styles.navLink2}>Classes</Link>
-                <Link to='#' className={styles.navLink2}>Classes</Link>
-                <Link to='#' className={styles.navLink2}>Classes</Link>
-                <Link to='#' className={styles.navLink2}>Classes</Link>
-            </div>
-        </div>
+   
+   
 
         <div className={styles.margLeftRow}>
             <Row>
@@ -381,7 +359,7 @@ function SectionAttendance(){
 
             </Row>
         </div>
-    </div>
+    
     
     
     </>

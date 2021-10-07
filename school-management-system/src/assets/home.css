@@ -104,6 +104,15 @@ width: 100%;
  min-height: 50px;
  max-height: 200px;
 }
+.fakeimg4{
+  background-color: #f1f1f1;
+  width: 20%;
+  max-width:199px;
+ min-height: 50px;
+ max-height: 200px;
+ margin-left: auto;
+ margin-right: auto;
+}
 @media screen and (min-width: 760px) {
   .container1{
   display:flex;

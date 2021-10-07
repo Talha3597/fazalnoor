@@ -1,4 +1,5 @@
 const Salary =require('../../model/salarySchema');
+const UserAttendance =require('../../model/attendanceSchemaUser');
 const User =require('../../model/user');
 
 
@@ -147,7 +148,26 @@ module.exports.deleteSalaryRecord=async(req,res)=>{
         }
     });
 }
-
+const salaryDeduction=(employeeNo,salary,attendanceData)=>{
+    let presents=0
+    let absents=0
+    attendanceData.map(i=>{
+        let user=i.presentUsers.find(p=>p.employeeNo == employeeNo)
+        if(user) {
+             presents = presents+1
+        }
+        else{
+             absents =absents+1
+        }
+      })
+ if(absents>2){
+      let deduct =Math.round((salary/30)*(absents-2))
+      return deduct
+ }
+ else{
+     return ''
+ }
+}
 
 module.exports.generateSalary = async(req,res)=>
 { 
@@ -159,28 +179,112 @@ module.exports.generateSalary = async(req,res)=>
     let title='Monthly Salary'
     let salary=0
     let date=new Date()
+    let year=date.getFullYear()
+    let month=date.getMonth()
+    let attendanceData=[]
     let username=''
-    await User.find({}, (error,data) => {
-            if (error) {
-                return res.status(200).json({
-                    success: true,
-                    token: "No User Found",
-                })
-                
-            }else{
-                data.map(item => {   
-                employeeNo=item.employeeNo;
-                username=item.username
-                salary=item.salary
-                const newFee=  Salary.create({title,type,username,employeeNo,salary,pending,date,status,person})
-            })
+    await UserAttendance.find({date:{ $regex: year+'-'+month+'-' }}, (error,data) => {
+        if (error) {
             return res.status(200).json({
                 success: true,
-                token: "Salary add successfully",
+                token: "No User Found",
+            })
+            
+        }else{
+            attendanceData=data
+        }})
+        if(attendanceData[2]){
+            console.log("Second Checked")
+            await User.find({}, (error,data) => {
+                if (error) {
+                    return res.status(200).json({
+                        success: true,
+                        token: "No User Found",
+                    })
+                    
+                }else{
+                    data.map(item => { 
+                      let deduct=salaryDeduction(item.employeeNo,item.salary,attendanceData)
+                     if(deduct){
+                        console.log("Fourth Checked")
+                        employeeNo=item.employeeNo;
+                        username=item.username
+                        salary=item.salary
+                        pending=deduct
+                        type='salary'
+                        title='Monthly Salary'
+                        status='Unpaid'
+                        
+                        //const newFee=   Salary.create({title,type,username,employeeNo,salary,pending,date,status,person})
+                       let key=0
+                        var newFee= new  Salary()
+                        newFee.title=title
+                        newFee.type=type
+                        newFee.username=username
+                        newFee.employeeNo=employeeNo
+                        newFee.salary=salary
+                        newFee.pending=pending
+                        newFee.date=date
+                        newFee.status=status
+                        newFee.person=person
+                        newFee.save(function(err,data) {
+                            key=data.invoiceNo
+                            type='deposite'
+                            title='Leave Deduction'
+                            status='Paid'
+                            pending=deduct    
+                            const newFee1=   Salary.create({title,type,username,employeeNo,salary,pending,date,status,person,key})
+                       
+                         });
+                          
+                     }
+                     else{
+                        console.log("Third Checked")
+                        employeeNo=item.employeeNo;
+                        username=item.username
+                        salary=item.salary
+                        type='salary'
+                        title='Monthly Salary'
+                        status='Unpaid'
+                        pending=0
+                        const newFee2=  Salary.create({title,type,username,employeeNo,salary,pending,date,status,person})    
+                        
+                     
+                    }   
+                       })
+                return res.status(200).json({
+                    success: true,
+                    token: "Salary add successfully",
+                }) 
+                }
+               
             }) 
-            }
-           
-        }) 
+        }else{
+            console.log("First Checked")
+            await User.find({}, (error,data) => {
+                if (error) {
+                    return res.status(200).json({
+                        success: true,
+                        token: "No User Found",
+                    })
+                    
+                }else{
+                    data.map(item => {  
+                        employeeNo=item.employeeNo;
+                        username=item.username
+                        salary=item.salary
+                        const newFee3=  Salary.create({title,type,username,employeeNo,salary,pending,date,status,person})    
+                     } )  
+                       
+                return res.status(200).json({
+                    success: true,
+                    token: "Salary add successfully",
+                }) 
+                }
+               
+            }) 
+        }
+   
         return res.status(200).json({
             success: true,
             token: "Salary Not add successfully",

@@ -36,6 +36,8 @@ import EditAttendance from '../super_admin/editAttendance'
 import ViewStudents from '../super_admin/viewStudents'
 import ManageGrades from '../super_admin/manageGrades'
 import ViewGrades from '../super_admin/viewGrades'
+import ViewGradesStudent from '../super_admin/viewGradesStudent'
+
 import UpdateGrade from '../super_admin/updateGrade'
 import ManageTitmetable from '../super_admin/manageTimetable'
 import ViewTitmetable from '../super_admin/viewTimetable'
@@ -56,7 +58,9 @@ import Message from '../Screens/messages'
 import Transfer from '../Screens/transfer'
 //screen
 
-
+import Exam from '../Screens/exam'
+import ViewGradesByClass from '../super_admin/viewGradesByClass'
+import ViewGradesBySection from '../super_admin/viewGradesBySection'
 
 //
 //
@@ -133,6 +137,9 @@ import * as RiIcons from 'react-icons/ri';
           <Route exact path="/viewGrades">
             <ViewGrades />
           </Route>
+          <Route exact path="/viewGradesStudent/:id">
+<ViewGradesStudent />
+</Route>
           <Route exact path="/updateGrade/:id">
             <UpdateGrade />
           </Route>
@@ -148,7 +155,13 @@ import * as RiIcons from 'react-icons/ri';
           <Route exact path="/updateTimetable">
             <UpdateTitmetable />
           </Route>
-
+          <Route  path="/exam" component={Exam}/>
+      <Route exact path="/viewGradesBySection">
+            <ViewGradesBySection />
+          </Route>
+          <Route exact path="/viewGradesByClass">
+            <ViewGradesByClass />
+          </Route>
     //
     <Route  path="/addStudent" component={AddStudent}/>
     <Route  path="/students" component={Students}/>
@@ -363,11 +376,44 @@ export const SidebarData7 = [
       ]
     
     },
-    {
+    { status:i,
       title: 'Grades',
-      path: '/viewGrades',
-      icon: <AiIcons.AiOutlineStock />
+      path: '#',
+      icon: <FaIcons.FaCalendarTimes />,
+      iconClosed: <RiIcons.RiArrowDownSFill />,
+      iconOpened: <RiIcons.RiArrowUpSFill />,
+       
+      subNav: [
+        {
+          
+          title: 'Add Exam',
+          path: '/exam',
+          icon: <IoIcons.IoMdAddCircleOutline />
+        },
+        {
+          
+          title: 'View Grades',
+          path: '/viewGrades',
+          icon: <IoIcons.IoIosPaper />
+        },
+        {
+          
+          title: 'Section Grades',
+          path: '/viewGradesBySection',
+          icon: <AiIcons.AiOutlineAppstoreAdd />
+        },
+        {
+          
+          title: 'Class Grades',
+          path: '/viewGradesByClass',
+          icon: <AiIcons.AiOutlineAppstoreAdd />
+        },
+       
+        
+      ]
+    
     },
+
     {
       title: 'Attendance',
       path: '/attendance',

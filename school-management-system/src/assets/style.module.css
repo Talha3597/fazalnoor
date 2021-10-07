@@ -7,6 +7,9 @@
     margin-left: 30px;
     
 }
+.attendanceTable{
+padding: 5px;
+}
 .formHeading{
   
     text-align: center;
@@ -154,6 +157,10 @@
 .formMargin{
     margin-left: 22%;
     
+}
+.viewMargin{
+    margin-left: 15%;
+    margin-right: 2%;
 }
 .tableMargin{
     margin-right: 5%;

@@ -89,9 +89,23 @@ const{addMessage,messages,deleteMessage}=require('../controller/Acadmic/message.
 router.route('/addMessage').post(addMessage)
 router.route('/messages').get(messages)
 router.route('/message').delete(deleteMessage)
+// user Attendance
+const {markAttendance,getAttendance,updateAttendance,viewAttendance,deleteAttendanceRecord}=require('../controller/Acadmic/userAttendance.controller')
+router.route('/markAttendance').post(markAttendance)
+router.route('/getAttendance').get(getAttendance)
+router.route('/updateAttendance').put(updateAttendance)
+router.route('/viewAttendance').get(viewAttendance)
+router.route('/deleteAttendanceRecord').delete(deleteAttendanceRecord)
+
+//Exam
+const{addExam,exams,deleteExam,getExam}=require('../controller/Acadmic/exam.controller')
+router.route('/addExam').post(addExam)
+router.route('/exams').get(exams)
+router.route('/exam').get(getExam)
+router.route('/exam').delete(deleteExam)
+
+
 const { SuperAdmin } = require('../controller/super_admin/index')
-
-
 router.route('/addClass').post(SuperAdmin.addClass)
 //router.route('/addStudent').post(SuperAdmin.addStudent)
 router.route('/addSection').post(SuperAdmin.addSection)

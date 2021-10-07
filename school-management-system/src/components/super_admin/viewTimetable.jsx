@@ -66,19 +66,37 @@ function ViewTimetable() {
             return <p>8 : 00 am</p>
         }
         if(lecStart == 9){
-            return <p>9 : 00 am</p>
+            return <p>8 : 30 am</p>
         }
         if(lecStart == 10){
-            return <p>10 : 00 am</p>
+            return <p>9 : 00 am</p>
         }
         if(lecStart == 11){
-            return <p>11 : 00 am</p>
+            return <p>9 : 30 am</p>
         }
         if(lecStart == 12){
-            return <p>12 : 00 pm</p>
+            return <p>10 : 00 am</p>
         }
         if(lecStart == 13){
+            return <p>10 : 30 am</p>
+        }
+        if(lecStart == 14){
+            return <p>11 : 00 am</p>
+        }
+        if(lecStart == 15){
+            return <p>11 : 30 am</p>
+        }
+        if(lecStart == 16){
+            return <p>12 : 00 pm</p>
+        }
+        if(lecStart == 17){
+            return <p>12 : 30 pm</p>
+        }
+        if(lecStart == 18){
             return <p>1 : 00 pm</p>
+        }
+        if(lecStart == 19){
+            return <p>1 : 30 pm</p>
         }
 
 
@@ -88,21 +106,39 @@ function ViewTimetable() {
     const manageEndHours = (lecEnd) => {
 
         if(lecEnd == 9){
-            return <p>9 : 00 am</p>
+            return <p>8 : 30 am</p>
         }
         if(lecEnd == 10){
-            return <p>10 : 00 am</p>
+            return <p>9 : 00 am</p>
         }
         if(lecEnd == 11){
-            return <p>11 : 00 am</p>
+            return <p>9 : 30 am</p>
         }
         if(lecEnd == 12){
-            return <p>12 : 00 pm</p>
+            return <p>10 : 00 am</p>
         }
         if(lecEnd == 13){
-            return <p>1 : 00 pm</p>
+            return <p>10 : 30 am</p>
         }
         if(lecEnd == 14){
+            return <p>11 : 00 am</p>
+        }
+        if(lecEnd == 15){
+            return <p>11 : 30 am</p>
+        }
+        if(lecEnd == 16){
+            return <p>12 : 00 pm</p>
+        }
+        if(lecEnd == 17){
+            return <p>12 : 30 pm</p>
+        }
+        if(lecEnd == 18){
+            return <p>1 : 00 pm</p>
+        }
+        if(lecEnd == 19){
+            return <p>1 : 30 pm</p>
+        }
+        if(lecEnd == 20){
             return <p>2 : 00 pm</p>
         }
 

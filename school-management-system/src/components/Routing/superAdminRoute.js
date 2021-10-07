@@ -81,6 +81,11 @@ import ReportFinanceRole from '../Screens/reportFinanceRole'
 import ReportClassFee from '../Screens/reportClassFee'
 import ReportRoleSalary from '../Screens/reportRoleSalary'
 import MessageList from '../Screens/messageList'
+//User Attendance
+import MarkUserAttendance from '../Screens/markUserAttendance'
+import ViewUserAttendance from '../Screens/viewUserAttendance'
+//Exam
+import Exam from '../Screens/exam'
 
 
 //
@@ -147,6 +152,7 @@ import * as RiIcons from 'react-icons/ri';
       <Route exect path="/forgotpassword" component={forgotPasswordScreen}/>
       <Route exect path="/passwordreset/:resetToken" component={resetPasswordScreen}/>
      
+      <Route  path="/exam" component={Exam}/>
       
       <Route  path="/addNotice" component={AddNotice}/>
       <Route  path="/notices" component={Notices}/>
@@ -198,7 +204,8 @@ import * as RiIcons from 'react-icons/ri';
     <Route  path="/feeReport" component={FeeReport}/>
     <Route  path="/reportFinanceRole" component={ReportFinanceRole}/>
     <Route  path="/messageList" component={MessageList}/>
-    
+    <Route  path="/markUserAttendance" component={MarkUserAttendance}/>
+    <Route  path="/viewUserAttendance" component={ViewUserAttendance}/>
       <Route exact path="/addClass">
             <SuperAdminDashboard />
           </Route>
@@ -242,6 +249,8 @@ import * as RiIcons from 'react-icons/ri';
           <Route exact path="/viewGrades">
             <ViewGrades />
           </Route>
+
+
           <Route exact path="/viewGradesStudent/:id">
             <ViewGradesStudent />
           </Route>
@@ -341,7 +350,18 @@ export const SidebarData2 =
           path: '/register',
           icon: <AiIcons.AiOutlineUserAdd />
         },
-        
+        {
+          
+          title: 'Attendance',
+          path: '/markUserAttendance',
+          icon: <AiIcons.AiOutlineUserAdd />
+        },
+        {
+          
+          title: 'View Attendance',
+          path: '/viewUserAttendance',
+          icon: <IoIcons.IoIosPeople />
+        },
       ]
     
     },
@@ -590,6 +610,12 @@ export const SidebarData2 =
       iconOpened: <RiIcons.RiArrowUpSFill />,
        
       subNav: [
+        {
+          
+          title: 'Add Exam',
+          path: '/exam',
+          icon: <IoIcons.IoMdAddCircleOutline />
+        },
         {
           
           title: 'View Grades',

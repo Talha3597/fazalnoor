@@ -1,32 +1,22 @@
-const HomeWork =require('../../model/homeworkSchema');
+const Exam =require('../../model/examSchema');
 
 
 
-module.exports.addHomework=async (req,res)=>{
+module.exports.addExam=async (req,res)=>{
     
         
        
 try{ 
-
-       
-       
-        
-           
-           const notice=req.body.notice
-           const url=req.body.url
            const Class=req.body.Class
            const section=req.body.section
-           const status=req.body.status
-           const attachment=req.body.attachment
-           const date=req.body.date
            const title=req.body.title
            
-           const newNotice=  HomeWork.create({title,notice,url,Class,section,status,attachment,date})
-           .then(console.log(newNotice))
+           const newNotice=  Exam.create({title,Class,section})
+           
             
            return res.status(200).json({
                 success: true,
-                token: "HomeWork add successfully",
+                token: "Exam add successfully",
             })
         
    }
@@ -38,11 +28,11 @@ try{
     
     
 }
-module.exports.getHomework = async(req,res)=>
+module.exports.getExam = async(req,res)=>
 {        
        const {id}=req.query
        
-       HomeWork.findById(id, (error, data) => {
+       Exam.findById(id, (error, data) => {
         if (error) {
             
             throw error;
@@ -53,11 +43,11 @@ module.exports.getHomework = async(req,res)=>
     });
     
 }
-module.exports.homeworks = async(req,res)=>
+module.exports.exams = async(req,res)=>
 {        
     const {Class,section}=req.query
     if(Class==''&& section==''){
-       await HomeWork.find({}).sort({_id:-1})
+       await Exam.find({}).sort({_id:-1})
         .then((data)=>{
             
             return res.send(data)})
@@ -67,7 +57,7 @@ module.exports.homeworks = async(req,res)=>
     } 
     else 
     {
-        await HomeWork.find({Class:Class,section:section}).sort({_id:-1})
+        await Exam.find({Class:Class,section:section}).sort({_id:-1})
         .then((data)=>{
             
             return res.send(data)})
@@ -76,11 +66,11 @@ module.exports.homeworks = async(req,res)=>
         })
     } 
 }
-module.exports.deleteHomework=(req,res)=>{
+module.exports.deleteExam=(req,res)=>{
     
     const id=req.query.id
     
-    HomeWork.findByIdAndDelete(id, (error, data) => {
+    Exam.findByIdAndDelete(id, (error, data) => {
         if (error) {
             
             throw error;
@@ -89,18 +79,4 @@ module.exports.deleteHomework=(req,res)=>{
             res.status(204).json(data);
         }
     });
-}
-
-module.exports.updateHomework=(req,res)=>
-{
-    
-    HomeWork.updateOne({_id: req.body.id}, {$set:req.body}, {upsert: true}, function(err, data) {
-        if (err) {
-            res.status(500).send({error: "Could not modify noticeboard info..."});
-        } else {           
-           //console.log(hasps);
-           
-           res.status(200).send(data);
-        }
-    }); 
 }

@@ -53,30 +53,9 @@ function Attendance(){
     return(
     <>
 
-    <Navbar className={styles.respNav} expand="lg">
-        
-        <Navbar.Toggle aria-controls="basic-navbar-nav" style={{color: '#ffffff'}}/>
-        <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-                <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-            
-            </Nav>
-            
-        </Navbar.Collapse>
-    </Navbar>
+   
 
-    <div className={styles.overflow}>
-        <div className={styles.background}>
-            <div className={styles.topSet}>
-                <Link to='#' className={styles.navLink2}>Classes</Link>
-                <Link to='#' className={styles.navLink2}>Classes</Link>
-                <Link to='#' className={styles.navLink2}>Classes</Link>
-                <Link to='#' className={styles.navLink2}>Classes</Link>
-            </div>
-        </div>
+    
 
         <div className={styles.margLeftRow}>
             <Row>
@@ -168,7 +147,7 @@ function Attendance(){
 
             </Row>
         </div>
-    </div>
+    
     
     
     </>

@@ -140,18 +140,18 @@ return(
                             <td>{item.section}</td>  
                             <td>{item.phoneNo}</td>  
                             <td>{item.address}</td>
-                              {role=='superAdmin'&&
+                              {role=='superAdmin'?
                           <td><Link  to={`/updateStudent/${item._id}`}>  
                             <Button className={styles.sideButton1}  >
-                            Edit</Button></Link></td>}
-                            {role=='superAdmin'&&  <td>
+                            Edit</Button></Link></td>:''}
+                            {role=='superAdmin'?  <td>
                            <Button className={styles.sideButton2}  onClick={() => removeData(item._id)}>
                              Delete
-                            </Button></td>}
+                            </Button></td>:''}
                             
                             <td> <Link to={ `/viewStudent/${item._id}` }> <Button className={styles.sideButton3}  >
                             View</Button></Link></td>
-                            {role=='superAdmin'? <td>
+                            {role=='superAdmin'|| role=='finance'||role=='financeTeacher'||role=='adminFinance'? <td>
                             <Link to={`/addFeeStudent/${item.studentNo}`}>
                         <Button className={styles.sideButton1}>Fee</Button></Link></td> :''}
                         <td>

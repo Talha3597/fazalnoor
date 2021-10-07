@@ -44,7 +44,9 @@ import UpdateGrade from '../super_admin/updateGrade'
 import ViewTitmetable from '../super_admin/viewTimetable'
 import UpdateTitmetable from '../super_admin/updateTimetable'
 import Profile from '../Screens/profile'
-
+import Exam from '../Screens/exam'
+import ViewGradesByClass from '../super_admin/viewGradesByClass'
+import ViewGradesBySection from '../super_admin/viewGradesBySection'
 import ExpenseDashboard from "../Screens/expenseDashboard"
 import Expense from "../Screens/expense"
 import AddExpense from "../Screens/addExpense"
@@ -57,14 +59,15 @@ import FeeDashboard from "../Screens/feeDashboard"
 import Fee from "../Screens/fees"
 import AddFee from "../Screens/addFee"
 import PayFee from "../Screens/payFee"
+import AddFeeStudent from "../Screens/addFeeStudent"
 //
 import SalaryDashboard from "../Screens/salaryDashboard"
 import Salary from "../Screens/salaries"
 import PaySalary from "../Screens/paySalary"
 
 //User
-import ViewGradesByClass from '../super_admin/viewGradesByClass'
-import ViewGradesBySection from '../super_admin/viewGradesBySection'
+
+import ViewGradesStudent from '../super_admin/viewGradesStudent'
 import GradeReport from '../super_admin/gradeReport'
 import GradeReportByClass from '../super_admin/gradeReportByClass'
 import GradeReportBySection from '../super_admin/gradeReportBySection'
@@ -150,6 +153,12 @@ import * as RiIcons from 'react-icons/ri';
           
           <Route exact path="/updateTimetable">
             <UpdateTitmetable />
+          </Route> <Route  path="/exam" component={Exam}/>
+      <Route exact path="/viewGradesBySection">
+            <ViewGradesBySection />
+          </Route>
+          <Route exact path="/viewGradesByClass">
+            <ViewGradesByClass />
           </Route>
        <Route  path="/expense" component={Expense}/>
       <Route  path="/addExpense" component={AddExpense}/>
@@ -161,10 +170,13 @@ import * as RiIcons from 'react-icons/ri';
       <Route  path="/incomeDashboard" component={IncomeDashboard}/>
       <Route  path="/expenseDashboard" component={ExpenseDashboard}/>
       <Route  path="/addFee" component={AddFee}/>
+<Route  path="/addFeeStudent/:id" component={AddFeeStudent}/>
       <Route  path="/payFee/:id" component={PayFee}/>
         <Route  path="/salaries" component={Salary}/>
       <Route  path="/paySalary/:id" component={PaySalary}/>
-    
+<Route exact path="/viewGradesStudent/:id">
+<ViewGradesStudent />
+</Route>
 <Route  path="/incomeView/:id" component={ViewIncome}/>
 <Route  path="/expenseView/:id" component={ViewExpense}/>
 <Route exact path="/viewGradesBySection">
@@ -300,11 +312,44 @@ export const SidebarData8 = [
       ]
     
     },
-    {
+    { status:i,
       title: 'Grades',
-      path: '/viewGrades',
-      icon: <AiIcons.AiOutlineStock />
+      path: '#',
+      icon: <FaIcons.FaCalendarTimes />,
+      iconClosed: <RiIcons.RiArrowDownSFill />,
+      iconOpened: <RiIcons.RiArrowUpSFill />,
+       
+      subNav: [
+        {
+          
+          title: 'Add Exam',
+          path: '/exam',
+          icon: <IoIcons.IoMdAddCircleOutline />
+        },
+        {
+          
+          title: 'View Grades',
+          path: '/viewGrades',
+          icon: <IoIcons.IoIosPaper />
+        },
+        {
+          
+          title: 'Section Grades',
+          path: '/viewGradesBySection',
+          icon: <AiIcons.AiOutlineAppstoreAdd />
+        },
+        {
+          
+          title: 'Class Grades',
+          path: '/viewGradesByClass',
+          icon: <AiIcons.AiOutlineAppstoreAdd />
+        },
+       
+        
+      ]
+    
     },
+
     {
       title: 'Attendance',
       path: '/attendance',

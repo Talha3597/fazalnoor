@@ -15,12 +15,17 @@ function ManageGrades() {
     const [ totalMarks, setTotalMarks ] = useState()
     const [ obtainedMarks, setObtainedMarks ] = useState()
     const [ gradesTitles, setGradesTitles ] = useState([])
-
+    const [ examData, setExamData] = useState([])
+    const [ Class, setClass ] = useState('')
+    const [ section, setSection ] = useState('')
+    
     useEffect(() => {
         axios.get('/api/singleStudent/' + id)
         .then((res) => {
             console.log(res.data)
             setStudent(res.data)
+            setClass(res.data.Class)
+            setSection(res.data.section)
         })
         .catch(err => {
             console.log(err)
@@ -34,8 +39,16 @@ function ManageGrades() {
         .catch(err => {
             console.log(err)
         })
+        axios.get('/api/exams',{params:{Class,section}})
+        .then((res) => {
+            console.log(res.data)
+            setExamData(res.data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
 
-    }, [])
+    }, [Class,section])
 
 
     const onSubmit = (e) => {
@@ -165,16 +178,21 @@ function ManageGrades() {
                                         <br/>
                                         <form name="classForm" className={styles.formMargin} onSubmit={onSubmit} noValidate>
 
-                                            <Form.Group>
-                                                <Form.Label>Grade Title</Form.Label>
-                                                <Form.Control className={styles.formField} type="text" placeholder="Enter Title" value={title} onChange={ e => setTitle(e.target.value) } required/>
-                                                <Form.Text id="title" className={styles.authtextF1} style={{display: 'none'}}>
-                                                    Please provide title for Grade.
-                                                </Form.Text>
-                                                <Form.Text id="titleCheck" className={styles.authtextF1} style={{display: 'none'}}>
-                                                    You have already Updated Grade for this exam.
-                                                </Form.Text>
-                                            </Form.Group>
+                                        <Form.Group controlId="formBasicstudentClass">
+                                        <Form.Label>Exam Title</Form.Label>
+                                        <Form.Control required className={styles.formField} as="select" value={title} onChange={ e => setTitle(e.target.value) } >
+                                          <option defaultValue>Select Class</option>
+                                            {   
+                                                 examData.map((classIns,idx) => {
+                                                     return <option 
+                                                        key={classIns.title}
+                                                        value={classIns.title}>
+                                                            {classIns.title}
+                                                    </option>;
+                                                    })
+                                            }
+                                        </Form.Control>
+                                    </Form.Group>
 
                                             <Form.Group>
                                                 <Form.Label>Total Marks</Form.Label>
@@ -192,7 +210,8 @@ function ManageGrades() {
                                                     Please provide obtained marks for Grade.
                                                 </Form.Text>
                                             </Form.Group>
-
+                                          
+                                          
                                             <Button className={styles.formButton} type="submit">
                                                 
                                                 Add Grade

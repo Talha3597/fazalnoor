@@ -34,6 +34,7 @@ import FeeDashboard from "../Screens/feeDashboard"
 import Fee from "../Screens/fees"
 import AddFee from "../Screens/addFee"
 import PayFee from "../Screens/payFee"
+import AddFeeStudent from "../Screens/addFeeStudent"
 //
 import SalaryDashboard from "../Screens/salaryDashboard"
 import Salary from "../Screens/salaries"
@@ -100,7 +101,7 @@ export const App3=()=> {
       <Route  path="/salaryDashboard" component={SalaryDashboard}/>
       <Route  path="/incomeDashboard" component={IncomeDashboard}/>
       <Route  path="/expenseDashboard" component={ExpenseDashboard}/>
-     
+<Route  path="/addFeeStudent/:id" component={AddFeeStudent}/>
       <Route  path="/addFee" component={AddFee}/>
       <Route  path="/payFee/:id" component={PayFee}/>
         <Route  path="/salaries" component={Salary}/>

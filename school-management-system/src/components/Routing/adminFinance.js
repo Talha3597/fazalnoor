@@ -84,6 +84,7 @@ import FeeDashboard from "../Screens/feeDashboard"
 import Fee from "../Screens/fees"
 import AddFee from "../Screens/addFee"
 import PayFee from "../Screens/payFee"
+import AddFeeStudent from "../Screens/addFeeStudent"
 //
 import SalaryDashboard from "../Screens/salaryDashboard"
 import Salary from "../Screens/salaries"
@@ -229,6 +230,8 @@ export const App6=()=> {
       <Route  path="/expenseDashboard" component={ExpenseDashboard}/>
      
       <Route  path="/addFee" component={AddFee}/>
+<Route  path="/addFeeStudent/:id" component={AddFeeStudent}/>
+
       <Route  path="/payFee/:id" component={PayFee}/>
         <Route  path="/salaries" component={Salary}/>
      

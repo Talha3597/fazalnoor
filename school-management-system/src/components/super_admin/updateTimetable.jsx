@@ -16,9 +16,28 @@ function UpdateTimetable() {
     const [ lecEnd, setLecEnd ] = useState(9)
     const [ teacherName, setTeacherName ] = useState('')
     const [ timetableData, setTimetable ] = useState([])
+    const [ classData, setClassData ] = useState([])
+    const [ sectionData, setSectionData ] = useState([])
 
     useEffect(() => {
+        axios.get('/api/getClasses')
+        .then((res) => {
+           
+            setClassData(res.data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
 
+        axios.get('/api/getSections')
+        .then((res) => {
+            
+            setSectionData(res.data)
+            
+        })
+        .catch(err => {
+            console.log(err)
+        })
         axios.get('/api/singleTimetable/' + id)
         .then((res) => {
             console.log(res.data)
@@ -199,18 +218,53 @@ function UpdateTimetable() {
                                                     Please provide teacher name for this lecture.
                                                 </Form.Text>
                                             </Form.Group>
+                                            <Form.Group>
+                                            <Form.Label>Class *</Form.Label>
+                                        <Form.Control required className={styles.formField} as="select" value='' onChange={ e => setTeacherName(teacherName+':'+e.target.value) } >
+                                          <option defaultValue>Select Class</option>
+                                            {   
+                                                 classData.map((classIns,idx) => {
+                                                     return <option 
+                                                        key={classIns.title}
+                                                        value={classIns.title}>
+                                                            {classIns.title}
+                                                    </option>;
+                                                    })
+                                            }
+                                        </Form.Control>
+                                    </Form.Group>
 
+                                    <Form.Group controlId="formBasicstudentClass">
+                                        <Form.Label>Section *</Form.Label>
+                                        <Form.Control className={styles.formField} as="select" value='' onChange={ e => setTeacherName(teacherName+':'+e.target.value) } required >
+                                        <option defaultValue>Select Section</option>
+                                            {
+                                                 sectionData.map((section,idx) => {
+                                                     return <option 
+                                                        key={section._id}
+                                                        value={section.title}>
+                                                            {section.title}
+                                                    </option>;
+                                                    })
+                                            }
+                                        </Form.Control>
+                                    </Form.Group>
 
                                             <Form.Group controlId="formBasicstudentClass">
                                                 <Form.Label>Start Time</Form.Label>
                                                 <Form.Control className={styles.formField} as="select" value={lecStart} onChange={ e => setLecStart(e.target.value) } required>
                                                     <option value='8'>8 : 00 am</option>
-                                                    <option value='9'>9 : 00 am</option>
-                                                    <option value='10'>10 : 00 am</option>
-                                                    <option value='11'>11 : 00 am</option>
-                                                    <option value='12'>12 : 00 pm</option>
-                                                    <option value='13'>1 : 00 pm</option>
-                                                    
+                                                    <option value='9'>8 : 30 am</option>
+                                                    <option value='10'>9 : 00 am</option>
+                                                    <option value='11'>9 : 30 am</option>
+                                                    <option value='12'>10 : 00 am</option>
+                                                    <option value='13'>10 : 30 am</option>
+                                                    <option value='14'>11: 00 am</option>
+                                                    <option value='15'>11 : 30 am</option>
+                                                    <option value='16'>12 : 00 pm</option>
+                                                    <option value='17'>12 : 30 pm</option>
+                                                    <option value='18'>1 : 00 pm</option>
+                                                    <option value='19'>1 : 30 pm</option>
                                                 </Form.Control>
                                                 <Form.Text id="lecStart" className={styles.authtextF1} style={{display: 'none'}}>
                                                     Please provide Start Time for this lecture.
@@ -220,13 +274,18 @@ function UpdateTimetable() {
                                             <Form.Group controlId="formBasicstudentClass">
                                                 <Form.Label>End Time</Form.Label>
                                                 <Form.Control className={styles.formField} as="select" value={lecEnd} onChange={ e => setLecEnd(e.target.value) } required>
-                                                    <option value='9'>9 : 00 am</option>
-                                                    <option value='10'>10 : 00 am</option>
-                                                    <option value='11'>11 : 00 am</option>
-                                                    <option value='12'>12 : 00 pm</option>
-                                                    <option value='13'>1 : 00 pm</option>
-                                                    <option value='14'>2 : 00 pm</option>
-                                                    
+                                                    <option value='9'>8 : 30 am</option>
+                                                    <option value='10'>9 : 00 am</option>
+                                                    <option value='11'>9 : 30 am</option>
+                                                    <option value='12'>10 : 00 am</option>
+                                                    <option value='13'>10 : 30 am</option>
+                                                    <option value='14'>11 : 00 am</option>
+                                                    <option value='15'>11 : 30 am</option>
+                                                    <option value='16'>12 : 00 pm</option>
+                                                    <option value='17'>12 : 30 pm</option>
+                                                    <option value='18'>1 : 00 pm</option>
+                                                    <option value='19'>1 : 30 pm</option>
+                                                    <option value='19'>2 : 00 pm</option>
                                                 </Form.Control>
                                                 <Form.Text id="lecEnd" className={styles.authtextF1} style={{display: 'none'}}>
                                                     Please provide End Time for this lecture.

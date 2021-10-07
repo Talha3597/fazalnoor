@@ -1,6 +1,6 @@
 import React, { useState,useEffect,useRef} from 'react'
 import styles from '../../assets/style.module.css'
-import { Row, Col, Form, Button, Table} from 'react-bootstrap'
+import { Row, Col, Form, Button, Table,Image} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
 import { useReactToPrint } from 'react-to-print';
@@ -112,6 +112,9 @@ return (
                  <div className={styles.formHeading}>
                      <h3> Al Khidmat Fazal Noor Campus </h3>
                      <h3> Fee Slip</h3>
+                     <div className='fakeimg4' >
+        <Image src='/images/fn.jpeg' alt='Fazal Noor School' fluid />
+     </div>
                  </div>
                  
                  <div className={styles.formStyle}>
