@@ -64,7 +64,7 @@ function ClassData() {
                                         <th className={styles.tableHeading}>Class</th>
                                         <th className={styles.tableHeading}>Number of Sections</th>
                                         <th className={styles.tableHeading}>Total Students</th>
-                                        <th className={styles.tableHeading}>Class Incharge</th>
+                                        <th className={styles.tableHeading}>Supervisor</th>
                                     </tr>
                                 </thead>
 

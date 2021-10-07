@@ -55,6 +55,16 @@ module.exports.exams = async(req,res)=>
             return res.status(200).json({success:true, token:'Error Loading Data'})
         })
     } 
+    else if(Class!=''&& section=='') 
+    {
+        await Exam.find({Class:Class}).sort({_id:-1})
+        .then((data)=>{
+           
+            return res.send(data)})
+        .catch( (err)=>{
+            return res.status(200).json({success:true, token:'Error Loading Data'})
+        })
+    } 
     else 
     {
         await Exam.find({Class:Class,section:section}).sort({_id:-1})

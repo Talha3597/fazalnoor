@@ -588,7 +588,7 @@ module.exports.addStudentGrade = async (req, res) => {
         
         const grade = new gradeSchema()
 
-        grade.title = req.body.title.toLowerCase()
+        grade.title = req.body.title
         grade.totalMarks = req.body.totalMarks
         grade.obtainedMarks = req.body.obtainedMarks
         grade.student_id = req.body.student_id

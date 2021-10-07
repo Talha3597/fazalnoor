@@ -43,7 +43,9 @@ function ViewGradesByClass() {
     const [ stclassData, setClassTitle ] = useState([])
     const [ sectionData, setSectionTitle ] = useState([])
     const [ grades, setGrades ] = useState([])
-
+    const [ title, setTitle ] = useState([])
+    const Class=classTitle
+    const section=''
     const classSectionDataList = () => {
         return studentGrades.map((currentclass) => {
           return <ClassVar classIns={currentclass} key={currentclass._id}/>;
@@ -67,7 +69,7 @@ function ViewGradesByClass() {
                 }
                 
                 setGrades(res.data)
-                setExam(res.data[0].title)
+               
             })
             .catch(err => {
                 console.log(err)
@@ -80,6 +82,18 @@ function ViewGradesByClass() {
         
        
     }, [])
+    useEffect(async() => {
+        axios.get('/api/exams',{params:{Class,section}})
+        .then((res) => {
+            console.log(res.data)
+            setTitle(res.data)
+            setExam(res.data[0].title)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }, [Class])
+   
 
     const changeExams = (e) => {
         setClass( e.target.value )
@@ -117,31 +131,6 @@ function ViewGradesByClass() {
 
     return (
         <>
-
-        <Navbar className={styles.respNav} expand="lg">
-            
-            <Navbar.Toggle aria-controls="basic-navbar-nav" style={{color: '#ffffff'}}/>
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                    <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                    <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                    <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                    <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                
-                </Nav>
-                
-            </Navbar.Collapse>
-        </Navbar>
-
-        <div className={styles.overflow}>
-            <div className={styles.background}>
-                <div className={styles.topSet}>
-                    <Link to='#' className={styles.navLink2}>Classes</Link>
-                    <Link to='#' className={styles.navLink2}>Classes</Link>
-                    <Link to='#' className={styles.navLink2}>Classes</Link>
-                    <Link to='#' className={styles.navLink2}>Classes</Link>
-                </div>
-            </div>
 
             <div className={styles.margLeftRow}>
                 <Row>
@@ -189,7 +178,7 @@ function ViewGradesByClass() {
                                                 <Form.Label>Exam Title</Form.Label>
                                                 <Form.Control className={styles.formField} as="select" value={examTitle} onChange={ e => setExam(e.target.value) } required>
                                                     {
-                                                            grades.map((classIns) => {
+                                                            title.map((classIns) => {
                                                                 return <option 
                                                                 key={classIns.title}
                                                                 value={classIns.title}>
@@ -252,7 +241,7 @@ function ViewGradesByClass() {
 
                 </Row>
             </div>
-        </div>
+        
         
         
         </>

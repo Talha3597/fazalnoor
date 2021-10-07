@@ -43,6 +43,9 @@ function ViewGradesBySection() {
     const [ stclassData, setClassTitle ] = useState([])
     const [ sectionData, setSectionTitle ] = useState([])
     const [ grades, setGrades ] = useState([])
+    const [ title, setTitle ] = useState([])
+let Class=classTitle
+let section=sectionTitle
 
     const classSectionDataList = () => {
         return studentGrades.map((currentclass) => {
@@ -69,7 +72,7 @@ function ViewGradesBySection() {
                     .then((res) => {
                         console.log(res.data)
                         setGrades(res.data)
-                        setExam(res.data[0].title)
+                        
                     })
                     .catch(err => {
                         console.log(err)
@@ -85,10 +88,20 @@ function ViewGradesBySection() {
         })
 
         
+
        
     }, [])
-
-
+    useEffect(async() => {
+        axios.get('/api/exams',{params:{Class,section}})
+        .then((res) => {
+            console.log(res.data)
+            setTitle(res.data)
+            setExam(res.data[0].title)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }, [Class,section])
     const changeSections = async(e) => {
         setClass( e.target.value )
 
@@ -225,7 +238,7 @@ function ViewGradesBySection() {
                                                 <Form.Label>Exam Title</Form.Label>
                                                 <Form.Control className={styles.formField} as="select" value={examTitle} onChange={ e => setExam(e.target.value) } required>
                                                     {
-                                                            grades.map((classIns) => {
+                                                            title.map((classIns) => {
                                                                 return <option 
                                                                 key={classIns.title}
                                                                 value={classIns.title}>
