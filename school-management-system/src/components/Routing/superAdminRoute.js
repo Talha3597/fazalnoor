@@ -86,6 +86,7 @@ import MarkUserAttendance from '../Screens/markUserAttendance'
 import ViewUserAttendance from '../Screens/viewUserAttendance'
 //Exam
 import Exam from '../Screens/exam'
+import Dashboard from '../Screens/adminDashboard'
 
 
 //
@@ -142,7 +143,7 @@ import * as RiIcons from 'react-icons/ri';
        
        <Sidebar/>
        
-
+       <Route  path="/adminDashboard" component={Dashboard}/>
         <Route  path="/addStudent" component={AddStudent}/>
         <Route  path="/students" component={Students}/>
         <Route  path="/updateStudent/:id" component={UpdateStudent}/>
@@ -303,9 +304,12 @@ import * as RiIcons from 'react-icons/ri';
        
 const i='true'
 export const SidebarData2 = 
-[
- 
-    { 
+[ { 
+  title: 'Dashboard',
+  path: '/adminDashboard',
+  icon: <AiIcons.AiOutlineDashboard />
+},
+{ 
       title: 'Student',
       path: '#',
       icon: <IoIcons.IoMdSchool/>,
@@ -318,8 +322,8 @@ export const SidebarData2 =
           
           title: 'Students',
           path: '/students',
-          icon: <IoIcons.IoIosPeople />
-        
+          icon: <IoIcons.IoIosPeople />,
+         
         },{
           status:'true',
           title: 'Add Student',

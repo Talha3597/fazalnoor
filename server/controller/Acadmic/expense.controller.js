@@ -59,7 +59,7 @@ module.exports.Expenses = async(req,res)=>
    console.log(month)
        await Expense.find({date: { $regex: month+'.*'+year }}).sort({_id:-1}).limit(200)
         .then((data)=>{
-            console.log(data)
+          
         return res.send(data)
            
         })

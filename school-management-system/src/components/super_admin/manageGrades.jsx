@@ -181,7 +181,7 @@ function ManageGrades() {
                                         <Form.Group controlId="formBasicstudentClass">
                                         <Form.Label>Exam Title</Form.Label>
                                         <Form.Control required className={styles.formField} as="select" value={title} onChange={ e => setTitle(e.target.value) } >
-                                          <option defaultValue>Select Class</option>
+                                          <option defaultValue>Select Exam</option>
                                             {   
                                                  examData.map((classIns,idx) => {
                                                      return <option 

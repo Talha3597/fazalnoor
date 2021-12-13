@@ -31,8 +31,12 @@ const PayFee =  ( {match})=> {
     }
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
-      content: () => componentRef.current,
-    });
+            content: () => componentRef.current,
+            
+          });
+       
+       
+    
     due=amount-pending
     useEffect(()=>{
         async function fetchFeeData(){   
@@ -187,6 +191,7 @@ return (
 </tbody>
 </Table>
 </div>
+<div className={styles.noprint}>
 {gdata1[0]?'': <div> <label>Discount</label>&nbsp;
                         <input   type="number" placeholder="Enter Title" value={discount} onChange={ e => setDiscount(e.target.value) } />%</div> }
                         
@@ -199,10 +204,10 @@ return (
                                         
                                         Pay Fee
                                     </Button>
-                                    <Button style={{marginLeft: '10%'}} onClick={handlePrint} className={styles.formButton} type="submit">
+                                    <Button style={{marginLeft: '10%'}} onClick={handlePrint} className={styles.formButton} >
                                         
                                         Print Now
-                                       </Button> 
+                                       </Button> </div>
                                 </form>
                                 
                                 <br/>

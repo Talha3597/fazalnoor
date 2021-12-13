@@ -19,18 +19,25 @@ import React,{useState,useEffect} from 'react'
              presentUsers.push({"employeeNo":x.employeeNo,"username":x.username})
          })
      }
+    //  const markAll=()=>{
+    //      userData.map(i=>{
+    //         const user={"employeeNo":i.employeeNo,"username":i.username}
+    //         presentUsers.push(user)
+    //      })
+    //  }
+
       const handleChange = (employeeNo,username) => {
        
         const name=presentUsers.find(p=>p.employeeNo == employeeNo)
                      if(name){
                         presentUsers = presentUsers.filter(p =>p.employeeNo !== employeeNo)
-                       console.log(presentUsers)
+                       
                       
                     }
                     else{
                         const user={"employeeNo":employeeNo,"username":username}
                         presentUsers.push(user)
-                        console.log(presentUsers)
+                        
                        
                     }
             
@@ -42,7 +49,7 @@ import React,{useState,useEffect} from 'react'
                 await axios.get('/api/auth/users',{ params: {search,employeeNo}})
                 .then(res=>{
                     setUserData(res.data)
-                    console.log(res.data)
+                    
                 })
                }
                async function fetchAttendanceData(){   
@@ -50,7 +57,7 @@ import React,{useState,useEffect} from 'react'
                 .then(res=>{
                    setAttendanceData(res.data)
                    
-                    console.log(res.data)
+                   
                 })
                }
          fetchUserData()
@@ -62,7 +69,7 @@ import React,{useState,useEffect} from 'react'
             let absentUsers =userData.filter(el=>{return !presentUsers.find(element =>{
                 return element.employeeNo === el.employeeNo
             })})
-            console.log(absentUsers)
+           
             await axios.put('/api/updateAttendance',{date,presentUsers,absentUsers})
             alert("Updated Attendance")
           }else{
@@ -70,7 +77,7 @@ import React,{useState,useEffect} from 'react'
             let absentUsers =userData.filter(el=>{return !presentUsers.find(element =>{
                 return element.employeeNo === el.employeeNo
             })})
-            console.log(absentUsers)
+           
             await axios.post('/api/markAttendance',{date,presentUsers,absentUsers})
             alert("Submit Attendance")
           }
@@ -95,7 +102,7 @@ import React,{useState,useEffect} from 'react'
                                                 onChange={date => setTodayDate(date)}
                                                 />
                                         </Form.Group>
-                                       {attendanceData[0]?<Table>
+                                       {attendanceData[0]?<Table striped bordered hover size='sm'>
                                             <thead>
                                            
                                                 <th>Employee No</th>
@@ -120,7 +127,7 @@ import React,{useState,useEffect} from 'react'
                                                
                                              }
                                             </tbody>
-                                        </Table>:<Table>
+                                        </Table>:<Table striped bordered hover size='sm'>
                                             <thead>
                                                 <th >Employee No</th>
                                                 <th>Name</th>
@@ -142,6 +149,7 @@ import React,{useState,useEffect} from 'react'
                                             
                                             Submit Attendance
                                         </Button>
+                                      
                                     </form>
     
         </div>

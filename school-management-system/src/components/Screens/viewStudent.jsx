@@ -139,86 +139,36 @@ return( <>
                                       <div ref={componentRef} >
                   <div className={styles.formHeading}>
                     <h3> Al Khidmat Fazal Noor Campus </h3>
-                    <h3> Employee {studentName} </h3>
+                    <h3> Student {studentName} </h3>
                      </div>
                               
-                               <form  >
-                               
-                                     
-                                          <div className="container1">
-                                              <div className="box2">
-                                    <Form.Group controlId="formBasicEmail">
-                              <Form.Label>Student Number 
                               
-                              </Form.Label>
-                              <Form.Control readOnly disabled className={styles.formField} type="number"  value={studentNo} onChange={ e => setStudentNo(e.target.value) } required />
-                          </Form.Group>
-                          
-                          <Form.Group controlId="formBasicEmail">
-                              <Form.Label>Name</Form.Label>
-                              <Form.Control readOnly disabled className={styles.formField} type="text"  value={studentName} onChange={ e => setStudentName(e.target.value)} required />
-                          </Form.Group>
-                          <Form.Group controlId="formBasicEmail">
-                              <Form.Label>ID</Form.Label>
-                              <Form.Control readOnly disabled className={styles.formField} type="number"  value={rollNo} onChange={ e => setRollNo(e.target.value) }/>
-                          </Form.Group>
-                          <Form.Group controlId="formBasicEmail">
-                              <Form.Label>Class</Form.Label>
-                              <Form.Control readOnly disabled className={styles.formField} type="text"  value={Class} onChange={ e => setClass(e.target.value)} required />
-                          </Form.Group>
-                          <Form.Group controlId="formBasicEmail">
-                              <Form.Label>Section</Form.Label>
-                              <Form.Control readOnly disabled className={styles.formField} type="text"  value={section} onChange={ e => setSection(e.target.value)} required />
-                          </Form.Group>
-                         
-                          
-                                      <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>Date Of Birth  Format: XX-XX-XXXX</Form.Label>
-                                        <Form.Control readOnly disabled pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"  className={styles.formField} type="text" placeholder="Enter Date of Birth" value={dob} onChange={ e => setDob(e.target.value) }/>
-                                    </Form.Group>
-                                      
-                                      <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>Address</Form.Label>
-                                        <Form.Control readOnly disabled className={styles.formField} type="text" placeholder="Enter Address" value={address} onChange={ e => setAddress(e.target.value) } required />
-                                    </Form.Group>
-                                    </div>
-                                    <div className="box2">       
-                           <Form.Group controlId="formBasicEmail">
-                              <Form.Label>Guardian name </Form.Label>
-                              <Form.Control readOnly disabled  className={styles.formField} type="text"  value={parentName} onChange={ e => setParentName(e.target.value) }/>
-                          </Form.Group>
-                          <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>CNIC * Format: XXXXX-XXXXXXX-X</Form.Label>
-                                        <Form.Control readOnly disabled pattern="[0-9]{5}-[0-9]{7}-[0-9]{1}" required className={styles.formField} type="text" placeholder="Enter CNIC" value={cnic} onChange={ e => setCnic(e.target.value) }/>
-                                    </Form.Group>
-                                     
-                          <Form.Group controlId="formBasicEmail">
-                              <Form.Label>Phone Number</Form.Label>
-                              <Form.Control readOnly disabled className={styles.formField} type="number"  value={phoneNo} onChange={ e => setPhoneNo(e.target.value) }/>
-                          </Form.Group>
-                          <Form.Group controlId="formBasicEmail">
-                              <Form.Label>Email</Form.Label>
-                              <Form.Control readOnly disabled className={styles.formField} type="email"  value={email} onChange={ e => setEmail(e.target.value) }/>
-                          </Form.Group>
-                          <Form.Group controlId="formBasicEmail">
-                              <Form.Label>Guardian Relation</Form.Label>
-                              <Form.Control readOnly disabled className={styles.formField} type="text"  value={parentRelation} onChange={ e => setParentRelation(e.target.value) }/>
-                          </Form.Group>
-                          <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>School Fee *</Form.Label>
-                                        <Form.Control readOnly disabled className={styles.formField} type="number" placeholder="Enter School Fee" value={schoolFee} onChange={ e => setSchoolFee(e.target.value) }/>
-                                    </Form.Group>
-                          <Form.Group controlId="formBasicEmail">
-                              <Form.Label>Description</Form.Label>
-                              <Form.Control readOnly disabled className={styles.formField} as="textarea"  value={description} onChange={ e => setDescription(e.target.value) } />
-                          </Form.Group>
-                          </div>
-                          </div>
-                          
-                      </form>
                       <br/>
                       <div className='container1'>
                       <div className='box2'>
+                      <Table bordered  size='lg'>
+  <tbody>
+ <tr > 
+<td>    
+                       <Table  bordered size='sm'>
+  <tbody>
+ <tr > 
+ <td>Student Number</td><td>{studentNo}</td> <td>Guardian Name</td><td>{parentName}</td>   </tr> <tr>
+ <td>Name</td><td>{studentName}</td> <td>CNIC</td><td>{cnic}</td> </tr> <tr>
+ <td>Class</td><td>{Class}</td> <td>Phone</td><td>{phoneNo}</td> </tr> <tr>
+ <td>Section</td><td>{section}</td> <td>Email</td><td>{email}</td>  </tr> <tr>
+ <td>Date of birth</td><td>{dob}</td> <td>Guardian Relation </td><td>{parentRelation}</td></tr> <tr>
+ <td>Address</td><td>{address}</td> <td>School Fee</td><td>{schoolFee}</td></tr> <tr>
+ <td></td><td></td> <td>Description</td><td>{description}</td>
+</tr>  
+</tbody>
+</Table>
+</td>
+</tr>
+
+</tbody>
+</Table>
+                     
        <Table striped bordered hover size='sm'>
   <thead>
     <tr>
@@ -249,10 +199,10 @@ return( <>
                             <td>{item.pending}</td>
                             <td>{item.person}</td>
                             <td>{item.status}</td>
-                            <td>  {role=='superAdmin'?
+                            <td className={styles.noprint}>  {role=='superAdmin'?
                         <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
                          Delete
-                        </Button>:''}
+                        </Button>:''}<br/>&nbsp;
                         {role=='superAdmin'|| role=='finance'|| role=='financeTeacher'||role=='adminFinance'? 
                         <Link to={`/payFee/${item._id}` } ><Button className={styles.sideButton1}  >
                         Pay</Button></Link>:''} </td>

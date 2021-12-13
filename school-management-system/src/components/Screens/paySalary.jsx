@@ -155,7 +155,7 @@ return (
 </tbody>
 </Table>
 </div> 
-               
+               <div className={styles.noprint}>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label> Pay Amount </Form.Label>
                         <Form.Control  className={styles.formField} type="number" placeholder="Enter Amount" value={payAmount} onChange={ e => setPayAmount(e.target.value) } required/>
@@ -164,11 +164,11 @@ return (
                     <Button className={styles.formButton} type="submit">
                                         
                                         Pay Salary
-                                    </Button><Button style={{marginLeft: '10%'}} onClick={handlePrint} className={styles.formButton} type="submit">
+                                    </Button><Button style={{marginLeft: '10%'}} onClick={handlePrint} className={styles.formButton} >
                                         
                                         Print Now
                                        </Button>
-                                    
+                                   </div> 
                                 </form>
                                 
                                 <br/>

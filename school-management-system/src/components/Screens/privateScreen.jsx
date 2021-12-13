@@ -91,7 +91,8 @@ const PrivateScreen = ({history}) =>{
        
        try {
         const {data}=  (await axios.get('/api/private',config))
-        setPrivateData(data.data)
+        console.log(data.data)
+
              
         } catch (error) {
             localStorage.removeItem("authToken")

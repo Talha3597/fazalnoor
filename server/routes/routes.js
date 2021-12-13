@@ -2,9 +2,13 @@ const express = require('express')
 const {protect}=require('../middleware/auth')
 
 const router = express.Router();
-const{addStudent,students,deleteStudent,updateStudent,getStudent,promote,findStudent,transfer,studentsData}=require('../controller/Acadmic/student.controller')
+const{addStudent,students,deleteStudent,updateStudent,getStudent,promote,findStudent,transfer,studentsData,deleteSection,totalStudents,totalClasses,totalSections}=require('../controller/Acadmic/student.controller')
 router.route('/addStudent').post(addStudent)
 router.route('/students').get(students)
+router.route('/totalStudents').get(totalStudents)
+router.route('/totalClasses').get(totalClasses)
+router.route('/totalSections').get(totalSections)
+router.route('/deleteSection').delete(deleteSection)
 
 router.route('/studentsData').get(studentsData)
 router.route('/student').get(getStudent)

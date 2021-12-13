@@ -132,8 +132,10 @@ return (
                      <h3> Al Khidmat Fazal Noor Campus </h3>
                      <h3> Salary </h3>
                  </div>
+<h5> &nbsp;{employeeNo ? "Employee No:"+employeeNo:
+                 <h5>&nbsp;{status ? "Status:"+status:''}&nbsp;{month ? "Month:"+month:''}&nbsp;{"Year:"+year}</h5>        
 
-                 <h5> &nbsp;{employeeNo ? "Employee No:"+employeeNo:''}&nbsp;{status ? "Status:"+status:''}&nbsp;{month ? "Month:"+month:''}&nbsp;{"Year:"+year}</h5>        
+}</h5>
                         
        <div className='table-responsive'>
        <Table striped bordered hover size='sm'>
@@ -148,7 +150,7 @@ return (
       <th>Paid</th>
       <th>Person</th>
       <th>Status</th>
-      
+      <th className={styles.noprint}></th>
     </tr>
   </thead>
   <tbody>
@@ -163,11 +165,12 @@ return (
                             <td>{item.pending}</td>
                             <td>{item.person}</td>
                             <td>{item.status}</td>
-                            <td>
+                            
+                            <td className={styles.noprint}>
                            {role=='superAdmin'? 
                             <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
                              Delete
-                            </Button>:''}
+                            </Button>:''}&nbsp;
                            <Link to={`/paySalary/${item._id}` } > <Button className={styles.sideButton1}  >
                             Pay</Button></Link></td>
                         </tr>  

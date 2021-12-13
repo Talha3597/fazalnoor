@@ -49,13 +49,7 @@ return(
     
    
     <div className={styles.margLeftRowTable }>
-    <div ref={componentRef} >
-       <Row>
-
-           <Col><div className={styles.backBar}>
-                            <h1>Users List</h1>
-                        </div></Col>
-       </Row>
+    <div className={styles.empty}></div>
        <div className='text-center'>      
        <input type="text" placeholder="Search by Name.." value={search} onChange={e=>setSearch(e.target.value)}/>
        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -66,7 +60,11 @@ return(
                                        </button>
 </div>
 <br/>
-
+<div ref={componentRef} >
+<div className={styles.formHeading}>
+                     <h3> Al Khidmat Fazal Noor Campus </h3>
+                     <h3> Employees List</h3>
+                  </div><br/>
        <div className='table-responsive'>
        <Table striped bordered hover size='sm'>
   <thead>
@@ -77,6 +75,10 @@ return(
       <th>Role</th>
       <th>Phone Number</th>
       <th>Address</th>
+      <th className={styles.noprint}></th>
+      <th className={styles.noprint}></th>
+      <th className={styles.noprint}></th>
+      <th className={styles.noprint}></th>
       
     </tr>
   </thead>
@@ -91,18 +93,18 @@ return(
                             <td>{item.address}</td>
                               
                             {role=='superAdmin'?
-                            <td><Link to={ `/updateUser/${item._id}` }><Button className={styles.sideButton1}  >
+                            <td className={styles.noprint}><Link to={ `/updateUser/${item._id}` }><Button className={styles.sideButton1}  >
                             Edit</Button></Link></td>
                             :''}
                             {role=='superAdmin'?
-                            <td>  <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
+                            <td className={styles.noprint}>  <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
                              Delete
                             </Button></td> :''}
             
-                            <td><Link to={`/viewUser/${item._id}`}>  <Button className={styles.sideButton3}   >
+                            <td className={styles.noprint}><Link to={`/viewUser/${item._id}`}>  <Button className={styles.sideButton3}   >
                             View</Button></Link></td>
                             {role=='superAdmin'?
-                            <td><Link to={ `/addSalaryUser/${item.employeeNo}` }><Button className={styles.sideButton1}  >
+                            <td className={styles.noprint}><Link to={ `/addSalaryUser/${item.employeeNo}` }><Button className={styles.sideButton1}  >
                             Add Salary</Button></Link></td>
                             :''}
                         </tr>  

@@ -69,7 +69,10 @@ return(
       <th>Title</th>
       <th>Class</th>
       <th>Section</th>
-      <th>Status</th>    
+      <th>Status</th>
+      <th></th>    
+      <th></th>    
+      <th></th>    
     </tr>
   </thead>
   <tbody>

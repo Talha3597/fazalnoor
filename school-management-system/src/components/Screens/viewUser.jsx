@@ -125,67 +125,28 @@ useEffect(()=>{
                    <div className={styles.formHeading}>
                      <h3> Al Khidmat Fazal Noor Campus </h3>
                      <h3> Employee {username} </h3>
-                      </div>
-                               
-                                <form  >
-                                
-                                      
-                                           <div className="container1">
-                                               <div className="box2">
-                                  <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>Employee Number *</Form.Label>
-                                        <Form.Control readOnly disabled className={styles.formField} type="number" placeholder="Enter Unique Employee Number" value={employeeNo} onChange={ e => setEmployeeNo(e.target.value) } required />
-                                    </Form.Group>
-                                    <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>Employee Name *</Form.Label>
-                                        <Form.Control readOnly disabled className={styles.formField} type="text" placeholder="Enter Name" value={username} onChange={ e => setUserName(e.target.value) } required />
-                                    </Form.Group>
-                                    
-                                       
-                                      <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>Address *</Form.Label>
-                                        <Form.Control readOnly disabled className={styles.formField} type="text" placeholder="Enter Address" value={address} onChange={ e => setAddress(e.target.value) } required />
-                                    </Form.Group>
-                                     
-                                    <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>CNIC  Format: XXXXX-XXXXXXX-X</Form.Label>
-                                        <Form.Control readOnly disabled pattern="[0-9]{5}-[0-9]{7}-[0-9]{1}"  className={styles.formField} type="text" placeholder="Enter CNIC" value={cnic} onChange={ e => setCnic(e.target.value)  }/>
-                                    </Form.Group>
-                                    <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>Phone Number *</Form.Label>
-                                        <Form.Control readOnly disabled required className={styles.formField} type="number" placeholder="Enter Phone Number" value={phoneNo} onChange={ e => setPhoneNo(e.target.value) }/>
-                                    </Form.Group>
-                                    </div>
-                                    <div className="box2">
-                                    <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>Email</Form.Label>
-                                        <Form.Control readOnly disabled className={styles.formField} required  type="email" placeholder="Enter Email" value={email} onChange={ e => setEmail(e.target.value) }/>
-                                    </Form.Group>
-                                    <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>Joining Date</Form.Label>
-                                        <Form.Control readOnly disabled className={styles.formField} required  type="email" placeholder="Enter Date" value={joiningDate} onChange={ e => setJoiningDate(e.target.value) }/>
-                                    </Form.Group>
-                                    
-                                    
-                                    <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>Description</Form.Label>
-                                        <Form.Control readOnly disabled className={styles.formField} as="textarea" placeholder="Description" value={description} onChange={ e => setDescription(e.target.value) } />
-                                    </Form.Group>
-                                   
-                        
-                                    
-                                    <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>Salary *</Form.Label>
-                                        <Form.Control readOnly disabled required className={styles.formField} type="number" placeholder="Enter School Fee" value={salary} onChange={ e => setSalary(e.target.value) }/>
-                                    </Form.Group>
-                                    </div>
-                                    </div>
-                                   
-                                </form>
-                                
-                               
+                      </div><br/>   
                       <div className="container1">
                        <div className="box2">
+                       <Table bordered  size='lg'>
+  <tbody>
+ <tr > 
+<td>    
+                       <Table  bordered size='sm'>
+  <tbody>
+ <tr > 
+ <td>Employee Number</td><td>{employeeNo}</td>    </tr> <tr>
+ <td>Name</td><td>{username}</td> <td>CNIC</td><td>{cnic}</td> </tr> <tr>
+ <td>Joining Date</td><td>{joiningDate}</td> <td>Phone</td><td>{phoneNo}</td> </tr> <tr>
+ <td>Salary</td><td>{salary}</td> <td>Email</td><td>{email}</td>  </tr>  <tr>
+ <td>Address</td><td>{address}</td> <td>Description</td><td>{description}</td></tr>  
+</tbody>
+</Table>
+</td>
+</tr>
+
+</tbody>
+</Table>
                 <Table striped bordered hover size='sm'>
                 <thead>
                 <tr>
@@ -209,11 +170,11 @@ useEffect(()=>{
                                     <td>{item.pending}</td>
                                     <td>{item.person}</td>
                                     <td>{item.status}</td>
-                                    <td>
+                                    <td className={styles.noprint}>
                                     {role=='superAdmin'? 
                                     <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
                                         Delete
-                                    </Button>:''}
+                                    </Button>:''}<br/>&nbsp;
                                     {role=='superAdmin'|| role=='finance'|| role=='financeTeacher'||role=='adminFinance'? 
                                     <Link to={`/paySalary/${item._id}` } > <Button className={styles.sideButton1}  >
                                     Pay</Button></Link>:''}</td>

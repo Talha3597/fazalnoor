@@ -118,7 +118,7 @@ exports.resetpassword=async(req,res,next) =>{
         const salt =await bcrypt.genSalt(10)
         const pass =await bcrypt.hash(req.body.password,salt)
         
-        User.updateOne({_id: user._id}, {$set:{password:pass,resetPasswordToken:"undefined"}}, {upsert: false}, function(err, data) {
+        User.updateOne({_id:user._id}, {$set:{password:pass,resetPasswordToken:"undefined"}}, {upsert: false}, function(err, data) {
             if (err) {
                 res.status(500).send({error: "Could not modify student info..."});
             } else {           
@@ -285,4 +285,14 @@ module.exports.updateUser=(req,res)=>
            res.status(200).send(data);
         }
     }); 
+}
+module.exports.totalUsers=(req,res)=>{
+    User.countDocuments({}
+    ,function(error,data)  {
+        if (error) {
+            res.status(500).send({error: "Could not modify User info..."});
+        } else {           
+          
+       return  res.status(200).send(String(data))}
+    })
 }

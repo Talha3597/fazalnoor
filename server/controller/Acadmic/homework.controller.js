@@ -22,7 +22,7 @@ try{
            const title=req.body.title
            
            const newNotice=  HomeWork.create({title,notice,url,Class,section,status,attachment,date})
-           .then(console.log(newNotice))
+           
             
            return res.status(200).json({
                 success: true,

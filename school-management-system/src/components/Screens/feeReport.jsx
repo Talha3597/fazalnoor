@@ -73,7 +73,7 @@ console.log(err)
  fetchData()
 
 
-},[month,Class,section,studentNo,year]
+},[month,year]
 )
 
 
@@ -111,44 +111,6 @@ return (
                   </select>&nbsp;<AiIcons.AiFillPlusCircle onClick={ addYear}/>&nbsp;
                   <AiIcons.AiFillMinusCircle onClick={minusYear}/> &nbsp;
                  
-                  <select required  as="select" value={status} onChange={ e => setStatus(e.target.value) } >
-                    <option value=''defaultValue>Select status</option>
-                    <option value='Paid'>Paid</option>
-                    <option value='Unpaid'>Unpaid</option>
-                   
-                   
-                  </select>&nbsp;
-                  <select required  as="select" value={Class} onChange={ e => setClass(e.target.value) } >
-                                          <option value='' defaultValue>Select Class</option>
-                                            {   
-                                                 classData.map((classIns) => {
-                                                     return <option 
-                                                        key={classIns._id}
-                                                        value={classIns.title}>
-                                                            {classIns.title}
-                                                    </option>;
-                                                    })
-                                            }
-                                        </select>
-                                   
-                                        &nbsp;
-                                        <select as="select" value={section} onChange={ e => setSection(e.target.value) } required >
-                                        <option value='' defaultValue>Select Section</option>
-                                            {
-                                                 sectionData.map((section) => {
-                                                     return <option 
-                                                        key={section._id}
-                                                        value={section.title}>
-                                                            {section.title}
-                                                    </option>;
-                                                    })
-                                            }
-                                        </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                   
-                                       
-                       
-                        <input   type="number" placeholder="Search Student Number" value={studentNo} onChange={ e => setStudentNo(e.target.value) } />
-                        
                                 
 </div>
 <br/>

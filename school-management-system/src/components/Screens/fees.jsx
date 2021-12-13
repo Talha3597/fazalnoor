@@ -193,7 +193,9 @@ return (
                      <h3> Al Khidmat Fazal Noor Campus </h3>
                      <h3> Fee</h3>
                   </div>
- <h5>&nbsp; {Class ? "Class:"+Class:''}&nbsp; {section ? "Section:"+section:''}&nbsp; {studentNo ? "Student No:"+studentNo:''}&nbsp; {status? "Status:"+status:''}&nbsp; {month ? "Month:"+month:''}&nbsp;{"Year:"+year}</h5>
+ <h5>&nbsp; {studentNo ? "Student No:"+studentNo:
+ <h5>&nbsp; {Class ? "Class:"+Class:''}&nbsp; {section ? "Section:"+section:''}&nbsp; {status? "Status:"+status:''}&nbsp; {month ? "Month:"+month:''}&nbsp;{"Year:"+year}</h5>
+ }</h5>
  
 <br/>
        <div className='table-responsive'>
@@ -206,12 +208,11 @@ return (
       <th>Invoice Number</th>
       <th>Amount</th>
       <th>Discount</th>
-      <th>Class</th>
-      <th>section</th>
       <th>Date</th>
       <th>Paid</th>
       <th>person</th>
       <th>Status</th>
+      <th className={styles.noprint}></th>
     </tr>
   </thead>
   <tbody>
@@ -222,17 +223,15 @@ return (
                             <td>{item.title}</td>  
                             <td>{item.invoiceNo}</td>  
                             <td>{item.amount}</td>  
-                            <td>{item.discount}</td>
-                            <td>{item.Class}</td>  
-                            <td>{item.section}</td>  
+                            <td>{item.discount}</td>  
                             <td>{item.date}</td> 
                             <td>{item.pending}</td>
                             <td>{item.person}</td>
                             <td>{item.status}</td>
-                            <td>  {role=='superAdmin'?
+                            <td className={styles.noprint}>  {role=='superAdmin'?
                         <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
                          Delete
-                        </Button>:''}
+                        </Button>:''}&nbsp;
                         <Link to={`/payFee/${item._id}` } ><Button className={styles.sideButton1}  >
                         Pay</Button></Link> </td>
                             

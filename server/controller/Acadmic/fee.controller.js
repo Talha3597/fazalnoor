@@ -134,6 +134,46 @@ try{
                 token: "Fees Not add successfully",
             })
         }
+        else if( section !='' && Class=='')
+        {
+            await StudentSchema.find({section:section}, (error,data) => {
+                if (error) {
+                    return res.status(200).json({
+                        success: true,
+                        token: "No Students Found",
+                    })
+                    
+                }else{
+                   
+                    data.map(item => {   
+
+                            
+                        studentNo=item.studentNo;
+                        
+                       
+                               
+                                studentNo=item.studentNo;
+                                studentName=item.studentName;
+                                const Class=item.Class;
+                                const section=item.section
+                               const newFee=  Fee.create({title,type,studentName,studentNo,amount,discount,pending,date,status,Class,section,person})
+                              
+                            
+                        
+                    
+                })
+                return res.status(200).json({
+                    success: true,
+                    token: "Fee add successfully",
+                })
+                }
+               
+            }) 
+            return res.status(200).json({
+                success: true,
+                token: "Fees Not add successfully",
+            })
+        }
              
         
    }
@@ -222,6 +262,15 @@ module.exports.fees = async(req,res)=>
              return res.status(200).json({success:true, token:'Error Loading Data'})
          })
        }
+    else if(Class==''&& section!=''){
+        await Fee.find({section:section,date: { $regex: month+'.*'+year },status: { $regex: status },type:type}).sort({_id:-1}).limit(200)
+         .then((data)=>{
+             
+             return res.send(data)})
+         .catch( (err)=>{
+             return res.status(200).json({success:true, token:'Error Loading Data'})
+         })
+       }
     else if(Class=='' && section==''){
        await Fee.find({date: { $regex: month+'.*'+year },status: { $regex: status },type:type}).sort({_id:-1}).limit(200)
         .then((data)=>{
@@ -252,7 +301,7 @@ module.exports.deleteFeeRecord=async(req,res)=>{
     const month=req.query.month
     const year=req.query.year
     
-   await Fee.deleteMany({date: { $regex: month+'.*'+year },status:'Paid'},(error, data) => {
+   await Fee.deleteMany({date: { $regex: month+'.*'+year }},(error, data) => {
         if (error) {
             
             throw error;
@@ -377,6 +426,31 @@ const status=req.query.status
            ,function(error,count) {
               
                Fee.countDocuments({Class:Class,type:type,status:"Unpaid",date: { $regex: month+'.*'+year }}
+               ,function(error,count1)  {
+                   
+                  
+                  let array=[sum3,sum4,count,count1]
+           
+                  return res.send(array)
+               })
+           })
+        })
+            
+        .catch( (err)=>{
+       return res.status(200).json({success:true, token:'Error Loading Data'})
+    })
+    }
+    else if(Class==''&& section!='')
+    {await Fee.find({section:section ,date: { $regex: month+'.*'+year },status: { $regex: status },type:type})
+    .then((data)=>{
+       
+        
+           const sum3=data.map(item=>item.pending).reduce((a,item)=>item+a)
+           const sum4=data.map(item=>item.amount).reduce((a,item)=>item+a)
+           Fee.countDocuments({section:section,type:type,status:"Paid",date: { $regex: month+'.*'+year }}
+           ,function(error,count) {
+              
+               Fee.countDocuments({section:section,type:type,status:"Unpaid",date: { $regex: month+'.*'+year }}
                ,function(error,count1)  {
                    
                   
@@ -522,45 +596,8 @@ module.exports.feeReportExpensive= async(req,res)=>
 {        
     const month=req.query.month
     const year=req.query.year
-    const Class=req.query.Class
-    const section=req.query.section
-    const studentNo=req.query.studentNo
     const type='deposite'
    
-    if(studentNo){
-        await Fee.aggregate([{ $match: {studentNo:studentNo,date: { $regex:  month+'.*'+year },type:type} },
-            {$group: {_id:"$studentNo",pending:{"$sum":"$pending"},amount:{"$sum":"$amount"}} }
-        ])
-            .then((data)=>{
-               
-                return res.send(data)})
-            .catch( (err)=>{
-                return res.status(200).json({success:true, token:'Error Loading Data'})
-            })
-       }
-   else if(Class && section ){
-    await Fee.aggregate([{ $match: {Class:Class,section:section,date: { $regex:  month+'.*'+year },type:type} },
-        {$group: {_id:"$studentNo",pending:{"$sum":"$pending"},amount:{"$sum":"$amount"}} }
-    ])
-        .then((data)=>{
-           
-            return res.send(data)})
-        .catch( (err)=>{
-            return res.status(200).json({success:true, token:'Error Loading Data'})
-        })
-    }
-    else if(Class){
-        await Fee.aggregate([{ $match: {Class:Class,date: { $regex:  month+'.*'+year },type:type} },
-            {$group: {_id:"$studentNo",pending:{"$sum":"$pending"},amount:{"$sum":"$amount"}} }
-        ])
-            .then((data)=>{
-               
-                return res.send(data)})
-            .catch( (err)=>{
-                return res.status(200).json({success:true, token:'Error Loading Data'})
-            })
-        }
-    else {
         await Fee.aggregate([{ $match: {date: { $regex: month+'.*'+year  },type:type} },
             {$group: {_id:"$studentNo",pending:{"$sum":"$pending"},amount:{"$sum":"$amount"}} }
         ])
@@ -571,5 +608,5 @@ module.exports.feeReportExpensive= async(req,res)=>
                 return res.status(200).json({success:true, token:'Error Loading Data'})
             })
         
-    } 
+    
 }

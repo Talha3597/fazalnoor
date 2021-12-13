@@ -27,10 +27,25 @@ const removeData = async(id) => {
            
         }) }
 }
+const deleteRecord = async()=>{
+  if(section ){
+  let flag= window.confirm(`Delete  record of ${section} `)
+  if(flag)
+  { 
+    await axios.delete('/api/deleteSection', { params: {section} })
+  }
+}else{
+  window.alert('Select section to delete record')
+}
+  
+  
+ }
+const componentRef1 = useRef();
 
-const componentRef = useRef();
+
 const handlePrint = useReactToPrint({
-  content: () => componentRef.current,
+  content: function() {return  componentRef1.current},
+  documentTitle:"Students List Fazal Noor"
 });
 
 useEffect(()=>{
@@ -73,13 +88,11 @@ return(
     
   
     <div className={styles.margLeftRowTable }>
-    <div ref={componentRef} >
-       <Row>
-           <Col><div className={styles.backBar}>
-                            <h1>Student List</h1>
-                        </div></Col>
-       </Row>
-       <div className='text-center'>      
+    <div className={styles.empty}></div>
+    <div className='text-center'>  &nbsp;
+                            {role=='superAdmin'? <button className={styles.formButton} onClick={() => deleteRecord()}>
+        <span>&#9888; </span> Delete Record
+                            </button>:''} &nbsp;     
        <input type="text" placeholder="Search by Name.." value={search} onChange={e=>setSearch(e.target.value)}/>
        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
                    <select required  as="select" value={Class} onChange={ e => setClass(e.target.value) } >
@@ -114,11 +127,23 @@ return(
                                         Print
                                        </button>
 </div>
+    <div ref={componentRef1}>
+    <div className={styles.formHeading}>
+                     <h3> Al Khidmat Fazal Noor Campus </h3>
+                     <h3> Students List</h3>
+                  </div>
+  
+<br/>
+<h5>&nbsp; {studentNo ? "Student No:"+studentNo:
+<h5>&nbsp; {Class ? "Class:"+Class:''}&nbsp; {section ? "Section:"+section:''}&nbsp; &nbsp; </h5>
+}&nbsp;</h5>
 <br/>
        <div className='table-responsive'>
+    
        
-       <Table striped bordered hover size='sm'>
-  <thead>
+       <Table striped bordered hover size='sm' >
+       
+  <thead >
     <tr>
       <th>Student Number</th>
       <th> Name</th>
@@ -128,11 +153,17 @@ return(
     
       <th>Phone Number</th>
       <th>Address</th>
+      <th className={styles.noprint}></th>
+      <th className={styles.noprint}></th>
+      <th className={styles.noprint}></th>
+      <th className={styles.noprint}></th>
+      <th className={styles.noprint}></th>
     </tr>
   </thead>
-  <tbody>
+  <tbody >
   {gdata.map((item,idx) => {  
-                        return <tr key={item._id}> 
+                        return <tr key={item._id}>
+                          
                             <td>{item.studentNo}</td> 
                             <td>{item.studentName}</td>  
                             <td>{item.parentName}</td>  
@@ -141,20 +172,20 @@ return(
                             <td>{item.phoneNo}</td>  
                             <td>{item.address}</td>
                               {role=='superAdmin'?
-                          <td><Link  to={`/updateStudent/${item._id}`}>  
+                          <td className={styles.noprint}><Link  to={`/updateStudent/${item._id}`}>  
                             <Button className={styles.sideButton1}  >
                             Edit</Button></Link></td>:''}
-                            {role=='superAdmin'?  <td>
+                            {role=='superAdmin'?  <td className={styles.noprint}>
                            <Button className={styles.sideButton2}  onClick={() => removeData(item._id)}>
                              Delete
                             </Button></td>:''}
                             
-                            <td> <Link to={ `/viewStudent/${item._id}` }> <Button className={styles.sideButton3}  >
+                            <td className={styles.noprint}> <Link to={ `/viewStudent/${item._id}` }> <Button className={styles.sideButton3}  >
                             View</Button></Link></td>
-                            {role=='superAdmin'|| role=='finance'||role=='financeTeacher'||role=='adminFinance'? <td>
+                            {role=='superAdmin'|| role=='finance'||role=='financeTeacher'||role=='adminFinance'? <td className={styles.noprint}>
                             <Link to={`/addFeeStudent/${item.studentNo}`}>
                         <Button className={styles.sideButton1}>Fee</Button></Link></td> :''}
-                        <td>
+                        <td className={styles.noprint}>
                           <Link to={`/viewGradesStudent/${item.studentNo}`}>
                         <Button className={styles.sideButton3} >
                          Grades
@@ -163,10 +194,14 @@ return(
                     })}  
     
   </tbody>
+ 
+                            
 </Table>
-       </div>
+</div>    
+</div>
+
     </div>
-    </div>
+    
        </>
 )
 

@@ -118,6 +118,7 @@ return (
                      <h3> Expenses</h3>
                   </div>
                   <h5> &nbsp;{month ? "Month:"+month:''}&nbsp;{"Year:"+year}</h5>
+      <br/>
        <div className='table-responsive'>
        <Table striped bordered hover size='sm'>
   <thead>
@@ -129,6 +130,9 @@ return (
       <th>Date</th>
       <th>Note</th>
       <th>Created By</th>
+      <th className={styles.noprint}></th>
+      <th className={styles.noprint}></th>
+      <th className={styles.noprint}></th>
     </tr>
   </thead>
   <tbody>
@@ -141,15 +145,15 @@ return (
                             <td>{item.date}</td>  
                             <td>{item.note}</td>
                             <td>{item.createdBy}</td>
-                            <td> 
+                            <td className={styles.noprint}> 
                             {role=='superAdmin'? 
                             <Link to={`/updateExpense/${item._id}` }><Button className={styles.sideButton1}   >
                             Edit</Button></Link>:''}</td>
-                            <td>    {role=='superAdmin'?
+                            <td className={styles.noprint}>    {role=='superAdmin'?
                             <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
                              Delete
                             </Button>:''}</td>
-                            <td>   <Link to={`/expenseView/${item._id}` }><Button className={styles.sideButton3}   >
+                            <td className={styles.noprint}>   <Link to={`/expenseView/${item._id}` }><Button className={styles.sideButton3}   >
                             View</Button></Link></td>
                         </tr>  
                     })}  

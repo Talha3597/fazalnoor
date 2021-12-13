@@ -1,12 +1,13 @@
 
 
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect,useRef} from 'react'
 import styles from '../../assets/style.module.css'
 import { Button,Form,Table} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import * as AiIcons from 'react-icons/ai';
+import { useReactToPrint } from 'react-to-print';
 import axios from 'axios';
 const ViewUserAttendance =()=>{
    
@@ -15,7 +16,7 @@ const ViewUserAttendance =()=>{
     const [month,setMonth]=useState(parseInt(today.getMonth()+1))
     const search=''
     const employeeNo=''
-    let count=0
+   
 let role=localStorage.getItem("role")
     const [attendanceData, setAttendanceData] = useState([]);
     let[year,setYear] =useState(today.getFullYear())
@@ -35,7 +36,17 @@ let role=localStorage.getItem("role")
       }else{
         window.alert('Select month to delete  record')
       }}
-  
+      let count=0
+      let days=0
+      const addDay=()=>days++
+      const addAbsent =()=>{count++ 
+      
+      }
+      const initAbsent =() => count=0;
+      const componentRef = useRef();
+      const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+      });
     useEffect(()=>{
         
         async function fetchUserData(){   
@@ -60,12 +71,12 @@ let role=localStorage.getItem("role")
 return(
     <>
     <div className={styles.viewMargin}>
-    <div className={styles.backBar}>
-                                <h1>View Staff Attendance</h1>
-                                
-                            </div>
+   <div className={styles.empty}></div>
                             <div className="text-center">
-                   
+                            &nbsp;<button  onClick={handlePrint} className={styles.formButton} type="submit">
+                                        
+                                        Print
+                                       </button> &nbsp;
                    <select required  as="select" value={month} onChange={ e => setMonth(e.target.value) } >
                     <option value=''selected>Select Month</option>
                     <option value='1'>January</option>
@@ -86,30 +97,39 @@ return(
         <span>&#9888; </span> Delete Record
                             </button>:''} &nbsp;</div>
                             <br/>
-    
+                            <div ref={componentRef} >
+                            <div className={styles.formHeading}>
+                     <h3> Al Khidmat Fazal Noor Campus </h3>
+                     <h3> Employees Attendance</h3>
+                   
+                  </div><br/>
+<h5>&nbsp; &nbsp; {month ? "Month:"+month:''}&nbsp; &nbsp; </h5><br/>
                                    
-                                 { attendanceData[0]?<Table size='sm'>
+                                 { attendanceData[0]?<Table striped bordered hover size='sm'>
                                         <thead>
                                             <th>Employee No</th>
                                             <th>Name</th>
-                                            {attendanceData.map(j=>{return(<th>{j.date}</th>)})}
+                                            {attendanceData.map(j=>{return(<th onClick={addDay()}>{j.date}</th>)})}
+                                            <th>Absents</th>
                                         </thead>
                                         <tbody>
                                          { 
-                                             userData.map(item=>{return( <tr key={item._id}>
-                                             <td>{item.employeeNo}</td>
+                                             userData.map(item=>{return( <tr key={item._id} >
+                                               
+                                             <td onClick={initAbsent()}>{item.employeeNo}</td> 
                                              <td>{item.username}</td> 
                                              {attendanceData.map(i=>{return i.presentUsers.find(p=>p.employeeNo == item.employeeNo)?
                                              <td style={{color:'green'}}>P</td>
-                                             :<td style={{color:'red'}}>A</td>})}
-                                            </tr> ) })
+                                             :<td style={{color:'red'}} onClick={addAbsent()} >A</td>  })}
+                                             <td>{count}/{days}</td>
+                                            </tr > ) })
                                            
                                          } 
                                          
                                         </tbody>
                                     </Table>:
                                      
-                                    <Table size='sm'>
+                                    <Table striped bordered hover size='sm'>
                                         <thead>
                                             <th>Employee No</th>
                                             <th>Name</th>
@@ -132,7 +152,7 @@ return(
                                 
 
     </div>
-    
+    </div>
     </>
 )
 }

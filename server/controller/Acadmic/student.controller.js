@@ -1,6 +1,8 @@
 const StudentSchema =require('../../model/studentSchema');
 
 const Fee =require('../../model/feeSchema');
+const Class = require('../../model/SD_model/classSchema');
+const Section = require('../../model/SD_model/sectionSchema');
 
 
 
@@ -26,30 +28,28 @@ try{
            const person=req.body.createdBy
            
            const newStudent= await StudentSchema.create({studentName,Class,section,dob,address,parentName,cnic,phoneNo,parentRelation,email,description,fee})
-           StudentSchema.find({studentName:studentName,Class:Class,section:section,address:address,}, (error, data) => {
-            if (error) {
-                
-                throw error;
-            } else {
-           const title="Admission Fee"
-           const date= new Date
-           let studentNo=data[0].studentNo
-           console.log(data)
-
-           let status="Unpaid"
-           let type='fee'
-          const discount=0
-          const pending=0 
-           const newFee=  Fee.create({title,type,studentName,studentNo,amount,discount,pending,date,status,Class,section,person})
-                              
+          if(amount>0){
+            const title="Admission Fee"
+            const date= new Date
+            let studentNo=newStudent.studentNo
+            console.log(newStudent)
+ 
+            let status="Unpaid"
+            let type='fee'
+           const discount=0
+           const pending=0 
+            const newFee=  Fee.create({title,type,studentName,studentNo,amount,discount,pending,date,status,Class,section,person})
+              }
+          
+                            
            return res.status(200).json({
                 success: true,
                 token: "Student add successfully",
             })
         
                 
-            }
-        })
+            
+        
            
    }
     catch(error){
@@ -105,7 +105,52 @@ module.exports.students = async(req,res)=>
         })
         
        }else if(Class!='' && section!=''){
-        await StudentSchema.find({Class:Class,section:section}).sort({_id:-1}).limit(200)
+           if(search!=''){
+            await StudentSchema.find({Class:Class,section:section,studentName: { $regex: search,'$options' : 'i' }}).sort({_id:-1}).limit(200)
+            .then((data)=>{
+                
+                return res.send(data)})
+            .catch( (err)=>{
+                return res.status(200).json({success:true, token:'Error Loading Data'})
+            })
+           }
+           else{
+            await StudentSchema.find({Class:Class,section:section}).sort({_id:-1}).limit(200)
+            .then((data)=>{
+                
+                return res.send(data)})
+            .catch( (err)=>{
+                return res.status(200).json({success:true, token:'Error Loading Data'})
+            })
+           }
+       
+         
+       }
+       else if(Class!='' && section==''){
+           if(search !=''){
+            await StudentSchema.find({Class:Class,studentName: { $regex: search,'$options' : 'i' }}).sort({_id:-1}).limit(200)
+            .then((data)=>{
+                
+                return res.send(data)})
+            .catch( (err)=>{
+                return res.status(200).json({success:true, token:'Error Loading Data'})
+            })
+           }
+           else{
+            await StudentSchema.find({Class:Class}).sort({_id:-1}).limit(200)
+            .then((data)=>{
+                
+                return res.send(data)})
+            .catch( (err)=>{
+                return res.status(200).json({success:true, token:'Error Loading Data'})
+            })
+           }
+       
+         
+       }
+       else if(Class=='' && section!=''){
+       if(search !=''){
+        await StudentSchema.find({section:section,studentName: { $regex: search,'$options' : 'i' }}).sort({_id:-1}).limit(200)
         .then((data)=>{
             
             return res.send(data)})
@@ -114,8 +159,8 @@ module.exports.students = async(req,res)=>
         })
          
        }
-       else if(Class!='' && section==''){
-        await StudentSchema.find({Class:Class}).sort({_id:-1}).limit(200)
+       else{
+        await StudentSchema.find({section:section}).sort({_id:-1}).limit(200)
         .then((data)=>{
             
             return res.send(data)})
@@ -123,7 +168,10 @@ module.exports.students = async(req,res)=>
             return res.status(200).json({success:true, token:'Error Loading Data'})
         })
          
-       } else if(search==''){
+       }
+        
+       }  
+       else if(search==''){
         await StudentSchema.find({}).sort({_id:-1}).limit(200)
          .then((data)=>{
              
@@ -142,6 +190,21 @@ module.exports.students = async(req,res)=>
         })
     }
 }
+module.exports.deleteSection=async(req,res)=>{
+    
+    const section=req.query.section
+   await StudentSchema.deleteMany({section:section},(error, data) => {
+        if (error) {
+            
+            throw error;
+        } else {
+            
+            res.status(204).json(data);
+            
+        }
+    });
+}
+
 module.exports.studentsData = async(req,res)=>
 {        
        const Class =req.query.Class
@@ -222,5 +285,35 @@ module.exports.transfer=(req,res)=>
            
         }
     });
+}
+module.exports.totalStudents=(req,res)=>{
+    StudentSchema.countDocuments({}
+    ,function(error,data)  {
+        if (error) {
+            res.status(500).send({error: "Could not modify student info..."});
+        } else {           
+          
+       return  res.status(200).send(String(data))}
+    })
+}
+module.exports.totalClasses=(req,res)=>{
+    Class.find({}
+    ,function(error,data)  {
+        if (error) {
+            res.status(500).send({error: "Could not modify student info..."});
+        } else {           
+          
+       return  res.status(200).send(data)}
+    })
+}
+module.exports.totalSections=(req,res)=>{
+    Section.find({}
+    ,function(error,data)  {
+        if (error) {
+            res.status(500).send({error: "Could not modify student info..."});
+        } else {           
+          
+       return  res.status(200).send(data)}
+    })
 }
 

@@ -124,6 +124,9 @@ return (
       <th>Invoice Number</th>
       <th>Date</th>
       <th>Received By</th>
+      <th className={styles.noprint}></th>
+      <th className={styles.noprint}></th>
+      <th className={styles.noprint}></th>
           </tr>
   </thead>
   <tbody>
@@ -136,15 +139,15 @@ return (
                             <td>{item.date}</td>  
                             <td>{item.receivedBy}</td>
             
-                            <td>
+                            <td className={styles.noprint}>
                             {role=='superAdmin'?
                             <Link to={`/updateIncome/${item._id}` } ><Button className={styles.sideButton1}  >
                             Edit</Button></Link> :''}</td>
-                            <td>   {role=='superAdmin'? 
+                            <td className={styles.noprint}>   {role=='superAdmin'? 
                             <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
                              Delete
                             </Button>:''}</td> 
-                            <td> <Link to={`/incomeView/${item._id}` } ><Button className={styles.sideButton3}  >
+                            <td className={styles.noprint}> <Link to={`/incomeView/${item._id}` } ><Button className={styles.sideButton3}  >
                             View</Button></Link></td> 
                         </tr>  
                     })}  
