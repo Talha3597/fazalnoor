@@ -74,13 +74,13 @@ const SidebarWrap = styled.div`
 `;
 const PrivateScreen = ({history}) =>{
     const [sidebar, setSidebar] = useState(true);
-    
+    let view1='disable'
     const role=localStorage.getItem("role")
     const username=localStorage.getItem("username")
   const showSidebar = () => setSidebar(!sidebar);
  const [error, setError]= useState('')
  const [privateData, setPrivateData]= useState("")
-
+ const [isDisabled, setIsDisabled] = useState(false);
  
  
  useEffect(()=>{
@@ -118,6 +118,7 @@ const PrivateScreen = ({history}) =>{
        localStorage.removeItem("authToken")
        localStorage.removeItem("role")
        localStorage.removeItem("username")
+       setSidebar(false)
        document.location.href = '/login'
        }
  return error ?  (
@@ -127,11 +128,11 @@ const PrivateScreen = ({history}) =>{
          
         
          <IconContext.Provider value={{ color: '#fff' }}>
-        <Nav>
+        <Nav >
           <NavIcon to='#'>
             <FaIcons.FaBars onClick={showSidebar}  />
           </NavIcon>
-          <NavIconLogout  to='/sss' >
+          <NavIconLogout   to='#' >
             <FaIcons.FaSignOutAlt onClick={LogoutHandler} />
           </NavIconLogout> 
          
@@ -139,19 +140,19 @@ const PrivateScreen = ({history}) =>{
           
         </Nav>
        
-        <SidebarNav sidebar={sidebar}  >
-       
-          <SidebarWrap>
+        <SidebarNav sidebar={sidebar}   >
+      
+          <SidebarWrap  >
             <NavIcon to='#'>
-              <AiIcons.AiOutlineClose onClick={showSidebar} />
+              <AiIcons.AiOutlineClose  onClick={showSidebar} />
             </NavIcon>
             <h4 className={styles.heading}>  {username}</h4>
             { role=="admin" ?
            SidebarData1.map((item, index) => {
-            return <SubMenu item={item} key={index} />;
+            return <SubMenu  item={item} key={index} />;
           }): role=="superAdmin" ?
           SidebarData2.map((item, index) => {
-           return <SubMenu item={item} key={index} />;
+           return <SubMenu  item={item} key={index} />;
          }): role=="finance" ?
          SidebarData3.map((item, index) => {
           return <SubMenu item={item} key={index} />;
@@ -164,9 +165,9 @@ const PrivateScreen = ({history}) =>{
       }): role=="financeTeacher" ?
       SidebarData8.map((item, index) => {
        return <SubMenu item={item} key={index} />;
-     }): SidebarData4.map((item, index) => {
-          return <SubMenu item={item} key={index} />;
-        }) } 
+     }): role=="teacher" ? SidebarData4.map((item, index) => {
+          return <SubMenu disabled={isDisabled} item={item} key={index} />;
+        }) :''} 
            
           </SidebarWrap>
          
