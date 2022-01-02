@@ -8,21 +8,7 @@ import * as FaIcons from 'react-icons/fa';
 const HomePage =  ({history})=> {
   
 useEffect(()=>{
-  history.push('/home')
-  history.push('/home')
-  history.push('/home')
-  history.push('/home')
-  history.push('/home')
-  history.push('/home')
-  history.push('/home')
-  history.push('/home')
-  history.push('/home')
-  history.push('/home')
-  history.push('/home')
-  history.push('/home')
-  history.push('/home')
-  history.push('/home')
-  history.push('/home')
+  history.push('/blank')
   history.push('/home')
   
 },[])
