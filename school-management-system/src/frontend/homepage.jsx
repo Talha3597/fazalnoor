@@ -5,11 +5,23 @@ import { Navbar, Nav, Container, Image,Row,Col} from 'react-bootstrap'
 import { Link,useHistory} from 'react-router-dom'
 import * as FaIcons from 'react-icons/fa';
 
-const HomePage =  (history)=> {
+const HomePage =  ({history})=> {
   
-
-  
- 
+useEffect(()=>{
+  history.push('/home')
+  history.push('/home')
+  history.push('/home')
+  history.push('/home')
+  history.push('/home')
+  history.push('/home')
+  history.push('/home')
+  history.push('/home')
+  history.push('/home')
+  history.push('/home')
+  history.push('/home')
+  history.push('/home')
+  history.push('/home')
+},[])
       return (
         
         <>
