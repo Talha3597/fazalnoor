@@ -5,10 +5,11 @@ import { Navbar, Nav, Container, Image,Row,Col} from 'react-bootstrap'
 import { Link,useHistory} from 'react-router-dom'
 import * as FaIcons from 'react-icons/fa';
 
-const HomePage =  ({history})=> {
+const HomePage =  (history)=> {
   
-  // Hey, a popstate event happened!
 
+  
+ 
       return (
         
         <>
