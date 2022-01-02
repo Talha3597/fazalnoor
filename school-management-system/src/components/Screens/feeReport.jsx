@@ -95,20 +95,19 @@ return (
                     <select required  as="select" value={month} onChange={ e => setMonth(e.target.value) } >
                    
                     <option value='' defaultValue>Select Month</option>
-                    <option value=''>{year}</option>
-                    <option value='Jan'>January</option>
-                    <option value='Feb'>Februry</option>
-                    <option value='Mar'>March</option>
-                    <option value='Apr'>April</option>
-                    <option value='May'>May</option>
-                    <option value='Jun'>June</option>
-                    <option value='Jul'>July</option>
-                    <option value='Aug'>August</option>
-                    <option value='Sep'>September</option>
-                    <option value='Oct'>October</option>
-                    <option value='Nov'>November</option>
-                    <option value='Dec'>December</option>
-                  </select>&nbsp;<AiIcons.AiFillPlusCircle onClick={ addYear}/>&nbsp;
+                    <option value='1'>January</option>
+                    <option value='2'>Februry</option>
+                    <option value='3'>March</option>
+                    <option value='4'>April</option>
+                    <option value='5'>May</option>
+                    <option value='6'>June</option>
+                    <option value='7'>July</option>
+                    <option value='8'>August</option>
+                    <option value='9'>September</option>
+                    <option value='10'>October</option>
+                    <option value='11'>November</option>
+                    <option value='12'>December</option>
+                    </select>&nbsp;<AiIcons.AiFillPlusCircle onClick={ addYear}/>&nbsp;
                   <AiIcons.AiFillMinusCircle onClick={minusYear}/> &nbsp;
                  
                                 
@@ -146,7 +145,7 @@ return (
                         
                     })}  <tr><td>Total Piad(PKR)</td><td>{gdata[0]?
                       sum4=gdata.map(item=>item.pending).reduce((a,item)=>item+a):0}</td></tr>  
-    <tr><td>Total Pending(PKR)</td><td>{gdata[0]?
+    <tr><td>Total Amount(PKR)</td><td>{gdata[0]?
 sum4=gdata.map(item=>item.amount).reduce((a,item)=>item+a):0}</td></tr>  
                           
     

@@ -11,8 +11,8 @@ const Dashboard =  ()=> {
     let [userData,setUserData]=useState(0)
     let [classesData,setClassesData]=useState([])
     let [sectionData,setSectionData]=useState([])
-    const month=0
-    const year=0
+    const month=''
+    const year=''
 const expense=Number(expenseData.toString().split('+')[0])+Number(expenseData.toString().split('+')[1])
 
   

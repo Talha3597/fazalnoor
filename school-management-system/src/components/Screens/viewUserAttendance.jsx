@@ -2,7 +2,7 @@
 
 import React,{useState,useEffect,useRef} from 'react'
 import styles from '../../assets/style.module.css'
-import { Button,Form,Table} from 'react-bootstrap'
+import { Table} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -70,13 +70,10 @@ let role=localStorage.getItem("role")
   
 return(
     <>
-    <div className={styles.viewMargin}>
+    <div className={styles.margLeftRowTable}>
    <div className={styles.empty}></div>
-                            <div className="text-center">
-                            &nbsp;<button  onClick={handlePrint} className={styles.formButton} type="submit">
-                                        
-                                        Print
-                                       </button> &nbsp;
+<div className="text-center">{role=='superAdmin'&& <button className={styles.formButton} onClick={() => deleteRecord()}><span>&#9888;</span> Delete Record</button>}
+&nbsp;<button  onClick={handlePrint} className={styles.formButton} type="submit">Print</button> &nbsp;
                    <select required  as="select" value={month} onChange={ e => setMonth(e.target.value) } >
                     <option value=''selected>Select Month</option>
                     <option value='1'>January</option>
@@ -92,10 +89,7 @@ return(
                     <option value='11'>November</option>
                     <option value='12'>December</option>
                   </select>&nbsp;&nbsp;<AiIcons.AiFillPlusCircle onClick={ addYear}/>&nbsp;
-                  <AiIcons.AiFillMinusCircle onClick={minusYear}/> &nbsp; {year}&nbsp;
-                            {role=='superAdmin'? <button className={styles.formButton} onClick={() => deleteRecord()}>
-        <span>&#9888; </span> Delete Record
-                            </button>:''} &nbsp;</div>
+                  <AiIcons.AiFillMinusCircle onClick={minusYear}/> &nbsp; {year} &nbsp;</div>
                             <br/>
                             <div ref={componentRef} >
                             <div className={styles.formHeading}>
@@ -105,7 +99,9 @@ return(
                   </div><br/>
 <h5>&nbsp; &nbsp; {month ? "Month:"+month:''}&nbsp; &nbsp; </h5><br/>
                                    
-                                 { attendanceData[0]?<Table striped bordered hover size='sm'>
+                                 { attendanceData[0]?
+                                  <div className='table-responsive'>
+                                 <Table striped bordered hover size='sm'>
                                         <thead>
                                             <th>Employee No</th>
                                             <th>Name</th>
@@ -127,8 +123,8 @@ return(
                                          } 
                                          
                                         </tbody>
-                                    </Table>:
-                                     
+                                    </Table></div>:
+                                      <div className='table-responsive'>
                                     <Table striped bordered hover size='sm'>
                                         <thead>
                                             <th>Employee No</th>
@@ -147,7 +143,8 @@ return(
                                          } 
                                          
                                         </tbody>
-                                    </Table>}
+
+                                    </Table></div>}
                                   
                                 
 

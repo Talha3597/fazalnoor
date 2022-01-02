@@ -43,7 +43,7 @@ const deleteRecord = async()=>{
   if(flag)
   { 
     await axios.delete('/api/deleteIncome', { params: {month,year} })
- 
+    fetchData()
   }
 }else{
   window.alert('Select month to delete Paid record')
@@ -52,15 +52,15 @@ const deleteRecord = async()=>{
   
  }
 
-
+ async function fetchData(){   
+  await axios.get('/api/incomes',{params:{month,year}})
+  .then(res=>{
+      setData(res.data)
+      
+  })
+ }
 useEffect(()=>{
-    async function fetchData(){   
-        await axios.get('/api/incomes',{params:{month,year}})
-        .then(res=>{
-            setData(res.data)
-            
-        })
-       }
+    
        
  fetchData()
  
@@ -78,29 +78,29 @@ return (
         <div className={styles.margLeftRowTable }>
       <br/>
        <div className="text-center">
-             &nbsp;
-             <button className={styles.formButton} onClick={() => window.location="/addIncome"}>
+       <Link to={`/addIncome` } >
+             <button className={styles.formButton} >
                     
                     &nbsp;   Add Income   &nbsp;
-                    </button>  &nbsp;
+                    </button> </Link> &nbsp;
                             {role=='superAdmin'? <button className={styles.formButton} onClick={() => deleteRecord()}>
         <span>&#9888; </span> Delete Record
                             </button>:''} &nbsp;
-                    <select required  as="select" value={month} onChange={ e => setMonth(e.target.value) } >
+                    <select  as="select" value={month} onChange={ e => setMonth(e.target.value) } >
                     <option value=''>Select Month</option>
-                    <option value='Jan'>January</option>
-                    <option value='Feb'>Februry</option>
-                    <option value='Mar'>March</option>
-                    <option value='Apr'>April</option>
-                    <option value='May'>May</option>
-                    <option value='Jun'>June</option>
-                    <option value='Jul'>July</option>
-                    <option value='Aug'>August</option>
-                    <option value='Sep'>September</option>
-                    <option value='Oct'>October</option>
-                    <option value='Nov'>November</option>
-                    <option value='Dec'>December</option>
-                  </select>&nbsp;&nbsp;<AiIcons.AiFillPlusCircle onClick={ addYear}/>&nbsp;
+                    <option value='1'>January</option>
+                    <option value='2'>Februry</option>
+                    <option value='3'>March</option>
+                    <option value='4'>April</option>
+                    <option value='5'>May</option>
+                    <option value='6'>June</option>
+                    <option value='7'>July</option>
+                    <option value='8'>August</option>
+                    <option value='9'>September</option>
+                    <option value='10'>October</option>
+                    <option value='11'>November</option>
+                    <option value='12'>December</option>
+                   </select>&nbsp;&nbsp;<AiIcons.AiFillPlusCircle onClick={ addYear}/>&nbsp;
                   <AiIcons.AiFillMinusCircle onClick={minusYear}/> &nbsp;<button  onClick={handlePrint} className={styles.formButton} type="submit">
                                         
                                         Print
@@ -121,7 +121,7 @@ return (
       <th>Title</th>
       <th> Category</th>
       <th>Amount</th>
-      <th>Invoice Number</th>
+      <th>Invoice #</th>
       <th>Date</th>
       <th>Received By</th>
       <th className={styles.noprint}></th>
@@ -136,7 +136,7 @@ return (
                             <td>{item.incomeCategory}</td>  
                             <td>{item.amount}</td>  
                             <td>{item.invoiceNo}</td>  
-                            <td>{item.date}</td>  
+                            <td className={styles.tableDateSize}>{item.date}</td>  
                             <td>{item.receivedBy}</td>
             
                             <td className={styles.noprint}>

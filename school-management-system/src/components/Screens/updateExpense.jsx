@@ -12,6 +12,8 @@ const UpdateExpense =  ({match,history})=> {
     
     const createdBy=localStorage.getItem("username")
     const [note, setNote]=useState("")
+    const [message, setMessage]=useState("")
+    
    useEffect(()=>{
     async function fetchData(){   
         await axios.get('/api/Expense' ,{ params: {id} })
@@ -36,8 +38,12 @@ const UpdateExpense =  ({match,history})=> {
        
           
         await axios.put(`/api/updateExpense/${id}`,{id,title,ExpenseCategory,amount,note,createdBy})
-        history.push('/expense')
-        
+        setTimeout(()=>{
+            setMessage("")
+            history.push(`/updateExpense/${id}`)
+            
+            },4000)
+           return setMessage("Expense Updated")
     }
 
     return (
@@ -53,8 +59,8 @@ const UpdateExpense =  ({match,history})=> {
                  
                  <div className={styles.formStyle}>
                      <div className={styles.Border}>
-                         <br/>
-                          
+    {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+                         
                          <form className={styles.formMargin} onSubmit={onSubmit} enctype="multi-part/form-data">
                          <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Title</Form.Label>

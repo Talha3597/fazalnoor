@@ -12,12 +12,19 @@ function ManageGrades() {
     const { id } = useParams()
     const [ student, setStudent ] = useState({})
     const [ title, setTitle ] = useState('')
-    const [ totalMarks, setTotalMarks ] = useState()
-    const [ obtainedMarks, setObtainedMarks ] = useState()
+    const [ totalMarks, setTotalMarks ] = useState(0)
+    const [ obtainedMarks, setObtainedMarks ] = useState(0)
     const [ gradesTitles, setGradesTitles ] = useState([])
     const [ examData, setExamData] = useState([])
     const [ Class, setClass ] = useState('')
-    const [ section, setSection ] = useState(' ')
+    const [ section, setSection ] = useState('')
+    const [ message, setMessage ] = useState('')
+    const spaceClean=()=>{
+        setTitle('')
+        setTotalMarks(0)
+        setObtainedMarks(0)
+        setMessage('')    
+}
     
     useEffect(() => {
         axios.get('/api/singleStudent/' + id)
@@ -71,7 +78,7 @@ function ManageGrades() {
 
         var diff = totalMarks - obtainedMarks
 
-        if(title !== '' && totalMarks != 0 && obtainedMarks != 0 && flag === false && diff >= 0 || totalMarks >= 100){
+        if(title !== '' && totalMarks != 0 && obtainedMarks >= 0 && flag === false && diff >= 0 ){
 
 
 
@@ -86,11 +93,12 @@ function ManageGrades() {
                 section: student.section,
             }
             
-            console.log(section)
             axios.post('/api/addStudentGrade', section)
                 .then(res => {
-                    console.log(res.data)
-                    window.location = '/manageGrades/' + id
+                    setTimeout(() => {
+                        spaceClean()
+                     }, 4000);
+                     return setMessage("Marks Added"); 
                 })
                 .catch(err => console.log('error : ' + err))
         }else{
@@ -103,7 +111,7 @@ function ManageGrades() {
                 $('#totalmarks').fadeIn(100)
             }
 
-            if(obtainedMarks === 0){
+            if(obtainedMarks < 0){
                 $('#obtainedmarks').fadeIn(100)
             }
 
@@ -124,31 +132,8 @@ function ManageGrades() {
     return (
         <>
 
-        <Navbar className={styles.respNav} expand="lg">
-            
-            <Navbar.Toggle aria-controls="basic-navbar-nav" style={{color: '#ffffff'}}/>
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                    <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                    <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                    <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                    <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                
-                </Nav>
-                
-            </Navbar.Collapse>
-        </Navbar>
-
         <div className={styles.overflow}>
-            <div className={styles.background}>
-                <div className={styles.topSet}>
-                    <Link to='#' className={styles.navLink2}>Classes</Link>
-                    <Link to='#' className={styles.navLink2}>Classes</Link>
-                    <Link to='#' className={styles.navLink2}>Classes</Link>
-                    <Link to='#' className={styles.navLink2}>Classes</Link>
-                </div>
-            </div>
-
+           
             <div className={styles.margLeftRow}>
                 <Row>
                     <Col md={12}>
@@ -175,7 +160,8 @@ function ManageGrades() {
                             <Col>
                                 <div className={styles.formStyle}>
                                     <div className={styles.Border}>
-                                        <br/>
+                                    {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+
                                         <form name="classForm" className={styles.formMargin} onSubmit={onSubmit} noValidate>
 
                                         <Form.Group controlId="formBasicstudentClass">

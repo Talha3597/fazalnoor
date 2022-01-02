@@ -10,44 +10,53 @@ function UpdateSection(){
 
     const { id_1, id_2 } = useParams()
     const [ title, setTitle ] = useState('')
+    const [ message, setMessage ] = useState('')
     const [ description, setDescription ] = useState('')
-    const [ teacher, setTeacher ] = useState('')
     const [ sectionClass, setSectionClass ] = useState({})
     const [ stclassData, setClassTitle ] = useState([])
     const [ currentClass, setClass ] = useState('')
-
-    useEffect(() => {
+    const spaceClean=()=>{
+        setTitle('')
+        setDescription('')
+        setMessage('')
+    }
+    async function fetchClassData(){ 
         axios.get('/api/singleClass/' + id_2)
             .then((res) => {
-                console.log(res.data)
+              
                 setSectionClass(res.data)
                 setClass(res.data.title)
             })
             .catch(err => {
 				console.log(err)
 			})
-
+        }
+        async function fetchSectionData(){ 
             axios.get('/api/singleSection/' + id_1)
             .then((res) => {
-                console.log(res.data)
+               
                 setTitle(res.data.title)
                 setDescription(res.data.description)
-                setTeacher(res.data.teacher)
+               
             })
             .catch(err => {
 				console.log(err)
 			})
-
+        }
+    useEffect(() => {
+    
+      
             axios.get('/api/getClasses')
             .then((res) => {
-                console.log(res.data)
+               
                 setClassTitle(res.data)
                 
             })
             .catch(err => {
 				console.log(err)
 			})
-
+fetchClassData()
+fetchSectionData()
             
     }, [])
 
@@ -67,14 +76,17 @@ function UpdateSection(){
             const section = {
                 title,
                 description,
-                teacher,
                 currentClass
             }
 
             axios.post('/api/updateSection/' + id_1 , section)
                 .then(res => {
-                    console.log(res.data)
-                    window.location = `/classData`
+                    setTimeout(() => {
+                        spaceClean()
+                        fetchClassData()
+                        fetchSectionData()
+                     }, 4000);
+                     return setMessage("Section Updated");
                 })
                 .catch(err => console.log('error : ' + err))
         }else{
@@ -87,10 +99,7 @@ function UpdateSection(){
                 $('#description').fadeIn(100)
             }
 
-            if(teacher === ''){
-                $('#teacher').fadeIn(100)
-            }
-            
+          
             
         }
     }
@@ -115,12 +124,13 @@ function UpdateSection(){
                         
                         <div className={styles.formStyle}>
                             <div className={styles.Border}>
-                                <br/>
+                            {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+
                                 <form className={styles.formMargin} onSubmit={onSubmit}>
 
                                     <Form.Group>
                                         <Form.Label>Title</Form.Label>
-                                        <Form.Control className={styles.formField} type="text" placeholder="Enter Title" value={title} onChange={ e => setTitle(e.target.value) }/>
+                                        <Form.Control className={styles.formField} type="text" placeholder="Enter Title" value={title} onChange={ e => setTitle(e.target.value) } required/>
                                         <Form.Text id="title" className={styles.authtextF1} style={{display: 'none'}}>
                                             Please provide title for Section.
                                         </Form.Text>
@@ -135,13 +145,7 @@ function UpdateSection(){
                                     </Form.Group>
 
 
-                                    <Form.Group>
-                                        <Form.Label>Teacher</Form.Label>
-                                        <Form.Control className={styles.formField} type="text" placeholder="Teacher" value={teacher} onChange={ e => setTeacher(e.target.value) } />
-                                        <Form.Text id="teacher" className={styles.authtextF1} style={{display: 'none'}}>
-                                            Please provide teacher for Section.
-                                        </Form.Text>
-                                    </Form.Group>
+
 
                                     <Form.Group controlId="formBasicstudentClass">
                                         <Form.Label>Class</Form.Label>

@@ -1,5 +1,6 @@
 const Income =require('../../model/incomeSchema');
 const Fee =require('../../model/feeSchema');
+const FeeDeposite = require('../../model/feeDepositeSchema');
 
 
 module.exports.addIncome=async (req,res)=>{     
@@ -9,7 +10,7 @@ try{
            const amount=req.body.amount
            const note=req.body.note
            const receivedBy=req.body.receivedBy
-           const date=new Date()
+           const date=req.body.date
            
            const newIncome=  Income.create({title,incomeCategory,amount,date,note,receivedBy})
            
@@ -48,7 +49,7 @@ module.exports.incomes = async(req,res)=>
     const month=req.query.month
     const year=req.query.year
     
-       await Income.find({date: { $regex: month+'.*'+year }}).sort({_id:-1}).limit(200)
+       await Income.find({date: { $regex: month+'-'+year }}).sort({_id:-1}).limit(200)
         .then((data)=>{
             
             return res.send(data)})
@@ -76,7 +77,7 @@ module.exports.deleteIncomeRecord=async(req,res)=>{
     const month=req.query.month
     const year=req.query.year
     
-   await Income.deleteMany({date: { $regex: month+'.*'+year }},(error, data) => {
+   await Income.deleteMany({date: { $regex: month+'-'+year }},(error, data) => {
         if (error) {
             
             throw error;
@@ -102,12 +103,12 @@ module.exports.updateIncome=(req,res)=>
     }); 
 }
 module.exports.incomeDashboard=async(req,res)=>{
-    let type='deposite'
+    
     const month=req.query.month
     const year=req.query.year
     
-    let data =await Income.find({date: { $regex: month+'.*'+year }})
-    let fdata=await Fee.find({date: { $regex: month+'.*'+year },type:type}) 
+    let data =await Income.find({date: { $regex: month+'-'+year }})
+    let fdata=await FeeDeposite.find({date: { $regex: month+'-'+year },}) 
     if(data[0] && fdata[0]){
         let sum =data.map(item=>item.amount).reduce((a,item)=>item+a)
         let sum3=fdata.map(item=>item.pending).reduce((a,item)=>item+a)
@@ -137,7 +138,7 @@ module.exports.incomeDashboard=async(req,res)=>{
         const month=req.query.month
         const year=req.query.year
     
-       await Income.aggregate([{ $match: {date: { $regex: month+'.*'+year }} },
+       await Income.aggregate([{ $match: {date: { $regex: month+'-'+year }} },
         {$group: {_id:"$title",amount:{"$sum":"$amount"}} }
     ])
         .then((data)=>{
@@ -153,7 +154,7 @@ module.exports.incomeDashboard=async(req,res)=>{
         const month=req.query.month
         const year=req.query.year
     
-       await Income.aggregate([{ $match: {date: { $regex: month+'.*'+year }} },
+       await Income.aggregate([{ $match: {date: { $regex: month+'-'+year }} },
         {$group: {_id:"$receivedBy",amount:{"$sum":"$amount"}} }
     ])
         .then((data)=>{

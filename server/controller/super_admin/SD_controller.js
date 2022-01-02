@@ -243,7 +243,7 @@ module.exports.classData = async (req, res) => {
             })
 
             students.forEach(student => {
-                if(classIns.title === student.studentClass){
+                if(classIns.title === student.Class){
                     studentCount++
                 }
             })
@@ -647,23 +647,20 @@ module.exports.addStudentGrade = async (req, res) => {
 }
 
 module.exports.getStudentGrades = async (req, res) => {
-    try{
-        
+   
         await gradeSchema.find({ student_id: req.params.id })
-            .then((data) => {
+            if(data) {
                 return res.json(data)
-            })
-            .catch((err) => {
+            }
+            else {
                 return res.json({
-                    message: "section add unsuccessful",
+                    message: "Grades error",
                     err,
                     status: 400,
                 })
-            })
+            }
     
-    }catch(err) { 
-        return res.json({message: 'server crashed', err}) 
-    }
+   
 }
 
 
@@ -740,7 +737,7 @@ module.exports.getStudentGrades = async (req, res) => {
             })
         
 
-        return res.json(titles)
+       
     
     }catch(err) { 
         return res.json({message: 'server crashed', err}) 
@@ -749,7 +746,7 @@ module.exports.getStudentGrades = async (req, res) => {
 
 module.exports.singleStudentByRoll = async (req, res) => {
     try{
-        
+      
         await studentSchema.findOne({studentNo: req.params.id})
             .then((data) => {
                 return res.json(data)
@@ -885,6 +882,7 @@ module.exports.addLecture = async (req, res) => {
         const lecture = new timetableSchema()
 
         lecture.title = req.body.title
+        lecture.section = req.body.section
         lecture.day = req.body.day
         lecture.teacherName = req.body.teacherName
         lecture.lecStart = req.body.lecStart
@@ -915,7 +913,7 @@ module.exports.addLecture = async (req, res) => {
 module.exports.getTimetable = async (req, res) => {
     try{
         
-        await timetableSchema.find()
+        await timetableSchema.find({section:req.query.section})
             .then((data) => {
                 return res.json(data)
             })
@@ -939,6 +937,7 @@ module.exports.updateTimetable = async (req, res) => {
         timetableSchema.findById(req.params.id)
             .then(timetable => {
                 timetable.title = req.body.title
+                timetable.section = req.body.section
                 timetable.day = req.body.day
                 timetable.teacherName = req.body.teacherName
                 timetable.lecStart = req.body.lecStart
@@ -999,7 +998,7 @@ module.exports.singleTimetable = async (req, res) => {
         
         await timetableSchema.findOne({_id: req.params.id})
             .then((data) => {
-                console.log(data)
+                
                 return res.json(data)
             })
             .catch((err) => {

@@ -80,34 +80,35 @@ return (
                  </div>
                 
                  <div className={styles.formStyle}>
-                     <div className={styles.Border}>
+                     
                          <br/>
                          <div className="text-center">
                    
-                         <select required  as="select" value={month} onChange={ e => setMonth(e.target.value) } >
+                         <select   as="select" value={month} onChange={ e => setMonth(e.target.value) } >
                     <option value=''defaultValue>Select Month</option>
-                    <option value='Jan'>January</option>
-                    <option value='Feb'>Februry</option>
-                    <option value='Mar'>March</option>
-                    <option value='Apr'>April</option>
-                    <option value='May'>May</option>
-                    <option value='Jun'>June</option>
-                    <option value='Jul'>July</option>
-                    <option value='Aug'>August</option>
-                    <option value='Sep'>September</option>
-                    <option value='Oct'>October</option>
-                    <option value='Nov'>November</option>
-                    <option value='Dec'>December</option>
+                    <option value='1'>January</option>
+                    <option value='2'>Februry</option>
+                    <option value='3'>March</option>
+                    <option value='4'>April</option>
+                    <option value='5'>May</option>
+                    <option value='6'>June</option>
+                    <option value='7'>July</option>
+                    <option value='8'>August</option>
+                    <option value='9'>September</option>
+                    <option value='10'>October</option>
+                    <option value='11'>November</option>
+                    <option value='12'>December</option>
+                   
                   </select>&nbsp;
 &nbsp;<AiIcons.AiFillPlusCircle onClick={ addYear}/>&nbsp;
                   <AiIcons.AiFillMinusCircle onClick={minusYear}/> &nbsp;
-<select required  as="select" value={status} onChange={ e => setStatus(e.target.value) } >
+<select   as="select" value={status} onChange={ e => setStatus(e.target.value) } >
                     <option value=''defaultValue>Select status</option>
                     <option value='Paid'>Paid</option>
                     <option value='Unpaid'>Unpaid</option>
                    
                   </select>&nbsp;
-                  <select required  as="select" value={Class} onChange={ e => setClass(e.target.value) } >
+                  <select   as="select" value={Class} onChange={ e => setClass(e.target.value) } >
                                           <option value='' defaultValue>Select Class</option>
                                             {   
                                                  classData.map((classIns,idx) => {
@@ -121,7 +122,7 @@ return (
                                         </select>
                                    
                                         &nbsp;
-                                        <select as="select" value={section} onChange={ e => setSection(e.target.value) } required >
+                                        <select as="select" value={section} onChange={ e => setSection(e.target.value) }  >
                                         <option value='' defaultValue>Select Section</option>
                                             {
                                                  sectionData.map((section,idx) => {
@@ -140,19 +141,35 @@ return (
                                         <h5> {Class ? "Class:"+Class:''}&nbsp;{section ? "Section:"+section:''}&nbsp;{month ? "Month:"+month:''}&nbsp;{"Year:"+year}</h5>         
 </div>
 <br/>
-                         <form className={styles.formMargin} >
-                             
-                              <div className={styles.box}><h3>Amount:{data[1]}</h3></div> 
-                              <div className={styles.box}><h3>Paid:{data[0]}</h3></div> 
-                              <div className={styles.box}><h3>Pending:{data[1]-data[0]}</h3></div>     
-                              <div className={styles.box}><h3>No of Paid:{data[2]}</h3></div>     
-                               <div className={styles.box}><h3>No of Unpaid:{data[3]}</h3></div>     
+                         <form className={styles.margLeftRowTable} >
+                         <div className={styles.card}>
+                                <h2>Amount</h2>
+                                <h3>{data[1]}</h3> 
+                                </div>
+                                <div className={styles.card}>
+                                <h2>Paid</h2>
+                                <h3>{data[0]}</h3> 
+                                </div>
+                                
+                                <div className={styles.card}>
+                                <h2>Pending</h2>
+                                <h3>{data[1]-data[0]}</h3> 
+                                </div>
+                                <div className={styles.card}>
+                                <h2># of Paid</h2>
+                                <h3>{data[2]}</h3> 
+                                </div>
+                                <div className={styles.card}>
+                                <h2># of UnPaid</h2>
+                                <h3>{data[3]}</h3> 
+                                </div>
+                        
                               
                          </form>
                          <br/>
                                    
                                 
-                            </div>
+                           
                             
                         </div>
                         </div>

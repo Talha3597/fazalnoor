@@ -6,31 +6,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios'
 
 
-const ClassVar = props => (
-      
-    <tbody>
-        <tr>
-            <td>{props.classIns.title}</td>
-            <td>{props.classIns.totalMarks}</td>
-            <td>{props.classIns.obtainedMarks}</td>
-            <td>{props.classIns.percentage}</td>
-            <td>{props.classIns.testGrade}</td>
-            <td><Link to={'/updateGrade/' + props.classIns._id}><span className={[styles['Edel'], 'fas fa-pencil-alt'].join(' ')}></span></Link>
-            <button onClick={() =>  {let flag= window.confirm("Delete  record!")
-  if(flag)
-  {
-                   axios.delete('/api/deleteGrade/'+props.classIns._id)
-                   .then(response => { 
-                       console.log(response.data)
-                       window.location = '/viewGrades'
-                    });}
-            }} className={styles.Edel2}><span className={[styles['Edel3'], 'fas fa-trash'].join(' ')}></span></button></td>
-        </tr>
 
-    </tbody>
-        
-    
-)
 
 function ViewGrades() {
 
@@ -43,7 +19,31 @@ function ViewGrades() {
           return <ClassVar classIns={currentclass} key={currentclass._id}/>;
         })
     }
-
+    const ClassVar = props => (
+      
+        <tbody>
+            <tr>
+                <td>{props.classIns.title}</td>
+                <td>{props.classIns.totalMarks}</td>
+                <td>{props.classIns.obtainedMarks}</td>
+                <td>{props.classIns.percentage}</td>
+                <td>{props.classIns.testGrade}</td>
+                <td><Link to={'/updateGrade/' + props.classIns._id}><span className={[styles['Edel'], 'fas fa-pencil-alt'].join(' ')}></span></Link>
+                <button onClick={() =>  {let flag= window.confirm("Delete  record!")
+      if(flag)
+      {
+                       axios.delete('/api/deleteGrade/'+props.classIns._id)
+                       .then(response => { 
+                        const del = studentGrades.filter(studentGrades => props.classIns._id !== studentGrades._id)
+                        setStudentGrades(del)
+                        });}
+                }} className={styles.Edel2}><span className={[styles['Edel3'], 'fas fa-trash'].join(' ')}></span></button></td>
+            </tr>
+    
+        </tbody>
+            
+        
+    )
     const onSubmit = (e) => {
         e.preventDefault()
 
@@ -69,30 +69,10 @@ function ViewGrades() {
     return (
         <>
 
-        <Navbar className={styles.respNav} expand="lg">
-            
-            <Navbar.Toggle aria-controls="basic-navbar-nav" style={{color: '#ffffff'}}/>
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                    <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                    <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                    <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                    <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                
-                </Nav>
-                
-            </Navbar.Collapse>
-        </Navbar>
+ 
 
         <div className={styles.overflow}>
-            <div className={styles.background}>
-                <div className={styles.topSet}>
-                    <Link to='#' className={styles.navLink2}>Classes</Link>
-                    <Link to='#' className={styles.navLink2}>Classes</Link>
-                    <Link to='#' className={styles.navLink2}>Classes</Link>
-                    <Link to='#' className={styles.navLink2}>Classes</Link>
-                </div>
-            </div>
+           
 
             <div className={styles.margLeftRow}>
                 <Row>

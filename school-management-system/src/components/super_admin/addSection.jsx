@@ -11,10 +11,15 @@ function AddSection(){
 
     const { id } = useParams()
     const [ title, setTitle ] = useState('')
+    const [ message, setMessage ] = useState('')
     const [ description, setDescription ] = useState('')
-    const [ teacher, setTeacher ] = useState('')
+  
     const [ sectionClass, setClass ] = useState({})
-
+      const spaceClean=()=>{
+          setTitle('')
+          setDescription('')
+          setMessage('')
+      }
     useEffect(() => {
         axios.get('/api/singleClass/' + id)
             .then((res) => {
@@ -45,15 +50,17 @@ function AddSection(){
             const section = {
                 title,
                 description,
-                teacher,
                 class_id: id,
                 classTitle: sectionClass.title
             }
 
             axios.post('/api/addSection', section)
                 .then(res => {
-                    console.log(res.data)
-                    window.location = '/classData'
+                    setTimeout(() => {
+                        spaceClean()
+                     }, 4000);
+                     return setMessage("Section Added");
+
                 })
                 .catch(err => console.log('error : ' + err))
         }else{
@@ -66,9 +73,7 @@ function AddSection(){
                 $('#description').fadeIn(100)
             }
 
-            if(teacher === ''){
-                $('#teacher').fadeIn(100)
-            }
+          
             
             
         }
@@ -93,7 +98,8 @@ function AddSection(){
                         
                         <div className={styles.formStyle}>
                             <div className={styles.Border}>
-                                <br/>
+                            {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+
                                 <form className={styles.formMargin} onSubmit={onSubmit}>
 
                                     <Form.Group>
@@ -113,13 +119,7 @@ function AddSection(){
                                     </Form.Group>
 
 
-                                    <Form.Group>
-                                        <Form.Label>Teacher</Form.Label>
-                                        <Form.Control className={styles.formField} type="text" placeholder="Teacher" value={teacher} onChange={ e => setTeacher(e.target.value) } />
-                                        <Form.Text id="teacher" className={styles.authtextF1} style={{display: 'none'}}>
-                                            Please provide teacher for Section.
-                                        </Form.Text>
-                                    </Form.Group>
+                                  
 
                                     <Button className={styles.formButton} type="submit">
                                         

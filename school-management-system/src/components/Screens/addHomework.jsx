@@ -16,11 +16,8 @@ const AddHomework =  ({history})=> {
     const [ Class, setClass ] = useState('')
     const [ section, setSection ] = useState('')
    const [ status, setStatus ] = useState('')
-   // const [ attachment, setAttachment ] = useState('')
-    
-   // const [ group, setGroup ] = useState('')
- //  const [ photo, setPhoto ] = useState('')
-   // const [ date, setDate ] = useState('')
+   const [message, setMessage]=useState("")
+   
    
   
    useEffect(() => {
@@ -60,10 +57,13 @@ const AddHomework =  ({history})=> {
           
              
                const{data} =await axios.post('/api/addHomework',{notice,url,Class,section,status,title})
-             alert(data.token) 
-            history.push('/homeworks')
-            history.push('/addHomework')
-
+            setTimeout(()=>{
+                setMessage("")
+                history.push('/homeworks')
+                history.push('/addHomework')
+                
+                },4000)
+               return setMessage(data.token)
     }
 
     return (
@@ -77,10 +77,10 @@ const AddHomework =  ({history})=> {
                             <h1>Add Homework</h1>
                         </div>
                         
-                        <div className={styles.formStyle}>
+                        <div className={styles.formStyle}>           
                             <div className={styles.Border}>
-                                <br/>
-                                 
+                            {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+                         <br/>
                                 <form className={styles.formMargin} onSubmit={onSubmit}>
                                 {error && <span className='error-message'>{error}</span>}             
                                  

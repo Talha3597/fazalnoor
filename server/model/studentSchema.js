@@ -20,12 +20,7 @@ const StudentSchema=mongoose.Schema({
         
     },
    
-    rollNo:{
-        type:Number,
-      //  unique:true,
-        trim:true,
-       
-    },
+  
     Class:{
         type:String,
         //required:true,
@@ -45,10 +40,7 @@ const StudentSchema=mongoose.Schema({
         type:String,
         trim:true,
     },
-    photo:{
-        type:String,
-        trim:true,
-    },
+   
     parentName:{
         type:String,
         required:true,
@@ -80,11 +72,7 @@ const StudentSchema=mongoose.Schema({
         trim:true,
         
     },
-    group:{
-        type:String,
-        trim:true,
-        
-    },
+   
 },
 { timestamps: true });
 StudentSchema.plugin(autoIncrement.plugin, { model: 'Student', field: 'studentNo',startAt: 1,  });

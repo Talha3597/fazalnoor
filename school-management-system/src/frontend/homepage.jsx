@@ -36,7 +36,7 @@ const HomePage =  ({history})=> {
              
                 <Link to='/login'>
                  
-                  <FaIcons.FaSignInAlt/>  Sign In
+                  <FaIcons.FaSignInAlt/> Sign In
                   
                 </Link>
              
@@ -98,7 +98,7 @@ const HomePage =  ({history})=> {
 </div>
 
 <div className='box4'> 
-    <iframe class="map" width='400' height='200' frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3403.1513742329166!2d74.33696261462947!3d31.465021857022304!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39190747b150cbd3%3A0xf8e73d43ea4f50a1!2sAl%20Khidmat%20School!5e0!3m2!1sen!2s!4v1628706655322!5m2!1sen!2s"></iframe>
+    <iframe   height='200' frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3403.1513742329166!2d74.33696261462947!3d31.465021857022304!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39190747b150cbd3%3A0xf8e73d43ea4f50a1!2sAl%20Khidmat%20School!5e0!3m2!1sen!2s!4v1628706655322!5m2!1sen!2s"></iframe>
     </div>
     
     </div>

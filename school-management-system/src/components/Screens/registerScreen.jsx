@@ -6,15 +6,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
 
 const RegisterScreen =({history})=>{
-    const [username, setUserName]=useState("")
-    const [email, setEmail]=useState("")
-    const [password, setPassword]=useState("")
-    const [cPassword, setCpassword]=useState("")
-    const [error, setError]=useState("")
+    const [username, setUserName]=useState('')
+    const [email, setEmail]=useState('')
+    const [password, setPassword]=useState('')
+    const [error, setError]=useState('')
    const [ address, setAddress ] = useState('')
     const [ phoneNo, setPhoneNo ] = useState('')
-    const [ invoiceNo, setInvoiceNo ] = useState('')
-    const [salary, setSalary ] = useState('')
+    const [salary, setSalary ] = useState(0)
     const [ cnic, setCnic ] = useState('')
     const [ description, setDescription ] = useState('')
     const [ role, setRole ] = useState('')
@@ -22,9 +20,23 @@ const RegisterScreen =({history})=>{
     const [ section, setSection ] = useState('')
     const [ classData, setClassData ] = useState([])
     const [ sectionData, setSectionData ] = useState([])
-    
-    const [ paidAmount, setPaidAmount ] = useState('')
-    
+    const [message, setMessage]=useState('')
+    const freeSpace =()=>{
+        setAddress('')
+        setClass('')
+        setCnic('')
+        setDescription('')
+        setEmail('')
+        setMessage('')
+        setPassword('')
+        setPhoneNo('')
+        setRole('')
+        setSalary('')
+        setSection('')
+        setUserName('')
+        
+        
+    }
    useEffect(async()=>{
     await axios.get('/api/getClasses')
     .then((res) => {
@@ -50,7 +62,7 @@ const RegisterScreen =({history})=>{
    )
    
 
-    const onSubmit=async(e)=>
+const onSubmit=async(e)=>
             {
                 e.preventDefault()
                 const config ={
@@ -58,37 +70,35 @@ const RegisterScreen =({history})=>{
                          "Content-Type":  "application/json"
                      }
                 }
-                if (password !== cPassword ) {
-                    setPassword("");
-                    setCpassword("");
-                    setTimeout(() => {
-                      setError("");
-                    }, 5000);
-                    return setError("Passwords do not match");
-                  }
                   if (password.length <=3 ) {
-                    setPassword("");
-                    setCpassword("");
+                    setPassword('');
                     setTimeout(() => {
-                      setError("");
+                      setError('');
                     }, 5000);
-                    return setError(`Password is Too short${role}`);
+                    return setError(`Password is Too short`);
+                  }
+                  if(salary<0){
+                   
+                    setTimeout(() => {
+                      setError('');
+                    }, 5000);
+                    return setError(`Salary should not be negative`);
                   }
                   if (role =='' ) {
                     
                     setTimeout(() => {
-                      setError("");
+                      setError('');
                     }, 5000);
                     return setError("Role is required");
                   }
              
-                      const {data}=await axios.post("/api/auth/register",{username,email,password,address,cnic,phoneNo,description,salary,paidAmount,invoiceNo,role,Class,section},config)    
-                  alert(data.data)
-                  history.push('/users')
-                  history.push('/register')
-                       }
-                        
-                      
+                const {data}=await axios.post("/api/auth/register",{username,email,password,address,cnic,phoneNo,description,salary,role,Class,section},config)    
+                setTimeout(()=>{
+                   
+                   freeSpace() 
+                    },4000)
+                return setMessage(data.data)    
+}     
                             
     return(
        
@@ -105,10 +115,11 @@ const RegisterScreen =({history})=>{
                         
                         <div className={styles.formStyle}>
                             <div className={styles.Border}>
-                                <br/>
-                                 
-                                <form className={styles.formMargin} onSubmit={onSubmit} >
-                                {error && <span className='error-message'>{error}</span>}             
+    {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+      {error && <Button  className={styles.sideButton5} autoFocus >{error}</Button>}             
+            
+                                
+                                <form className={styles.formMargin} onSubmit={onSubmit} autoComplete="off"  >
                                  
                                     <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Employee Name *</Form.Label>
@@ -116,13 +127,8 @@ const RegisterScreen =({history})=>{
                                     </Form.Group>
                                     <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Password</Form.Label>
-                                        <Form.Control className={styles.formField} type="password" placeholder="Enter Password " value={password} onChange={ e => setPassword(e.target.value) }/>
+                                        <Form.Control className={styles.formField} type="password" placeholder="Enter Password " value={password} onChange={ e => setPassword(e.target.value) } required/>
                                     </Form.Group>
-                                    <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>Confirm</Form.Label>
-                                        <Form.Control className={styles.formField} type="password" placeholder="Enter Confirm Password " value={cPassword} onChange={ e => setCpassword(e.target.value) }/>
-                                    </Form.Group>
-                                       
                                       <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Address *</Form.Label>
                                         <Form.Control className={styles.formField} type="text" placeholder="Enter Address" value={address} onChange={ e => setAddress(e.target.value) } required />
@@ -202,8 +208,8 @@ const RegisterScreen =({history})=>{
                                     {role=='teacher'|| role=='financeTeacher' || role=='adminTeacher'?
                                     <Form.Group controlId="formBasicstudentClass">
                                         <Form.Label>Class</Form.Label>
-                                        <Form.Control required className={styles.formField} as="select" value={Class} onChange={ e => setClass(e.target.value) } >
-                                          <option defaultValue>Select Class</option>
+                                        <Form.Control  className={styles.formField} as="select" value={Class} onChange={ e => setClass(e.target.value) } >
+                                          <option value='' defaultValue>Select Class</option>
                                             {   
                                                  classData.map((classIns,idx) => {
                                                      return <option 
@@ -218,8 +224,8 @@ const RegisterScreen =({history})=>{
                                     {role=='teacher'|| role=='financeTeacher' || role=='adminTeacher'?
                                     <Form.Group controlId="formBasicstudentClass">
                                         <Form.Label>Section</Form.Label>
-                                        <Form.Control className={styles.formField} as="select" value={section} onChange={ e => setSection(e.target.value) } required >
-                                        <option defaultValue>Select Section</option>
+                                        <Form.Control className={styles.formField} as="select" value={section} onChange={ e => setSection(e.target.value) }  >
+                                        <option value='' defaultValue>Select Section</option>
                                             {
                                                  sectionData.map((section,idx) => {
                                                      return <option 

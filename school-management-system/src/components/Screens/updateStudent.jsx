@@ -12,7 +12,7 @@ function UpdateStudent({match,history}){
      const [address, setAddress]=useState('')
     const [ studentNo, setStudentNo ] = useState('')
     let [ studentName, setStudentName ] = useState('')
-    let [ rollNo, setRollNo ] = useState('')
+   
     const [ Class, setClass ] = useState('')
     const [ section, setSection ] = useState('')
     let [ parentName, setParentName ] = useState('')
@@ -25,6 +25,7 @@ function UpdateStudent({match,history}){
     let [ email, setEmail ] = useState('')
     let [ description, setDescription ] = useState('')
     const [ classData, setClassData ] = useState([])
+    const [message, setMessage]=useState("")
     
     const [ sectionData, setSectionData ] = useState([])
    
@@ -55,7 +56,6 @@ function UpdateStudent({match,history}){
             setStudentName(res.data.studentName)
             setStudentNo(res.data.studentNo)
             setParentName(res.data.parentName)
-            setRollNo(res.data.rollNo)
             setPhoneNo(res.data.phoneNo)
             setEmail(res.data.email)
             setParentRelation(res.data.parentRelation)
@@ -74,8 +74,13 @@ function UpdateStudent({match,history}){
 },[id]
 )   
      const onSubmit = async() => {  
-        await axios.put(`/api/updateStudent/${id}`,{id,studentNo,studentName,rollNo,Class,section,address,parentName,phoneNo,parentRelation,email,description,fee})
-        history.push(`/updateStudent/${id}`)
+        await axios.put(`/api/updateStudent/${id}`,{id,studentNo,studentName,Class,section,address,parentName,phoneNo,parentRelation,email,description,fee})
+        setTimeout(()=>{
+            setMessage("")
+            history.push(`/updateStudent/${id}`)
+            
+            },4000)
+           return setMessage("Student Updated")
 }
 return( <>
 
@@ -89,15 +94,10 @@ return( <>
               
               <div className={styles.formStyle}>
                   <div className={styles.Border}>
-                      <br/>
-                       
+                  {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+               
                       <form className={styles.formMargin}  onSubmit={onSubmit}>
-                      {/* <Form.Group controlId="formBasicEmail">
-                         
-                          <input type="file" id="myFile" name="filename"/>
-                          <input type="submit" value={photo} onChange={ e => setPhoto(e.target.value) }>Upload</input>
-                          <img  width="100" height="100" src={photo} alt="Italian Trulli"></img>
-                        </Form.Group> */}
+                      
                         
                         <Form.Group controlId="formBasicEmail">
                               <Form.Label>Student Number 
@@ -110,10 +110,7 @@ return( <>
                               <Form.Label>Name</Form.Label>
                               <Form.Control className={styles.formField} type="text"  value={studentName} onChange={ e => setStudentName(e.target.value)} required />
                           </Form.Group>
-                          <Form.Group controlId="formBasicEmail">
-                              <Form.Label>ID</Form.Label>
-                              <Form.Control className={styles.formField} type="number"  value={rollNo} onChange={ e => setRollNo(e.target.value) }/>
-                          </Form.Group>
+                         
                           <Form.Group controlId="formBasicstudentClass">
                                         <Form.Label>Class</Form.Label>
                                         <Form.Control required className={styles.formField} as="select" value={Class} onChange={ e => setClass(e.target.value) } >

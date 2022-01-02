@@ -48,7 +48,7 @@ return(<>
              
                 <Link to='/login'>
                  
-                  <FaIcons.FaSignInAlt/>  Sign In
+                  <FaIcons.FaSignInAlt/> Sign In
                   
                 </Link>
              

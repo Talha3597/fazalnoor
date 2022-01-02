@@ -4,16 +4,20 @@ import { Row, Col, Form, Button, Table,Image} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useReactToPrint } from 'react-to-print';
 import axios from 'axios'
-//import { data } from 'jquery';
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from 'react-datepicker';
 
-const PaySalary =  ( {match})=> {
+
+ 
+const PaySalary =  ( {match,history})=> {
    // const [message, setMessage]=useState("")
+   var [today,setToday] =useState( new Date)
+   var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
  
      const id=match.params.id
      let due=0
     const [ employeeNo, setEmployeeNo] = useState('')
     const [ name, setName] = useState('')
-    const [ key, setKey] = useState('')
     const [ salary, setSalary] = useState(0)
      const [title, setTitle]=useState('')
   
@@ -24,54 +28,75 @@ const PaySalary =  ( {match})=> {
     let  receivedBy=localStorage.getItem("username")
     let[gdata,setData] =useState([]) 
     let[gdata1,setData1] =useState([]) 
+    const [error, setError]=useState('')
+    const [message, setMessage]=useState('')
+    
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
       content: () => componentRef.current,
     });    
     due=salary-pending
-    useEffect(()=>{
-        async function fetchSalaryData(){   
-            //let data
-           await axios.get(`/api/salary`,{ params: {id} } )
-           .then(res=>{
-            setData(res.data)
-           setEmployeeNo(res.data[0].employeeNo)
-           setName(res.data[0].username) 
-           setTitle(res.data[0].title) 
-           setSalary(res.data[0].salary) 
-           setPending(res.data[0].pending)
-           setDate1(res.data[0].date) 
-           setKey(res.data[0].invoiceNo) 
-              
-        }
-           )
+    async function fetchDepositeData(){   
+        await axios.get(`/api/salaryDeposite`,{ params: {invoiceNo} } )
+        .then(res=>{
+         setData1(res.data)
+        })
+     
+       
+     }
+     useEffect(()=>{
+        fetchDepositeData()
+     },[invoiceNo])
+     async function fetchSalaryData(){   
+        //let data
+       await axios.get(`/api/salary`,{ params: {id} } )
+       .then(res=>{
+        setData(res.data)
+       setEmployeeNo(res.data[0].employeeNo)
+       setName(res.data[0].username) 
+       setTitle(res.data[0].title) 
+       setSalary(res.data[0].salary) 
+       setPending(res.data[0].pending)
+       setDate1(res.data[0].date) 
+       setInvoiceNo(res.data[0].invoiceNo) 
           
-        }
-        
-        
-           async function fetchDepositeData(){   
-            await axios.get(`/api/salaryDeposite`,{ params: {key} } )
-            .then(res=>{
-             setData1(res.data)
-            })
-         
-           
-         }
-    
+    }
+       )
+      
+    }
+    useEffect(()=>{
+       
      fetchSalaryData()
     
-     fetchDepositeData()
-    },[key]
+    
+    },[]
     )    
     const onSubmit = async(e) => {
         e.preventDefault()
-       
-     const{data}=await axios.post('/api/paySalary',{id,name,employeeNo,title,salary,payAmount,pending,receivedBy,key})
-     
-     alert(data.message) 
-    window.location=`/paySalary/${id}`
-     
-      
+        if(payAmount<=0){
+            setTimeout(()=>{
+                setError('')
+                },4000)
+               return setError("Enter payable amount")
+                
+        }
+        if(payAmount>due){
+            setTimeout(()=>{
+                setError('')
+                },4000)
+               return setError("Entering extra amount")
+                
+        }
+
+     const{data}=await axios.post('/api/paySalary',{id,name,employeeNo,title,salary,payAmount,pending,receivedBy,invoiceNo,date})
+    setTimeout(()=>{
+        setMessage('')
+        setPayAmount('')
+        fetchDepositeData()
+        fetchSalaryData()
+        setToday(new Date)
+        },4000)
+       return setMessage(data.message)
 }
 
 return (
@@ -95,6 +120,13 @@ return (
                  </div>
                  
                  <div className={styles.formStyle}>
+    
+              
+                 <div className={styles.Border}>
+                        {error && <Button  className={styles.sideButton5} autoFocus >{error}</Button>}  
+                        {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}  
+                        
+                </div>           
                      
                          <br/>
                          
@@ -160,7 +192,14 @@ return (
                         <Form.Label> Pay Amount </Form.Label>
                         <Form.Control  className={styles.formField} type="number" placeholder="Enter Amount" value={payAmount} onChange={ e => setPayAmount(e.target.value) } required/>
                     </Form.Group>
-                                
+                    <Form.Group controlId="formBasicPassword">
+                                            <Form.Label>Select Date:</Form.Label><br/>
+                                            <DatePicker
+                                                selected={today}
+                                                onChange={date => setToday(date)}
+                                          required
+                                                 />
+                                        </Form.Group>     
                     <Button className={styles.formButton} type="submit">
                                         
                                         Pay Salary

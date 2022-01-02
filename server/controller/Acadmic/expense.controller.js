@@ -1,4 +1,5 @@
 const Expense =require('../../model/expenseSchema');
+const SalaryDeposite = require('../../model/salaryDepositeSchema');
 const Salary =require('../../model/salarySchema');
 
 
@@ -7,18 +8,12 @@ module.exports.addExpense=async (req,res)=>{
         
        
 try{ 
-
-       
-       
-        
-           
            const title=req.body.title
            const ExpenseCategory=req.body.ExpenseCategory
            const amount=req.body.amount
-           
            const note=req.body.note
            const createdBy=req.body.createdBy
-           const date=new Date()
+           const date=req.body.date
            
            const newExpense=  Expense.create({title,ExpenseCategory,amount,date,note,createdBy})
            
@@ -56,8 +51,8 @@ module.exports.Expenses = async(req,res)=>
 {        
     const month=req.query.month
     const year=req.query.year
-   console.log(month)
-       await Expense.find({date: { $regex: month+'.*'+year }}).sort({_id:-1}).limit(200)
+  
+       await Expense.find({date: { $regex: month+'-'+year }}).sort({_id:-1}).limit(200)
         .then((data)=>{
           
         return res.send(data)
@@ -87,7 +82,7 @@ module.exports.deleteExpenseRecord=async(req,res)=>{
     const month=req.query.month
     const year=req.query.year
     
-   await Expense.deleteMany({date: { $regex: month+'.*'+year }},(error, data) => {
+   await Expense.deleteMany({date: { $regex: month+'-'+year }},(error, data) => {
         if (error) {
             
             throw error;
@@ -113,12 +108,12 @@ module.exports.updateExpense=(req,res)=>
     }); 
 }
 module.exports.expenseDashboard=async(req,res)=>{
-    let type='deposite'
+
     const month=req.query.month
     const year=req.query.year
     
-    let data =await Expense.find({date: { $regex: month+'.*'+year }})
-    let sdata=await Salary.find({date: { $regex: month+'.*'+year },type:type}) 
+    let data =await Expense.find({date: { $regex: month+'-'+year }})
+    let sdata=await SalaryDeposite.find({date: { $regex: month+'-'+year },}) 
     if(data[0] && sdata[0]){
         let sum =data.map(item=>item.amount).reduce((a,item)=>item+a)
         let sum3=sdata.map(item=>item.pending).reduce((a,item)=>item+a)
@@ -145,7 +140,7 @@ module.exports.expenseDashboard=async(req,res)=>{
         const month=req.query.month
         const year=req.query.year
     
-       await Expense.aggregate([{ $match: {date: { $regex: month+'.*'+year }} },
+       await Expense.aggregate([{ $match: {date: { $regex: month+'-'+year }} },
         {$group: {_id:"$title",amount:{"$sum":"$amount"}} }
     ])
         .then((data)=>{
@@ -161,7 +156,7 @@ module.exports.expenseDashboard=async(req,res)=>{
         const month=req.query.month
         const year=req.query.year
    
-       await Expense.aggregate([{ $match: {date: { $regex: month+'.*'+year }} },
+       await Expense.aggregate([{ $match: {date: { $regex: month+'-'+year }} },
         {$group: {_id:"$createdBy",amount:{"$sum":"$amount"}} }
     ])
         .then((data)=>{

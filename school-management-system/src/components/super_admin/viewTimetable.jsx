@@ -1,25 +1,30 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useRef } from 'react'
 import styles from '../../assets/css/style.module.css'
 import { Row, Col,  Table } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
+import { useReactToPrint } from 'react-to-print';
 
 
 function ViewTimetable() {
 
+    const [ section, setSection ] = useState('')
+    const [ sectionData, setSectionData ] = useState([])
     const [ timetable, setTimetable ] = useState([])
     const [ monday, setMonday ] = useState([])
     const [ tuesday, setTuesday ] = useState([])
     const [ wednesday, setWednesday ] = useState([])
     const [ thursday, setThursday ] = useState([])
     const [ friday, setFriday ] = useState([])
-
-
-    useEffect(() => {
-        axios.get('/api/getTimetable')
+    const componentRef = useRef();
+    const handlePrint = useReactToPrint({
+      content: () => componentRef.current,
+    });
+    useEffect(async() => {
+        await axios.get('/api/getTimetable',{params:{section}})
         .then((res) => {
-            console.log(res.data)
+            
             setTimetable(res.data)
 
             var m = []
@@ -28,7 +33,7 @@ function ViewTimetable() {
             var th = []
             var f = []
 
-            res.data.sort((a, b) => (a.lecStart > b.lecStart) ? 1 : -1)
+           //res.data.sort((a, b) => (a.lecStart > b.lecStart) ? 1 : -1)
 
             res.data.forEach(element => {
                 if(element.day === 'monday'){
@@ -57,93 +62,20 @@ function ViewTimetable() {
         .catch(err => {
             console.log(err)
         })
+       await axios.get('/api/getSections')
+        .then((res) => {
+            
+            setSectionData(res.data)
+            
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }, [section])
 
-    }, [])
+    
 
-    const manageStartHours = (lecStart) => {
-
-        if(lecStart == 8){
-            return <p>8 : 00 am</p>
-        }
-        if(lecStart == 9){
-            return <p>8 : 30 am</p>
-        }
-        if(lecStart == 10){
-            return <p>9 : 00 am</p>
-        }
-        if(lecStart == 11){
-            return <p>9 : 30 am</p>
-        }
-        if(lecStart == 12){
-            return <p>10 : 00 am</p>
-        }
-        if(lecStart == 13){
-            return <p>10 : 30 am</p>
-        }
-        if(lecStart == 14){
-            return <p>11 : 00 am</p>
-        }
-        if(lecStart == 15){
-            return <p>11 : 30 am</p>
-        }
-        if(lecStart == 16){
-            return <p>12 : 00 pm</p>
-        }
-        if(lecStart == 17){
-            return <p>12 : 30 pm</p>
-        }
-        if(lecStart == 18){
-            return <p>1 : 00 pm</p>
-        }
-        if(lecStart == 19){
-            return <p>1 : 30 pm</p>
-        }
-
-
-    }
-
-
-    const manageEndHours = (lecEnd) => {
-
-        if(lecEnd == 9){
-            return <p>8 : 30 am</p>
-        }
-        if(lecEnd == 10){
-            return <p>9 : 00 am</p>
-        }
-        if(lecEnd == 11){
-            return <p>9 : 30 am</p>
-        }
-        if(lecEnd == 12){
-            return <p>10 : 00 am</p>
-        }
-        if(lecEnd == 13){
-            return <p>10 : 30 am</p>
-        }
-        if(lecEnd == 14){
-            return <p>11 : 00 am</p>
-        }
-        if(lecEnd == 15){
-            return <p>11 : 30 am</p>
-        }
-        if(lecEnd == 16){
-            return <p>12 : 00 pm</p>
-        }
-        if(lecEnd == 17){
-            return <p>12 : 30 pm</p>
-        }
-        if(lecEnd == 18){
-            return <p>1 : 00 pm</p>
-        }
-        if(lecEnd == 19){
-            return <p>1 : 30 pm</p>
-        }
-        if(lecEnd == 20){
-            return <p>2 : 00 pm</p>
-        }
-
-
-    }
+   
 
     const mondayShow = () => {
         
@@ -152,18 +84,18 @@ function ViewTimetable() {
         }else{
             var count = 0
             return monday.map(day => (
-                count++ % 2 != 0 ? <td className={styles.timetableOdd}>{day.title}<br/><br/>{day.teacherName}<br/><br/>Start: {manageStartHours(day.lecStart)}End: {manageEndHours(day.lecEnd)}</td> : <td className={styles.timetableEven}>{day.title}<br/><br/>{day.teacherName}<br/><br/>Start: {manageStartHours(day.lecStart)}End: {manageEndHours(day.lecEnd)}</td>
+                count++ % 2 != 0 ? <td className={styles.timetableOdd}>{day.title}<br/><br/>{day.teacherName}<br/><br/> {day.lecStart}&nbsp;To&nbsp; {day.lecEnd}</td> : <td className={styles.timetableEven}>{day.title}<br/><br/>{day.teacherName}<br/><br/> {day.lecStart}&nbsp;To&nbsp; {day.lecEnd}</td>
             ))
         }
     }
 
     const tuesdayShow = () => {
         if(tuesday.length === 0){
-            return <td colSpan='12' className={styles.timetableNolec}>No Lectures on Monday</td>
+            return <td colSpan='12' className={styles.timetableNolec}>No Lectures on Tuesday</td>
         }else{
             var count = 0
             return tuesday.map(day => (
-                count++ % 2 != 0 ? <td className={styles.timetableEven}>{day.title}<br/><br/>{day.teacherName}<br/><br/>Start: {manageStartHours(day.lecStart)}End: {manageEndHours(day.lecEnd)}</td> : <td className={styles.timetableOdd}>{day.title}<br/><br/>{day.teacherName}<br/><br/>Start: {manageStartHours(day.lecStart)}End: {manageEndHours(day.lecEnd)}</td>
+                count++ % 2 != 0 ? <td className={styles.timetableEven}>{day.title}<br/><br/>{day.teacherName}<br/><br/> {day.lecStart}&nbsp;To&nbsp; {day.lecEnd}</td> : <td className={styles.timetableOdd}>{day.title}<br/><br/>{day.teacherName}<br/><br/> {day.lecStart}&nbsp;To&nbsp; {day.lecEnd}</td>
             ))
         }
     }
@@ -174,7 +106,7 @@ function ViewTimetable() {
         }else{
             var count = 0
             return wednesday.map(day => (
-                count++ % 2 != 0 ? <td className={styles.timetableOdd}>{day.title}<br/><br/>{day.teacherName}<br/><br/>Start: {manageStartHours(day.lecStart)}End: {manageEndHours(day.lecEnd)}</td> : <td className={styles.timetableEven}>{day.title}<br/><br/>{day.teacherName}<br/><br/>Start: {manageStartHours(day.lecStart)}End: {manageEndHours(day.lecEnd)}</td>
+                count++ % 2 != 0 ? <td className={styles.timetableOdd}>{day.title}<br/><br/>{day.teacherName}<br/><br/> {day.lecStart}&nbsp;To&nbsp; {day.lecEnd}</td> : <td className={styles.timetableEven}>{day.title}<br/><br/>{day.teacherName}<br/><br/> {day.lecStart}&nbsp;To&nbsp; {day.lecEnd}</td>
             ))
         }
     }
@@ -185,7 +117,7 @@ function ViewTimetable() {
         }else{
             var count = 0
             return thursday.map(day => (
-                count++ % 2 != 0 ? <td className={styles.timetableEven}>{day.title}<br/><br/>{day.teacherName}<br/><br/>Start: {manageStartHours(day.lecStart)}End: {manageEndHours(day.lecEnd)}</td> : <td className={styles.timetableOdd}>{day.title}<br/><br/>{day.teacherName}<br/><br/>Start: {manageStartHours(day.lecStart)}End: {manageEndHours(day.lecEnd)}</td>
+                count++ % 2 != 0 ? <td className={styles.timetableEven}>{day.title}<br/><br/>{day.teacherName}<br/><br/> {day.lecStart}&nbsp;To&nbsp; {day.lecEnd}</td> : <td className={styles.timetableOdd}>{day.title}<br/><br/>{day.teacherName}<br/><br/> {day.lecStart}&nbsp;To&nbsp; {day.lecEnd}</td>
             ))
         }
     }
@@ -196,7 +128,7 @@ function ViewTimetable() {
         }else{
             var count = 0
             return friday.map(day => (
-                count++ % 2 != 0 ? <td className={styles.timetableOdd}>{day.title}<br/><br/>{day.teacherName}<br/><br/>Start: {manageStartHours(day.lecStart)}End: {manageEndHours(day.lecEnd)}</td> : <td className={styles.timetableEven}>{day.title}<br/><br/>{day.teacherName}<br/><br/>Start: {manageStartHours(day.lecStart)}End: {manageEndHours(day.lecEnd)}</td>
+                count++ % 2 != 0 ? <td className={styles.timetableOdd}>{day.title}<br/><br/>{day.teacherName}<br/><br/> {day.lecStart}&nbsp;To&nbsp; {day.lecEnd}</td> : <td className={styles.timetableEven}>{day.title}<br/><br/>{day.teacherName}<br/><br/> {day.lecStart}&nbsp;To&nbsp; {day.lecEnd}</td>
             ))
         }
     }
@@ -209,13 +141,25 @@ function ViewTimetable() {
             <div className={styles.margLeftRow}>
                 <Row>
                     <Col md={12}>
+                    <div ref={componentRef} >
                         <Row>
                             <Col>
                                 <div className={styles.backBar}>
-                                    <h1>Timetable</h1>
+                                    <h1>Timetable For {section}</h1>
                                 </div>
-
-                                
+                               <div className="text-center">
+                                <select as="select" value={section} onChange={ e => setSection(e.target.value) }>
+                                        <option value='' defaultValue>Select Section</option>
+                                            {
+                                                 sectionData.map((section) => {
+                                                     return <option 
+                                                        key={section._id}
+                                                        value={section.title}>
+                                                            {section.title}
+                                                    </option>;
+                                                    })
+                                            }
+                                        </select></div>
 
                                 
                             </Col>    
@@ -227,6 +171,7 @@ function ViewTimetable() {
                         <Row>
                             <Col>
                                 <div className={styles.tableMargin}>
+                                
                                     <Table className={styles.tableWidth} hover responsive='sm'>
                                         <thead>
                                             <tr>
@@ -257,18 +202,23 @@ function ViewTimetable() {
                                         </tbody>
                                         
                                     </Table>
-
+                                    </div>
                                     
 
-                                </div>
+                                
                             </Col>
                             
                         </Row>
+                        </div>
                         <br/>
 
                         <div style={{display: 'flex', height: 'auto'}}>
                             <Link className={styles.timetableButton} to={ '/editTimetable' }>Edit Timetable</Link>
                             <Link style={{paddingLeft: '3%'}} className={styles.timetableButton} to={ '/manageTimetable' }>Manage</Link>
+                            <button  onClick={handlePrint} style={{paddingLeft: '3%'}} className={styles.timetableButton} type="submit">
+                                        
+                                        Print
+                                       </button>
                         </div>
                         
                         <br/>

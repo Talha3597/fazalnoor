@@ -6,33 +6,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios'
 
 
-const ClassVar = props => (
-      
-    <tbody>
-        <tr>
-            <td>{props.classIns.student_name}</td>
-            <td>{props.classIns.student_admin_no}</td>
-            <td>{props.classIns.title}</td>
-            <td>{props.classIns.totalMarks}</td>
-            <td>{props.classIns.obtainedMarks}</td>
-            <td>{props.classIns.percentage}</td>
-            <td>{props.classIns.testGrade}</td>
-            <td><Link to={'/updateGrade/' + props.classIns._id}><span className={[styles['Edel'], 'fas fa-pencil-alt'].join(' ')}></span></Link>
-            <button onClick={() =>  {let flag= window.confirm("Delete  record!")
-  if(flag)
-  {
-                   axios.delete('/api/deleteGrade/'+props.classIns._id)
-                   .then(response => { 
-                       console.log(response.data)
-                       window.location = '/viewGrades'
-                    });}
-            }} className={styles.Edel2}><span className={[styles['Edel3'], 'fas fa-trash'].join(' ')}></span></button></td>
-        </tr>
 
-    </tbody>
-        
-    
-)
 
 function ViewGradesByClass() {
 
@@ -51,7 +25,33 @@ function ViewGradesByClass() {
           return <ClassVar classIns={currentclass} key={currentclass._id}/>;
         })
     }
-
+    const ClassVar = props => (
+      
+        <tbody>
+            <tr>
+                <td>{props.classIns.student_name}</td>
+                <td>{props.classIns.student_admin_no}</td>
+                <td>{props.classIns.title}</td>
+                <td>{props.classIns.totalMarks}</td>
+                <td>{props.classIns.obtainedMarks}</td>
+                <td>{props.classIns.percentage}</td>
+                <td>{props.classIns.testGrade}</td>
+                <td><Link to={'/updateGrade/' + props.classIns._id}><span className={[styles['Edel'], 'fas fa-pencil-alt'].join(' ')}></span></Link>
+                <button onClick={() =>  {let flag= window.confirm("Delete  record!")
+      if(flag)
+      {
+                       axios.delete('/api/deleteGrade/'+props.classIns._id)
+                       .then(response => { 
+                        const del = studentGrades.filter(studentGrades => props.classIns._id !== studentGrades._id)
+                        setStudentGrades(del)
+                        });}
+                }} className={styles.Edel2}><span className={[styles['Edel3'], 'fas fa-trash'].join(' ')}></span></button></td>
+            </tr>
+    
+        </tbody>
+            
+        
+    )
 
     useEffect(() => {
         

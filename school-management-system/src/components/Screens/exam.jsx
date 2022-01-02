@@ -15,9 +15,10 @@ const Exam =  ({history})=> {
     const [title,setTitle]= useState('')
     const [ Class, setClass ] = useState('')
     const [ section, setSection ] = useState('')
-
+    const [message, setMessage]=useState("")
+    
     const removeData = async(id) => {
-        let flag= window.confirm("Delete  record!")
+        let flag= window.confirm("Delete All grades with this title record!")
         if(flag)
         { 
           await axios.delete(`/api/exam`, { params: {id} }) 
@@ -75,9 +76,13 @@ const Exam =  ({history})=> {
           
              
                const{data} =await axios.post('/api/addExam',{Class,section,title})
-             alert(data.token) 
-            history.push('/exam')
-           
+          
+            setTimeout(()=>{
+                setMessage("")
+                history.push('/exam')
+                
+                },4000)
+               return setMessage(data.token)
 
     }
 
@@ -93,9 +98,11 @@ const Exam =  ({history})=> {
                         </div>
                         
                         <div className={styles.formStyle}>
+               
+
                             <div className={styles.Border}>
-                                <br/>
-                                 
+                            {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+                         <br/>
                                 <form className={styles.formMargin} onSubmit={onSubmit}>
                                 {error && <span className='error-message'>{error}</span>}             
                                  
@@ -106,7 +113,7 @@ const Exam =  ({history})=> {
                                     </Form.Group>
                                         <Form.Label>Class</Form.Label>
                                         <Form.Control required className={styles.formField} as="select" value={Class} onChange={ e => setClass(e.target.value) } >
-                                          <option defaultValue>Select Exam</option>
+                                          <option value=''defaultValue>Select Exam</option>
                                             {   
                                                  classData.map((classIns,idx) => {
                                                      return <option 
@@ -122,7 +129,7 @@ const Exam =  ({history})=> {
                                     <Form.Group controlId="formBasicstudentClass">
                                         <Form.Label>Section</Form.Label>
                                         <Form.Control className={styles.formField} as="select" value={section} onChange={ e => setSection(e.target.value) } required >
-                                        <option defaultValue>Select Section</option>
+                                        <option value=''defaultValue>Select Section</option>
                                             {
                                                  sectionData.map((section,idx) => {
                                                      return <option 

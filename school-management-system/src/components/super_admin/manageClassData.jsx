@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import styles from '../../assets/css/style.module.css'
-import { Row, Col, Navbar, Nav, Table } from 'react-bootstrap'
+import { Row, Col, Navbar, Nav, Table,Button } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link, Redirect, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios'
 
 
@@ -35,8 +35,10 @@ function ManageClassData() {
                     <td>{timetable.title}</td>
                     <td>{timetable.incharge}</td>
                     
-                    <td><Link to={ '/updateClass/' + timetable._id }><span className={[styles['Edel'], 'fas fa-pencil-alt'].join(' ')}></span></Link>
-                    <button onClick={() =>  {
+                    <td><Link to={ '/updateClass/' + timetable._id }><Button className={styles.sideButton1}  >
+                            Edit</Button></Link></td>
+
+                    <td><Button onClick={() =>  {
                         let flag= window.confirm("Delete  record!")
                         if(flag)
                         {
@@ -45,7 +47,7 @@ function ManageClassData() {
                             console.log(response.data)
                             window.location = '/manageClassData'
                             });}
-                    }} className={styles.Edel2}><span className={[styles['Edel3'], 'fas fa-trash'].join(' ')}></span></button></td>
+                    }} className={styles.sideButton2}>Delete</Button></td>
                 </tr>
         
             </tbody>
@@ -58,30 +60,9 @@ function ManageClassData() {
     return (
         <>
 
-        <Navbar className={styles.respNav} expand="lg">
-            
-            <Navbar.Toggle aria-controls="basic-navbar-nav" style={{color: '#ffffff'}}/>
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                    <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                    <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                    <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                    <Nav.Link className={styles.NavLink} href="#">Classes</Nav.Link>
-                
-                </Nav>
-                
-            </Navbar.Collapse>
-        </Navbar>
-
+        
         <div className={styles.overflow}>
-            <div className={styles.background}>
-                <div className={styles.topSet}>
-                    <Link to='#' className={styles.navLink2}>Classes</Link>
-                    <Link to='#' className={styles.navLink2}>Classes</Link>
-                    <Link to='#' className={styles.navLink2}>Classes</Link>
-                    <Link to='#' className={styles.navLink2}>Classes</Link>
-                </div>
-            </div>
+           
 
             <div className={styles.margLeftRow}>
                 <Row>
@@ -104,12 +85,13 @@ function ManageClassData() {
                         <Row>
                             <Col>
                                 <div className={styles.tableMargin}>
-                                    <Table className={styles.tableWidth} hover responsive='sm'>
+                                    <Table className={styles.tableWidth} bordered hover responsive='sm'>
                                         <thead>
                                             <tr>
                                                 <th className={styles.tableHeading}>Title</th>
                                                 <th className={styles.tableHeading}>Incharge</th>
-                                                <th className={styles.tableHeading}>Actions</th>
+                                                <th className={styles.tableHeading}></th>
+                                                <th className={styles.tableHeading}></th>
                                                 
                                             </tr>
                                         </thead>

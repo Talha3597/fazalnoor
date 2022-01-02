@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState,useEffect,useRef } from 'react'
 import styles from '../../assets/style.module.css'
 import { Row, Col, Form, Button, } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,8 +15,7 @@ const AddStudent =  ({history})=> {
     const [ section, setSection ] = useState('')
     const [ parentName, setParentName ] = useState('')
     const [ phoneNo, setPhoneNo ] = useState('')
-    const [ invoiceNo, setInvoiceNo ] = useState('')
-    const [ schoolFee, setSchoolFee ] = useState('')
+    const [ schoolFee, setSchoolFee ] = useState(0)
     const [ cnic, setCnic ] = useState('')
     const [ dob, setDob ] = useState('')
     const [ paidAmount, setPaidAmount ] = useState('')
@@ -28,10 +27,28 @@ const AddStudent =  ({history})=> {
     const createdBy=localStorage.getItem("username")
     const [ classData, setClassData ] = useState([])
     const [ account, setAccount ] = useState('')
-    const [ admissionFee, setAdmissionFee ] = useState('')
+    const [ admissionFee, setAdmissionFee ] = useState(0)
     const [ sectionData, setSectionData ] = useState([])
     const [error, setError]=useState("")
-   
+    const [message, setMessage]=useState("")
+       const freeSpace=()=>{
+           setAccount('')
+           setAddress('')
+           setAdmissionFee(0)
+           setClass('')
+           setCnic('')
+           setDescription('')
+           setDob('')
+           setEmail('')
+           setName('')
+           setParentName('')
+           setParentRelation('')
+           setPhoneNo('')
+           setSchoolFee(0)
+           setSection('')
+           setMessage('')
+       }         
+    
     useEffect(() => {
         axios.get('/api/getClasses')
             .then((res) => {
@@ -60,15 +77,28 @@ const AddStudent =  ({history})=> {
         {
             
                     setTimeout(() => {
-                      setError("");
+                      setError('');
                     }, 5000);
                     return setError(" Select Class and Section");
                   
         }
+        if(admissionFee<0 || schoolFee<0)
+        {
+
+            setTimeout(() => {
+                setError('');
+              }, 5000);
+              return setError(" Amount should not be negative");
+            
+        }
                const{data} =await axios.post('/api/addStudent',{name,Class,section,dob,address,parentName,phoneNo,parentRelation,email,description,schoolFee,cnic,createdBy,admissionFee})
-                 alert(data.token) 
-                 history.push('/students')
-                 history.push('/addStudent')
+               
+               setTimeout(()=>{
+                
+              freeSpace()
+                
+                },4000)
+               return setMessage(data.message)
                  
     }
 
@@ -85,17 +115,11 @@ const AddStudent =  ({history})=> {
                         </div>
                         
                         <div className={styles.formStyle}>
+
                             <div className={styles.Border}>
-                                <br/>
-                                 
+                            {error && <Button  className={styles.sideButton5} autoFocus >{error}</Button>}             
+                        {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
                                 <form className={styles.formMargin} onSubmit={onSubmit} autoComplete="off" >
-                                {/* <Form.Group controlId="formBasicEmail">
-                                   
-                                    <input type="file" id="myFile" name="filename"/>
-                                    <input type="submit" value={photo} onChange={ e => setPhoto(e.target.value) }>Upload</input>
-                                    <img  width="100" height="100" src={photo} alt="Italian Trulli"></img>
-                                  </Form.Group> */}
-                                 {error && <span className='error-message'>{error}</span>}             
                                  
                                  
                                     <Form.Group controlId="formBasicEmail">
@@ -107,7 +131,7 @@ const AddStudent =  ({history})=> {
                                     <Form.Group controlId="formBasicstudentClass">
                                         <Form.Label>Class *</Form.Label>
                                         <Form.Control required className={styles.formField} as="select" value={Class} onChange={ e => setClass(e.target.value) } >
-                                          <option defaultValue>Select Class</option>
+                                          <option value ='' defaultValue>Select Class</option>
                                             {   
                                                  classData.map((classIns,idx) => {
                                                      return <option 
@@ -123,7 +147,7 @@ const AddStudent =  ({history})=> {
                                     <Form.Group controlId="formBasicstudentClass">
                                         <Form.Label>Section *</Form.Label>
                                         <Form.Control className={styles.formField} as="select" value={section} onChange={ e => setSection(e.target.value) } required >
-                                        <option defaultValue>Select Section</option>
+                                        <option value='' defaultValue>Select Section</option>
                                             {
                                                  sectionData.map((section,idx) => {
                                                      return <option 
@@ -147,12 +171,12 @@ const AddStudent =  ({history})=> {
                                         <Form.Control required className={styles.formField} type="text" placeholder="Enter Parent Name" value={parentName} onChange={ e => setParentName(e.target.value) }/>
                                     </Form.Group>
                                     <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>CNIC  Format: XXXXX-XXXXXXX-X</Form.Label>
-                                        <Form.Control pattern="[0-9]{5}-[0-9]{7}-[0-9]{1}"  className={styles.formField} type="text" placeholder="Enter CNIC" value={cnic} onChange={ e => setCnic(e.target.value) }/>
+                                        <Form.Label>CNIC   Format: XXXXX-XXXXXXX-X</Form.Label>
+                                        <Form.Control pattern="[0-9]{5}-[0-9]{7}-[0-9]{1}"  className={styles.formField} type="text" placeholder="Enter CNIC" value={cnic} onChange={ e => setCnic(e.target.value) } />
                                     </Form.Group>
                                     <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Phone Number *</Form.Label>
-                                        <Form.Control required className={styles.formField} type="number" placeholder="Enter Number" value={phoneNo} onChange={ e => setPhoneNo(e.target.value) }/>
+                                        <Form.Control pattern="[0-9]" required className={styles.formField} type="number" placeholder="Enter Number" value={phoneNo} onChange={ e => setPhoneNo(e.target.value) }/>
                                     </Form.Group>
                                     <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Email</Form.Label>
@@ -179,14 +203,13 @@ const AddStudent =  ({history})=> {
                                         <Form.Label>School Fee *</Form.Label>
                                         <Form.Control required className={styles.formField} type="number" placeholder="Enter School Fee" value={schoolFee} onChange={ e => setSchoolFee(e.target.value) }/>
                                     </Form.Group>
-                                    
-                                   <Button className={styles.formButton} type="submit">
+                                       <Button className={styles.formButton} type="submit">
                                         
                                         Add New Student
                                     </Button>
-                                    {error && <span className='error-message'>{error}</span>}             
                                 
                                 </form>
+                                             
                                 
                                 <br/>
                             </div>

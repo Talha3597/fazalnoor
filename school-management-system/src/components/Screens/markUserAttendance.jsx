@@ -8,7 +8,7 @@ import React,{useState,useEffect} from 'react'
     const MarkUserAttendance =()=>{
         const [todayDate,setTodayDate]=useState(new Date)
         const [userData,setUserData]=useState([])
-        console.log(userData)
+       // console.log(userData)
         const date=todayDate.getFullYear()+'-'+parseInt(todayDate.getMonth()+1)+'-'+todayDate.getDate()
         const search=''
         const employeeNo=''
@@ -102,7 +102,9 @@ import React,{useState,useEffect} from 'react'
                                                 onChange={date => setTodayDate(date)}
                                                 />
                                         </Form.Group>
-                                       {attendanceData[0]?<Table striped bordered hover size='sm'>
+                                       {attendanceData[0]?
+                                        <div className='table-responsive'>
+                                       <Table striped bordered hover size='sm'>
                                             <thead>
                                            
                                                 <th>Employee No</th>
@@ -127,7 +129,9 @@ import React,{useState,useEffect} from 'react'
                                                
                                              }
                                             </tbody>
-                                        </Table>:<Table striped bordered hover size='sm'>
+                                        </Table></div>:
+                                        <div className='table-responsive'>
+                                            <Table striped bordered hover size='sm'>
                                             <thead>
                                                 <th >Employee No</th>
                                                 <th>Name</th>
@@ -143,11 +147,9 @@ import React,{useState,useEffect} from 'react'
                                                
                                              }
                                             </tbody>
-                                        </Table>
+                                        </Table></div>
                                          }
-                                        <Button className={styles.formButton} type="submit">
-                                            
-                                            Submit Attendance
+                                        <Button className={styles.formButton} type="submit"> Submit Attendance
                                         </Button>
                                       
                                     </form>

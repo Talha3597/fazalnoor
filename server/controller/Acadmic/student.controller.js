@@ -6,10 +6,7 @@ const Section = require('../../model/SD_model/sectionSchema');
 
 
 
-module.exports.addStudent=async (req,res)=>{
-    
-        
-       
+module.exports.addStudent=async (req,res)=>{   
 try{ 
            const studentName=req.body.name
            
@@ -30,27 +27,20 @@ try{
            const newStudent= await StudentSchema.create({studentName,Class,section,dob,address,parentName,cnic,phoneNo,parentRelation,email,description,fee})
           if(amount>0){
             const title="Admission Fee"
-            const date= new Date
+            const today= new Date
+               var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
+
             let studentNo=newStudent.studentNo
-            console.log(newStudent)
- 
+            
             let status="Unpaid"
-            let type='fee'
            const discount=0
            const pending=0 
-            const newFee=  Fee.create({title,type,studentName,studentNo,amount,discount,pending,date,status,Class,section,person})
-              }
-          
-                            
+            const newFee=  Fee.create({title,studentName,studentNo,amount,discount,pending,date,status,Class,section,person})
+              }               
            return res.status(200).json({
                 success: true,
-                token: "Student add successfully",
+                message: " Registerd successfully",
             })
-        
-                
-            
-        
-           
    }
     catch(error){
         return res.status(200).json({success:true, token:'Invalid Information'})
@@ -261,8 +251,10 @@ module.exports.promote=(req,res)=>
         if (err) {
             res.status(500).send({error: "Could not modify student info..."});
         } else {                 
-                   res.status(200)
-           
+            return res.status(200).json({
+                success: true,
+                message: " Promoted successfully",
+            })
            
            
         }
@@ -278,11 +270,10 @@ module.exports.transfer=(req,res)=>
             res.status(500).send({error: "Could not modify student info..."});
         } else {           
                
-                   res.status(200).send(data);
-                
-            
-           
-           
+            return res.status(200).json({
+                success: true,
+                message: " Transfered Successfully",
+            })
         }
     });
 }

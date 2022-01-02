@@ -45,6 +45,6 @@ const ExpenseSchema=mongoose.Schema({
     }
 },
 { timestamps: true });
-ExpenseSchema.plugin(autoIncrement.plugin, { model: 'Expense', field: 'invoiceNo' });
+ExpenseSchema.plugin(autoIncrement.plugin, { model: 'Expense', field: 'invoiceNo',startAt: 1,  });
 var Expense=mongoose.model('Expense',ExpenseSchema);
 module.exports=Expense

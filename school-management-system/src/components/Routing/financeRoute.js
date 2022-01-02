@@ -1,7 +1,7 @@
 import React from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"
 import {BrowserRouter as Router, Route} from "react-router-dom"
-
+import Blank from '../Screens/blank'
 import AddStudent from '../Screens/addStudent'
 import Students from '../Screens/students'
 import UpdateStudent from '../Screens/updateStudent'
@@ -78,6 +78,7 @@ export const App3=()=> {
       <Route exect path="/register" component={RegisterScreen}/>
       <Route exect path="/forgotpassword" component={forgotPasswordScreen}/>
       <Route exect path="/passwordreset/:resetToken" component={resetPasswordScreen}/>
+      <Route  path="/blank" component={Blank}/>
      
       
       <Route  path="/addNotice" component={AddNotice}/>

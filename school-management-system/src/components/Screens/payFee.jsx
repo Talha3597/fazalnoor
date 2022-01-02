@@ -4,27 +4,35 @@ import { Row, Col, Form, Button, Table,Image} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
 import { useReactToPrint } from 'react-to-print';
-const PayFee =  ( {match})=> {
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from 'react-datepicker';
+
+
+const PayFee =  ( {match,history})=> {
    // const [message, setMessage]=useState("")
+   var [today,setToday] =useState( new Date)
+   var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
  
      const id=match.params.id
      let due=0
-    const [ studentNo, setStudentNo] = useState('')
+    const [ studentNo, setStudentNo] = useState(0)
     const [ name, setName] = useState('')
-    const [ key, setKey] = useState('')
-    const [ schoolFee, setSchoolFee] = useState('')
+    const [ schoolFee, setSchoolFee] = useState(0)
     const [ Class, setClass] = useState('')
     const [ section, setSection] = useState('')
      const [title, setTitle]=useState('')
     let [amount, setAmount]=useState(0)
-    const [pending, setPending]=useState('')
+    let [pending, setPending]=useState(0)
     const [discount, setDiscount]=useState(0)
     const [date1, setDate1]=useState('')
-    const [payAmount, setPayAmount]=useState('')
-    const [invoiceNo, setInvoiceNo]=useState('')
+    const [payAmount, setPayAmount]=useState(0)
+    const [invoiceNo, setInvoiceNo]=useState(0)
     let  receivedBy=localStorage.getItem("username")
     let[gdata,setData] =useState([]) 
-    let[gdata1,setData1] =useState([]) 
+    let[gdata1,setData1] =useState([])
+    const [message, setMessage]=useState("")
+    const [error, setError]=useState("")
+     
     if(discount>0)
     {
         amount=Math.round(amount*((100-discount)/100))
@@ -35,10 +43,15 @@ const PayFee =  ( {match})=> {
             
           });
        
-       
-    
-    due=amount-pending
-    useEffect(()=>{
+ async function fetchDepositeData(){   
+            await axios.get(`/api/feeDeposite`,{ params: {invoiceNo} } )
+            .then(res=>{
+             setData1(res.data)
+            })
+         
+           
+         }   
+          
         async function fetchFeeData(){   
             //let data
            await axios.get(`/api/fee`,{ params: {id} } )
@@ -49,15 +62,15 @@ const PayFee =  ( {match})=> {
            setAmount(res.data[0].amount) 
            setPending(res.data[0].pending)
            setDate1(res.data[0].date) 
-           setKey(res.data[0].invoiceNo) 
+           setInvoiceNo(res.data[0].invoiceNo) 
               
         }
            )
           
         }
-        
-        
-        async function fetchStudentData(){  
+          
+     
+         async function fetchStudentData(){  
             
             await axios.get('/api/findstudent' ,{ params: {studentNo} })
             .then(res=>{
@@ -77,28 +90,60 @@ const PayFee =  ( {match})=> {
             })
            
            }
-           async function fetchDepositeData(){   
-            await axios.get(`/api/feeDeposite`,{ params: {key} } )
-            .then(res=>{
-             setData1(res.data)
-            })
-         
-           
-         }
+        
     
+    due=amount-pending
+    useEffect(()=>{
+        fetchDepositeData()
+    },[invoiceNo])
+    useEffect(()=>{
+        fetchStudentData()
+    },[studentNo])
+
+    useEffect(()=>{
+       
      fetchFeeData()
-     fetchStudentData()
-     fetchDepositeData()
-    },[studentNo,key]
+     
+    },[]
     )    
     const onSubmit = async(e) => {
         e.preventDefault()
-       
-     const{data}=await axios.post('/api/payFee',{id,discount,studentNo,title,amount,invoiceNo,payAmount,pending,receivedBy,Class ,section,key})
-     
-     alert(data.message) 
-    window.location=`/payFee/${id}`
-     
+      if(payAmount<=0)
+      {
+        setTimeout(()=>{
+            setError("")
+            
+            },4000)
+           return setError(" Enter Payable Amount")
+
+      } 
+      if(payAmount > due){
+        setTimeout(()=>{
+            setError("")
+            
+            },4000)
+            return setError(` Entering Extra Amount `)
+      }
+      if(discount<0 || discount>100)
+      {
+        setTimeout(()=>{
+            setError("")
+            
+            },4000)
+           return setError(" Discount should be in range 0 to 100")
+
+      }
+     const{data}=await axios.post('/api/payFee',{id,discount,studentNo,title,amount,invoiceNo,payAmount,pending,receivedBy,Class ,section,date})
+    setTimeout(()=>{
+        setMessage('')
+      
+        fetchFeeData()
+          fetchDepositeData()
+      setDiscount(0)
+       setPayAmount(0)
+        setToday(new Date)
+        },4000)
+       return setMessage(data.message)
       
 }
 
@@ -122,8 +167,10 @@ return (
                  </div>
                  
                  <div className={styles.formStyle}>
-                     
-                         <br/>
+                 <div className={styles.Border}>
+                 {error && <Button  className={styles.sideButton5} autoFocus >{error}</Button>}           
+                {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}    </div>         
+                                              <br/>
                          
                          <form  onSubmit={onSubmit} >
                         
@@ -163,7 +210,6 @@ return (
       <th> Title</th>
       <th>Invoice Number</th>
       <th>Amount</th>
-      <th>Discount</th>
       <th>Date</th>
       <th>Paid</th>
       <th>person</th>
@@ -176,7 +222,6 @@ return (
                             <td>{item.title}</td>  
                             <td>{item.invoiceNo}</td>  
                             <td>{item.amount}</td>  
-                            <td>{item.discount}</td>
                             <td>{item.date}</td> 
                             <td>{item.pending}</td>
                             <td>{item.person}</td>
@@ -199,7 +244,14 @@ return (
                         <Form.Label> Pay Amount </Form.Label>
                         <Form.Control  className={styles.formField} type="number" placeholder="Enter Amount" value={payAmount} onChange={ e => setPayAmount(e.target.value) } required/>
                     </Form.Group>
-                                
+                    <Form.Group controlId="formBasicPassword">
+                                            <Form.Label>Select Date:</Form.Label><br/>
+                                            <DatePicker
+                                                selected={today}
+                                                onChange={date => setToday(date)}
+                                          required
+                                                 />
+                                        </Form.Group>           
                     <Button className={styles.formButton} type="submit">
                                         
                                         Pay Fee

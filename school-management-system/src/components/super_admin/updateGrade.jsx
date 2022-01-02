@@ -12,33 +12,57 @@ function UpdateGrade() {
     const { id } = useParams()
     const [ grade, setGrade ] = useState({})
     const [ title, setTitle ] = useState('')
+    const [ message, setMessage ] = useState('')
+    const [ Class, setClass ] = useState('')
+    const [ section, setSection ] = useState('')
     const [ totalMarks, setTotalMarks ] = useState(0)
     const [ obtainedMarks, setObtainedMarks ] = useState(0)
     const [ gradesTitles, setGradesTitles ] = useState([])
-
-    useEffect(() => {
-        axios.get('/api/singleGrade/' + id)
-        .then((res) => {
-            console.log(res.data)
-            setGrade(res.data)
-            setTitle(res.data.title)
-            setTotalMarks(res.data.totalMarks)
-            setObtainedMarks(res.data.obtainedMarks)
-        })
-        .catch(err => {
-            console.log(err)
-        })
-
-        axios.get('/api/getGradestitles/' + id)
+    const [ examData, setExamData ] = useState([])
+const spaceClean=()=>{
+    setMessage('')
+    setTotalMarks(0)
+    setObtainedMarks(0)
+    setTitle('')
+}
+async function fetchSingleGrades(){ 
+    await  axios.get('/api/singleGrade/' + id)
+      .then((res) => {
+          console.log(res.data)
+          setGrade(res.data)
+          setTitle(res.data.title)
+          setClass(res.data.stdclass)
+          setSection(res.data.section)
+          setTotalMarks(res.data.totalMarks)
+          setObtainedMarks(res.data.obtainedMarks)
+      })
+      .catch(err => {
+          console.log(err)
+      })}
+      async function fetchGradesTitlesData(){ 
+        await axios.get('/api/getGradestitles/' + id)
         .then((res) => {
             console.log(res.data)
             setGradesTitles(res.data)
         })
         .catch(err => {
             console.log(err)
-        })
+        })}
+    useEffect(() => {
+       fetchGradesTitlesData()
+       fetchSingleGrades()
+       axios.get('/api/exams',{params:{Class,section}})
+       .then((res) => {
+           console.log(res.data)
+           setExamData(res.data)
+       })
+       .catch(err => {
+           console.log(err)
+       })
 
-    }, [])
+   
+
+    },[Class,section])
 
 
     const onSubmit = (e) => {
@@ -59,7 +83,7 @@ function UpdateGrade() {
             }
         })
 
-        if(title !== '' && totalMarks != 0 && obtainedMarks != 0 && flag === false && totalMarks >= obtainedMarks){
+        if(title !== '' && totalMarks > 0 && obtainedMarks >= 0 && flag === false && totalMarks >= obtainedMarks){
 
 
 
@@ -67,15 +91,16 @@ function UpdateGrade() {
                 title,
                 totalMarks,
                 obtainedMarks,
-                // student_id: student._id,
-                // student_admin_no: student.admin_no,
-                // student_name: student.name,
             }
 
             axios.post('/api/updateGrade/' + id, section)
                 .then(res => {
-                    console.log(res.data)
-                    window.location = '/viewGrades'
+                    setTimeout(() => {
+                        spaceClean()
+                        fetchGradesTitlesData()
+                        fetchSingleGrades()
+                     }, 4000);
+                     return setMessage("Grades Updated");
                 })
                 .catch(err => console.log('error : ' + err))
         }else{
@@ -88,7 +113,7 @@ function UpdateGrade() {
                 $('#totalmarks').fadeIn(100)
             }
 
-            if(obtainedMarks === 0){
+            if(obtainedMarks < 0){
                 $('#obtainedmarks').fadeIn(100)
             }
 
@@ -132,19 +157,25 @@ function UpdateGrade() {
                             <Col>
                                 <div className={styles.formStyle}>
                                     <div className={styles.Border}>
-                                        <br/>
+                                    {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+
                                         <form name="classForm" className={styles.formMargin} onSubmit={onSubmit} noValidate>
 
-                                            <Form.Group>
-                                                <Form.Label>Grade Title</Form.Label>
-                                                <Form.Control className={styles.formField} type="text" placeholder="Enter Title" value={title} onChange={ e => setTitle(e.target.value) } required/>
-                                                <Form.Text id="title" className={styles.authtextF1} style={{display: 'none'}}>
-                                                    Please provide title for Grade.
-                                                </Form.Text>
-                                                <Form.Text id="titleCheck" className={styles.authtextF1} style={{display: 'none'}}>
-                                                    You have already Updated Grade for this exam.
-                                                </Form.Text>
-                                            </Form.Group>
+                                        <Form.Group controlId="formBasicstudentClass">
+                                        <Form.Label>Exam Title</Form.Label>
+                                        <Form.Control required className={styles.formField} as="select" value={title} onChange={ e => setTitle(e.target.value) } >
+                                          <option defaultValue>Select Exam</option>
+                                            {   
+                                                 examData.map((classIns,idx) => {
+                                                     return <option 
+                                                        key={classIns.title}
+                                                        value={classIns.title}>
+                                                            {classIns.title}
+                                                    </option>;
+                                                    })
+                                            }
+                                        </Form.Control>
+                                    </Form.Group>
 
                                             <Form.Group>
                                                 <Form.Label>Total Marks</Form.Label>

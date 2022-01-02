@@ -13,6 +13,8 @@ const UpdateIncome =  ({match,history})=> {
     
     const receivedBy=localStorage.getItem("username")
     const [note, setNote]=useState("")
+    const [message, setMessage]=useState("")
+    
    useEffect(()=>{
     async function fetchData(){   
         await axios.get('/api/income' ,{ params: {id} })
@@ -37,8 +39,13 @@ const UpdateIncome =  ({match,history})=> {
        
           
         await axios.put(`/api/updateIncome/${id}`,{id,title,incomeCategory,amount,note,receivedBy})
-        history.push('/income')
-      
+        
+        setTimeout(()=>{
+            setMessage("")
+            history.push(`/updateIncome/${id}`)
+            
+            },4000)
+           return setMessage("Income Updated")
     }
 
     return (
@@ -54,8 +61,8 @@ const UpdateIncome =  ({match,history})=> {
                  
                  <div className={styles.formStyle}>
                      <div className={styles.Border}>
-                         <br/>
-                          
+    {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+                        
                          <form className={styles.formMargin} onSubmit={onSubmit} enctype="multi-part/form-data">
                          <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Title</Form.Label>

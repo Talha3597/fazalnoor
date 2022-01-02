@@ -13,6 +13,8 @@ const UpdateHomework =  ({match,history})=> {
     const [ Class, setClass ] = useState('')
     const [ section, setSection ] = useState('')
    const [ status, setStatus ] = useState('')
+   const [message, setMessage]=useState("")
+   
    useEffect(()=>{
     async function fetchData(){   
         await axios.get('/api/homework' ,{ params: {id} })
@@ -38,7 +40,12 @@ const UpdateHomework =  ({match,history})=> {
        
           
         await axios.put(`/api/updateHomework/${id}`,{id,title,notice,url,Class,section,status})
-        history.push(`/homeworks`)
+        setTimeout(()=>{
+            setMessage("")
+            history.push(`/updateHomework/${id}`)
+            
+            },4000)
+           return setMessage("HomeWork Updated")
     }
 
     return (
@@ -54,8 +61,9 @@ const UpdateHomework =  ({match,history})=> {
                         
                         <div className={styles.formStyle}>
                             <div className={styles.Border}>
-                                <br/>
-                                 
+   {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+                            
+
                                 <form className={styles.formMargin} onSubmit={onSubmit}>
                                     
                                 <Form.Group controlId="formBasicEmail">

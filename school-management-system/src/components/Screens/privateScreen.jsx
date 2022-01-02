@@ -1,5 +1,5 @@
 import styles from '../../assets/style.module.css'
-//import { Navbar, Nav } from 'react-bootstrap'
+import { Navbar } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useState,useEffect} from 'react'
 import {BrowserRouter as Router, Route} from "react-router-dom"
@@ -35,15 +35,24 @@ const Nav = styled.div`
 `;
 
 const NavIcon = styled(Link)`
-  margin-left: 2rem;
-  font-size: 2rem;
+  margin-left: 0.5rem;
+  font-size: 1.5rem;
   height: 80px;
   display: flex;
-  
   justify-content: flex-start;
   align-items: center;
 `;
-
+const NavIconLogout = styled(Link)`
+  margin-left:95%;
+  font-size: 1.5rem;
+  height: 80px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  @media (max-width: 768px) {
+    margin-left:75%;
+  }
+`;
 
 const SidebarNav = styled.nav`
   background: #15171c;
@@ -118,25 +127,11 @@ const PrivateScreen = ({history}) =>{
          <IconContext.Provider value={{ color: '#fff' }}>
         <Nav>
           <NavIcon to='#'>
-            <FaIcons.FaBars onClick={showSidebar} />
+            <FaIcons.FaBars onClick={showSidebar}  />
           </NavIcon>
-          &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; 
-          &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; 
-          &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; 
-         <div className={styles.heading}>
-            Fazal Noor School System</div>
-          &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; 
-          &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; 
-          &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; 
-          &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; 
-          &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; 
-          &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; 
-          &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; 
-          &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; 
-         
-          <NavIcon  to='#' style={{align:'text-right'}}>
+          <NavIconLogout  to='#' >
             <FaIcons.FaSignOutAlt onClick={logoutHandler} />
-          </NavIcon> 
+          </NavIconLogout> 
          
           
           

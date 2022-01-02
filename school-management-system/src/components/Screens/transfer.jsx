@@ -13,6 +13,8 @@ const TransferStudent =  ({history})=> {
     const [ classData, setClassData ] = useState([])
     const [ sectionData, setSectionData ] = useState([])
     const [error, setError]=useState("")
+    const [message, setMessage]=useState("")
+    
     useEffect(() => {
         axios.get('/api/getClasses')
             .then((res) => {
@@ -50,11 +52,14 @@ const TransferStudent =  ({history})=> {
         }
        
           
-       const {token}= await axios.post(`/api/transfer`,{Class,section,studentNo})
-       
-            setError(token)
-            history.push(`/transfer`)
-           
+     await axios.post(`/api/transfer`,{Class,section,studentNo})
+            setTimeout(()=>{
+                setMessage("")
+                history.push(`/blank`)
+                history.push(`/transfer`)
+                
+                },4000)
+               return setMessage(`Student Transfered to ${Class}`)
             
                 
 
@@ -74,8 +79,8 @@ const TransferStudent =  ({history})=> {
                     
                     <div className={styles.formStyle}>
                         <div className={styles.Border}>
-                            <br/>
-                             
+                        {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+
                             <form className={styles.formMargin} onSubmit={onSubmit}>
                             {error && <span className='error-message'>{error}</span>}  
                                 <Form.Group controlId="formBasicEmail">

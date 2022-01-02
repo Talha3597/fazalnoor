@@ -4,41 +4,50 @@ const User =require('../model/user')
 const Salary =require('../model/salarySchema')
 const bcrypt =require('bcryptjs')
 const ErrorResponse = require('../utils/errorResponse')
-const sendEmail =require('../utils/sendEmail')
+const sectionSchema = require('../model/SD_model/sectionSchema')
+const sendEmail =require('../utils/sendEmail');
+const { Console } = require("console");
 require('dotenv').config({path: '../.env'})
 exports.register=async (req,res,next)=>
 {
    
     const {username,email,password,cnic,address,phoneNo,salary,invoiceNo,paidAmount,description,role,Class,section}=req.body
-    const user1=await  User.findOne({email})
+    const user1=await  User.findOne({email:email})
    
     let joiningDate=new Date()
+  
     if(user1)
-    {    
-        return res.status(200).json({success:true,data:'This email is Already Registered'})
-    }
+        {    
+         res.status(200).json({success:true,data:'This email is Already Registered'})
+        }
+        else{
+            try {
+       
+       
+                if(Class=='' && section==''){
+                const user =  User.create({
+                   username,email,password,cnic,address,phoneNo,salary,description,role,joiningDate
+                })
+               .then(res.status(200).json({success:true,data:"Successfully registerd" }))
+                }
+                else{
+                    const user =  User.create({
+                        username,email,password,cnic,address,phoneNo,salary,description,role,Class,section,joiningDate
+                     })
+      
+                    
+                     sectionSchema.updateOne({title:section}, {$set:{teacher:username}})
+                     .then(   res.status(200).json({success:true,data:"Successfully registerd" }))
+                     
+                }
+                       
+               
+            } catch (error) {
+                
+                res.status(200).json({success:false, data:"Not Registered"})
+            }
+        }
    
-    try {
-       
-        if(Class=='' && section==''){
-        const user =  User.create({
-           username,email,password,cnic,address,phoneNo,salary,description,role,joiningDate
-        })
-       .then(res.status(200).json({success:true,data:"Successfully registerd" }))
-        }
-        else if(Class!='' && section!='') {
-            const user =  User.create({
-                username,email,password,cnic,address,phoneNo,salary,description,role,Class,section,joiningDate
-             })
-             .then(res.status(200).json({success:true,data:"Successfully registerd" }))
-             
-        }
-        res.status(200).json({success:true,data:"Select section" })        
-       
-    } catch (error) {
-        
-        res.status(200).json({success:false, data:"Not Registered"})
-    }
 }
 exports.login=async(req,res,next) =>{
     const {email, password}=req.body
@@ -109,7 +118,7 @@ exports.resetpassword=async(req,res,next) =>{
             resetPasswordToken,
             //resetPasswordExpire:{$gt:Date.now()}
         })
-       console.log(user)
+       
         if(!user)
         {
             return next(new ErrorResponse("Invlid reset token",400))
@@ -210,6 +219,21 @@ module.exports.users = async(req,res)=>
       
        
 }
+module.exports.userNames = async(req,res)=>
+{        
+      
+       await User.find().sort({_id:-1})
+        .then((data)=>{
+            let array=[]
+          for(let i=0;i<data.length;i++){
+              array[i]=data[i].username
+          }
+            return res.send(array)})
+        .catch( (err)=>{
+            return res.status(200).json({success:true, token:'Error Loading Data'})
+        })
+}
+  
 module.exports.usersData = async(req,res)=>
 {        
        const search=req.query.search
@@ -281,8 +305,11 @@ module.exports.updateUser=(req,res)=>
             res.status(500).send({error: "Could not modify student info..."});
         } else {           
            
-           
-           res.status(200).send(data);
+            sectionSchema.updateOne({title:req.body.section}, {$set:{teacher:req.body.username}})
+           .then(
+           res.status(200).send(data)
+
+           )
         }
     }); 
 }

@@ -14,6 +14,8 @@ const PromoteClass =  ({history})=> {
     const [ classData, setClassData ] = useState([])
     const [ sectionData, setSectionData ] = useState([])
     const [error, setError]=useState("")
+    const [message, setMessage]=useState("")
+    
     useEffect(() => {
         axios.get('/api/getClasses')
             .then((res) => {
@@ -64,8 +66,14 @@ const PromoteClass =  ({history})=> {
 
         await axios.post(`/api/promote`,{tClass,tSection,fClass,fSection})
         
-           history.push('/promote')
-      
+          
+           setTimeout(()=>{
+            setMessage("")
+            history.push(`/blank`)
+            history.push('/promote')
+            
+            },4000)
+           return setMessage(`Class promoted to ${tClass}`)
            
             
                 
@@ -86,8 +94,7 @@ const PromoteClass =  ({history})=> {
                     
                     <div className={styles.formStyle}>
                         <div className={styles.Border}>
-                            <br/>
-                             
+                        {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
                             <form className={styles.formMargin} onSubmit={onSubmit}>
                             {error && <span className='error-message'>{error}</span>}  
                            

@@ -2,21 +2,33 @@ import React, { useState,useEffect } from 'react'
 import styles from '../../assets/style.module.css'
 import { Row, Col, Form, Button, } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from 'react-datepicker';
 import axios from 'axios'
 
-const AddFee =  ()=> {
-   // const [message, setMessage]=useState("")
+const AddFee =  ({history})=> {
+    var [today,setToday] =useState( new Date)
+    var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
+
    const [ classData, setClassData ] = useState([])
    const [ sectionData, setSectionData ] = useState([])
-   const [error, setError]=useState("")
+   const [error, setError]=useState('')
     const [ Class, setClass ] = useState('')
     const [ section, setSection ] = useState('')
     const [ studentNo, setStudentNo] = useState('')
     const [title, setTitle]=useState("")
-    const [amount, setAmount]=useState("")
-    const [invoiceNo, setInvoiceNo]=useState("")
+    const [amount, setAmount]=useState(0)
+    const [message, setMessage]=useState("")
     const createdBy=localStorage.getItem("username")
+    const spaceClean=()=>{
+        setMessage('')
+        setAmount(0)  
+        setClass('')
+        setSection('')
+        setStudentNo(0) 
+        setTitle('')
+        setToday(new Date)
+    }
     useEffect(() => {
         axios.get('/api/getClasses')
             .then((res) => {
@@ -42,9 +54,27 @@ const AddFee =  ()=> {
     
     const onSubmit = async(e) => {
         e.preventDefault()
-      const{data}= await axios.post('/api/addFee',{Class,section,studentNo,title,amount,invoiceNo,createdBy})
-      alert(data.token)
-       window.location='/addFee'
+        if(studentNo=='' && Class=='' && section =='')
+        {
+            setTimeout(()=>{
+              setError('')         
+                 },4000)
+                return setError('Fields are required')     
+        }
+        if(amount<=0)
+        {
+            setTimeout(()=>{
+                setError('')         
+                   },4000)
+                  return setError('Enter payable amount')     
+              
+        }
+      const{data}= await axios.post('/api/addFee',{Class,section,studentNo,title,amount,createdBy,date})
+       setTimeout(()=>{
+       spaceClean()
+
+        },4000)
+       return setMessage(data.token)
 }
 
 return (
@@ -58,24 +88,27 @@ return (
                      <h1> Generate Fee </h1>
                  </div>
                  
-                 <div className={styles.formStyle}>
+                 <div className={styles.formStyle}>             
                      <div className={styles.Border}>
+                     {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+                     {error && <Button  className={styles.sideButton5} autoFocus >{error}</Button>}             
                          <br/>
-                          
                          <form className={styles.formMargin} onSubmit={onSubmit} >
-                         {error && <span className='error-message'>{error}</span>} 
                          <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Title</Form.Label>
                                         <Form.Control className={styles.formField} type="text" placeholder="Enter Title" value={title} onChange={ e => setTitle(e.target.value) } required ></Form.Control>
                                         
                         </Form.Group>
-                        <Form.Control required className={styles.formField} as="select" value={title} onChange={ e => setTitle(e.target.value) } >
+                        <Form.Control className={styles.formField} as="select" value={title} onChange={ e => setTitle(e.target.value) } >
                         <option defaultValue>Select Fee Types as title </option>                  
-                        <option value='Fine'>Fine</option>    
+                        <option value='Fine'>Fine</option>
+                        <option value='Exam Fee'>Exam Fee</option>
+                        <option value='Registration Fee'>Registration Fee</option>
+                        <option value='Extra-curricular'>Extra-curricular</option>    
                         </Form.Control>       
                                 <Form.Group controlId="formBasicstudentClass">
                                         <Form.Label>Class</Form.Label>
-                                        <Form.Control required className={styles.formField} as="select" value={Class} onChange={ e => setClass(e.target.value) } >
+                                        <Form.Control className={styles.formField} as="select" value={Class} onChange={ e => setClass(e.target.value) } >
                                           <option defaultValue>Select Class (Generate Fee For Whole Class)</option>
                                             {   
                                                  classData.map((classIns) => {
@@ -91,7 +124,7 @@ return (
 
                                     <Form.Group controlId="formBasicstudentClass">
                                         <Form.Label>Section</Form.Label>
-                                        <Form.Control className={styles.formField} as="select" value={section} onChange={ e => setSection(e.target.value) } required >
+                                        <Form.Control className={styles.formField} as="select" value={section} onChange={ e => setSection(e.target.value) } >
                                         <option defaultValue>Select Section (Generate Fee for Whole Section)</option>
                                             {  
                                                  sectionData.map((section) => {
@@ -113,7 +146,14 @@ return (
                         <Form.Label>Amount *</Form.Label>
                         <Form.Control className={styles.formField} type="number" placeholder="Enter Amount" value={amount} onChange={ e => setAmount(e.target.value) } required/>
                     </Form.Group>
-                   
+                    <Form.Group controlId="formBasicPassword">
+                                            <Form.Label>Select Date:</Form.Label><br/>
+                                            <DatePicker
+                                                selected={today}
+                                                onChange={date => setToday(date)}
+                                          required
+                                                 />
+                                        </Form.Group>
                 
                     
                     <Button className={styles.formButton} type="submit">

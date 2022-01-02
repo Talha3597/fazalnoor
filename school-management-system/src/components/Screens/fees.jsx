@@ -6,13 +6,16 @@ import * as AiIcons from 'react-icons/ai';
 import axios from 'axios'
 import {Link} from 'react-router-dom'
 import { useReactToPrint } from 'react-to-print';
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from 'react-datepicker';
 
  
 
 
 const Fee =  ()=> {
- 
-let[gdata,setData] =useState([]) 
+  var [today,setToday] =useState( new Date)
+  var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
+  let[gdata,setData] =useState([]) 
 let[month,setMonth] =useState('') 
 let[status,setStatus] =useState('') 
 const [ studentNo, setStudentNo] = useState('')
@@ -22,7 +25,6 @@ const [ section, setSection ] = useState('')
 const [ sectionData, setSectionData ] = useState([])
 let createdBy=localStorage.getItem("username")
 let role=localStorage.getItem("role")
-let today=new Date()
 let[year,setYear] =useState( today.getFullYear())
 const minusYear=()=>{
   setYear(year=>year-1)
@@ -45,6 +47,14 @@ const removeData = async(id) => {
            
         }) }
 }
+async function fetchData(){ 
+          
+  await axios.get('/api/fees', { params: {month,Class,section,status,studentNo,year} })
+  .then(res=>{
+      setData(res.data)
+      
+  })
+ }
 
 useEffect(()=>{
   axios.get('/api/getClasses')
@@ -66,14 +76,6 @@ console.log(err)
 console.log(err)
 })
 
-    async function fetchData(){ 
-          
-        await axios.get('/api/fees', { params: {month,Class,section,status,studentNo,year} })
-        .then(res=>{
-            setData(res.data)
-            
-        })
-       }
        
  fetchData()
 
@@ -81,11 +83,12 @@ console.log(err)
 },[month,status,Class,section,studentNo,year]
 )
 const generateDefaultFee = async()=>{
- let flag= window.confirm("Generate Default Fee for All Students")
+ let flag= window.confirm(`Generate Default Fee on ${date}`)
  if(flag)
  { 
-   await axios.post('/api/generateFee',{createdBy})
- }
+   await axios.post('/api/generateFee',{createdBy,date})
+      fetchData()
+  }
   
  
  
@@ -96,6 +99,7 @@ const deleteRecord = async()=>{
   if(flag)
   { 
     await axios.delete('/api/deleteFee', { params: {month,year} })
+  fetchData()
   }
 }else{
   window.alert('Select month to delete Paid record')
@@ -113,9 +117,8 @@ return (
    
         <div className={styles.margLeftRowTable }>
        <br/>
-       <div className="text-center">
-            
-                     &nbsp;
+       <div className="text-center">        
+       
         <button className={styles.formButton} onClick={() => window.location="/addFee"}>
                     
         &nbsp;   Add Fee   &nbsp;
@@ -130,32 +133,32 @@ return (
                                         
                                         Print
                                        </button><br/>      
-                    <select required  as="select" value={month} onChange={ e => setMonth(e.target.value) } >
+                    <select   as="select" value={month} onChange={ e => setMonth(e.target.value) } >
                    
                     <option value='' defaultValue>Select Month</option>
-                    <option value='Jan'>January</option>
-                    <option value='Feb'>Februry</option>
-                    <option value='Mar'>March</option>
-                    <option value='Apr'>April</option>
-                    <option value='May'>May</option>
-                    <option value='Jun'>June</option>
-                    <option value='Jul'>July</option>
-                    <option value='Aug'>August</option>
-                    <option value='Sep'>September</option>
-                    <option value='Oct'>October</option>
-                    <option value='Nov'>November</option>
-                    <option value='Dec'>December</option>
-                  </select>&nbsp;&nbsp;<AiIcons.AiFillPlusCircle onClick={ addYear}/>&nbsp;
+                    <option value='1'>January</option>
+                    <option value='2'>Februry</option>
+                    <option value='3'>March</option>
+                    <option value='4'>April</option>
+                    <option value='5'>May</option>
+                    <option value='6'>June</option>
+                    <option value='7'>July</option>
+                    <option value='8'>August</option>
+                    <option value='9'>September</option>
+                    <option value='10'>October</option>
+                    <option value='11'>November</option>
+                    <option value='12'>December</option>
+                   </select>&nbsp;<AiIcons.AiFillPlusCircle onClick={ addYear}/>&nbsp;
                   <AiIcons.AiFillMinusCircle onClick={minusYear}/> &nbsp;
                  
-                  <select required  as="select" value={status} onChange={ e => setStatus(e.target.value) } >
+                  <select  as="select" value={status} onChange={ e => setStatus(e.target.value) } >
                     <option value=''defaultValue>Select status</option>
                     <option value='Paid'>Paid</option>
                     <option value='Unpaid'>Unpaid</option>
                    
                    
                   </select>&nbsp;
-                  <select required  as="select" value={Class} onChange={ e => setClass(e.target.value) } >
+                  <select   as="select" value={Class} onChange={ e => setClass(e.target.value) } >
                                           <option value='' defaultValue>Select Class</option>
                                             {   
                                                  classData.map((classIns) => {
@@ -169,7 +172,7 @@ return (
                                         </select>
                                    
                                         &nbsp;
-                                        <select as="select" value={section} onChange={ e => setSection(e.target.value) } required >
+                                        <select as="select" value={section} onChange={ e => setSection(e.target.value) }>
                                         <option value='' defaultValue>Select Section</option>
                                             {
                                                  sectionData.map((section) => {
@@ -180,14 +183,14 @@ return (
                                                     </option>;
                                                     })
                                             }
-                                        </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                   
-                                       
-                       
-                        <input   type="number" placeholder="Search Student Number" value={studentNo} onChange={ e => setStudentNo(e.target.value) } />
-                        
-                                
-</div>
+                                        </select>&nbsp;
+                                   <input   type="number" placeholder="Search Student Number" className={styles.sizeFilter} value={studentNo} onChange={ e => setStudentNo(e.target.value) } />&nbsp;
+                                   <DatePicker
+                                                selected={today}
+                                                onChange={date => setToday(date)}
+                                                className={styles.sizeFilter}
+                                                 />                     
+                   &nbsp;</div>
 <div ref={componentRef} >
 <div className={styles.formHeading}>
                      <h3> Al Khidmat Fazal Noor Campus </h3>
@@ -199,19 +202,18 @@ return (
  
 <br/>
        <div className='table-responsive'>
-       <Table striped bordered hover size='sm'>
+       <Table striped bordered hover size='sm'  >
   <thead>
     <tr>
-      <th>Student Number</th>
+      <th>Student #</th>
       <th>Student Name</th>
       <th> Title</th>
-      <th>Invoice Number</th>
+      <th>Invoice #</th>
       <th>Amount</th>
-      <th>Discount</th>
       <th>Date</th>
       <th>Paid</th>
-      <th>person</th>
       <th>Status</th>
+      <th className={styles.noprint}></th>
       <th className={styles.noprint}></th>
     </tr>
   </thead>
@@ -223,15 +225,13 @@ return (
                             <td>{item.title}</td>  
                             <td>{item.invoiceNo}</td>  
                             <td>{item.amount}</td>  
-                            <td>{item.discount}</td>  
                             <td>{item.date}</td> 
                             <td>{item.pending}</td>
-                            <td>{item.person}</td>
                             <td>{item.status}</td>
                             <td className={styles.noprint}>  {role=='superAdmin'?
                         <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
                          Delete
-                        </Button>:''}&nbsp;
+                        </Button>:''}</td><td>
                         <Link to={`/payFee/${item._id}` } ><Button className={styles.sideButton1}  >
                         Pay</Button></Link> </td>
                             

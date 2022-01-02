@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styles from '../../assets/css/style.module.css'
-import { Row, Col,  Table } from 'react-bootstrap'
+import { Row, Col,  Table ,Button} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link,  useParams } from 'react-router-dom';
 import axios from 'axios'
@@ -12,15 +12,8 @@ const ClassVar = props => (
         <tr>
             <td>{props.classIns.studentNo}</td>
             <td>{props.classIns.studentName}</td>
-            <td><Link to={'/manageGrades/' + props.classIns._id}>Manage Grade</Link></td>
-            <td><Link to={'/updateStudents/' + props.classIns._id + '/' + props.classIns.class_id }><span className={[styles['Edel'], 'fas fa-pencil-alt'].join(' ')}></span></Link>
-            <button onClick={() =>  {
-                   axios.delete('/api/deleteSection/'+props.classIns._id)
-                   .then(response => { 
-                       console.log(response.data)
-                       window.location = '/sectionData/' + props.classIns.class_id
-                    });
-            }} className={styles.Edel2}><span className={[styles['Edel3'], 'fas fa-trash'].join(' ')}></span></button></td>
+            <td><Link to={'/manageGrades/' + props.classIns._id}><Button className={styles.sideButton1}  >Grade</Button></Link></td>
+            
         </tr>
 
     </tbody>
@@ -82,7 +75,7 @@ function ViewStudents() {
                                                 <th className={styles.tableHeading}>Admin No</th>
                                                 <th className={styles.tableHeading}>Name</th>
                                                 <th className={styles.tableHeading}>Grade</th>
-                                                <th className={styles.tableHeading}>Actions</th>
+                                                
                                             </tr>
                                         </thead>
 

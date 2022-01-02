@@ -2,23 +2,43 @@ import React, { useState } from 'react'
 import styles from '../../assets/style.module.css'
 import { Row, Col, Form, Button, } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from 'react-datepicker';
 import axios from 'axios'
 
 const AddExpense =  ({history})=> {
-    var today = new Date()
-   var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
+    var [today,setToday] =useState( new Date)
+    var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
    
     const [ ExpenseCategory, setExpenseCategory ] = useState('')
     const [title, setTitle]=useState("")
-    const [amount, setAmount]=useState("")
+    const [amount, setAmount]=useState(0)
     const [note, setNote]=useState("")
     const createdBy=localStorage.getItem("username")
-    const onSubmit = async() => {
-        await axios.post('/api/addExpense',{ExpenseCategory,title,amount,note,createdBy})
-        history.push('/expense')
-        history.push('/addExpense')
-
+    const [message, setMessage]=useState('')
+    const [error, setError]=useState('')
+    const spaceClean=()=>{
+        setAmount(0)
+        setTitle('')
+        setNote('')
+        setMessage('')
+        setExpenseCategory('')
+        
+    }
+    const onSubmit = async(e) => {
+        e.preventDefault()
+        if(amount<=0){
+            setTimeout(()=>{
+                 setError('')
+                    },4000)
+                   return setError("Enter payable amount")
+        
+        }
+        await axios.post('/api/addExpense',{ExpenseCategory,title,amount,note,createdBy,date})
+        setTimeout(()=>{
+        spaceClean()    
+            },4000)
+           return setMessage("Expense Added")
 
 }
 
@@ -34,10 +54,12 @@ return (
                  </div>
                  
                  <div className={styles.formStyle}>
+            
                      <div className={styles.Border}>
+                     {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+                     {error && <Button  className={styles.sideButton5} autoFocus >{error}</Button>}             
                          <br/>
-                         <div className="text-right">
-                          <h5>{date}&nbsp;</h5></div> 
+                         
                          <form className={styles.formMargin} onSubmit={onSubmit} >
                          <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Title</Form.Label>
@@ -52,7 +74,14 @@ return (
                         <Form.Control className={styles.formField} type="number" placeholder="Enter Amount" value={amount} onChange={ e => setAmount(e.target.value) } required/>
                     </Form.Group>
                    
-                   
+                    <Form.Group controlId="formBasicPassword">
+                                            <Form.Label>Select Date:</Form.Label><br/>
+                                            <DatePicker
+                                                selected={today}
+                                                onChange={date => setToday(date)}
+                                          required
+                                                 />
+                                        </Form.Group>
                 
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Note</Form.Label>

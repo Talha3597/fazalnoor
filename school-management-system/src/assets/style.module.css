@@ -1,11 +1,25 @@
 
 /**************** class page ********************/
+
+input:required {
+    border-color: red !important;
+  }
+:required {
+    border-color: red !important;
+  }
+  
 .heading{
-    font-size:22px; 
-    color:#fff;
-    justify-content: center;
-    margin-left: 30px;
-    
+    color:#fff; 
+}
+.tableDateSize{
+   
+        display: table-cell;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: auto;
+        max-width: 150px;
+     
 }
 .attendanceTable{
 padding: 5px;
@@ -46,7 +60,15 @@ padding: 5px;
     top: 0;
     left: 0;
 }
-
+.alert1 {
+    background-color: rgb(170, 0, 0); 
+    color: rgb(45, 0, 170);
+    opacity: 1;
+    transition: opacity 0.9s;
+    margin-bottom: 15px;
+    border: none;
+    padding: 10px;
+  }
 #leftCol {
     position: fixed;
     width: 150px;
@@ -193,18 +215,21 @@ padding: 5px;
     border: 2px solid;
     color: #46B6B1;
     min-width: 80px;
-    max-width: 140px;
-    justify-content: center;
+    max-width: 130px;
+    
 }
-
+.tableHeading{
+    background-color:#808080;
+    color: #ffffff;
+}
 .sideButton2{
     background-color:#fff!important;
     border-color:#9E3535;
     color: #9E3535;
     border: 2px solid;
     min-width: 80px;
-    max-width: 140px;
-    justify-content: center;
+    max-width: 130px;
+   
 }
 .sideButton3{
     background-color:#fff!important;
@@ -213,8 +238,20 @@ padding: 5px;
     border: 2px solid;
     min-width: 80px;
     max-width: 130px;
-    justify-content: center;
-    
+}
+.sideButton4{
+    background-color:rgb(97, 168, 115)!important;
+    font-size: 1.5rem;
+    border-color:#fefffe;
+    color: #ffffff ;
+    outline: none !important;
+}
+.sideButton5{
+    background-color:rgb(235, 85, 48)!important;
+    font-size: 1.5rem;
+    border-color:#fefffe;
+    color: #ffffff ;
+    outline: none !important;
 }
 .sideButton1:hover {
     background-color:#fff;
@@ -239,12 +276,12 @@ padding: 5px;
     background-color:#808080 !important;
     color: #ffffff;
     box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
-    min-width: 200px;
+    min-width: 130px;
     max-width: 300px;
-    
-    
 }
-
+.sizeFilter{
+    width:130px;
+}
 .card {
     /* Add shadows to create the "card" effect */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -322,7 +359,20 @@ padding: 5px;
 /**************** class page ********************/
 
 @media (max-width: 320px){
-
+    
+    .card
+    {
+        margin-left: 2%;  
+    }
+    .cardLarge {
+        margin-left: 2%;
+      }
+    .margLeftRow{
+        margin-left: 2.5% !important;
+    }
+    .margLeftRowTable{
+        margin-left: 2.5% !important;
+    }
     .respNav{
         display: block !important;
         background-color:#808080 
@@ -344,7 +394,7 @@ padding: 5px;
     }
 
     .formMargin{
-        margin-left: 13%;
+        margin-left: 12%;
        
     }
 
@@ -374,6 +424,19 @@ padding: 5px;
 
 
 @media (min-width: 321px) and (max-width: 575.98px){
+    .card
+    {
+        margin-left: 2%;  
+    }
+    .cardLarge {
+        margin-left: 2%;
+      }
+    .margLeftRow{
+        margin-left: 2% !important;
+    }
+    .margLeftRowTable{
+        margin-left: 2% !important;
+    }
     .respNav{
         display: block !important;
         background-color: #69a0b3;

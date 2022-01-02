@@ -46,7 +46,7 @@ const IncomeSchema=mongoose.Schema({
     }
 },
 { timestamps: true });
-IncomeSchema.plugin(autoIncrement.plugin, { model: 'Income', field: 'invoiceNo' });
+IncomeSchema.plugin(autoIncrement.plugin, { model: 'Income', field: 'invoiceNo',startAt: 1,  });
 
 var Income=mongoose.model('Income',IncomeSchema);
 module.exports=Income

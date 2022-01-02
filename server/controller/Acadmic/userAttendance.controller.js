@@ -4,7 +4,7 @@ try {
     const date=req.body.date
     const presentUsers=req.body.presentUsers
     const absentUsers=req.body.absentUsers
-    console.log(presentUsers+' '+date+" "+absentUsers)
+   
     const newAttendance =await UserAttendance.create({date,presentUsers,absentUsers})
     return res.status(200).json({
         success: true,

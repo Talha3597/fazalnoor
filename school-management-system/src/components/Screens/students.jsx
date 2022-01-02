@@ -10,7 +10,7 @@ let role=localStorage.getItem("role")
 //import axios from 'axios'
 const Students =()=>{
 let[gdata,setData] =useState([]) 
-const [search,setSearch]=useState("")
+const [search,setSearch]=useState('')
 const [ studentNo, setStudentNo] = useState('')
 const [ classData, setClassData ] = useState([])
 const [ Class, setClass ] = useState('')
@@ -32,7 +32,9 @@ const deleteRecord = async()=>{
   let flag= window.confirm(`Delete  record of ${section} `)
   if(flag)
   { 
+
     await axios.delete('/api/deleteSection', { params: {section} })
+    fetchData()
   }
 }else{
   window.alert('Select section to delete record')
@@ -47,7 +49,6 @@ const handlePrint = useReactToPrint({
   content: function() {return  componentRef1.current},
   documentTitle:"Students List Fazal Noor"
 });
-
 useEffect(()=>{
   axios.get('/api/getClasses')
   .then((res) => {
@@ -57,7 +58,8 @@ useEffect(()=>{
   .catch(err => {
 console.log(err)
 })
-
+},[])
+useEffect(()=>{
   axios.get('/api/getSections')
   .then((res) => {
       
@@ -67,15 +69,15 @@ console.log(err)
   .catch(err => {
 console.log(err)
 })
-
-    async function fetchData(){   
-        await axios.get('/api/students', { params: {search,Class,section,studentNo} })
-        .then(res=>{
-            setData(res.data)
-            
-        })
-       }
-       
+},[])
+async function fetchData(){   
+  await axios.get('/api/students', { params: {search,Class,section,studentNo} })
+  .then(res=>{
+      setData(res.data)
+      
+  })
+ }
+useEffect(()=>{     
  fetchData()
  
 
@@ -83,19 +85,15 @@ console.log(err)
 )
 return(
     <>
-           
-     
-    
-  
     <div className={styles.margLeftRowTable }>
     <div className={styles.empty}></div>
-    <div className='text-center'>  &nbsp;
-                            {role=='superAdmin'? <button className={styles.formButton} onClick={() => deleteRecord()}>
+    <div className='text-center'>
+     {role==='superAdmin' && <button className={styles.formButton} onClick={() => deleteRecord()}>
         <span>&#9888; </span> Delete Record
-                            </button>:''} &nbsp;     
-       <input type="text" placeholder="Search by Name.." value={search} onChange={e=>setSearch(e.target.value)}/>
-       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
-                   <select required  as="select" value={Class} onChange={ e => setClass(e.target.value) } >
+                            </button>} &nbsp;<button  onClick={handlePrint} className={styles.formButton} type="submit">Print</button>
+                            &nbsp;<input className={styles.sizeFilter} type="text" placeholder="Search by Name.." value={search} onChange={e=>setSearch(e.target.value)}/>
+       &nbsp;<input className={styles.sizeFilter} type="number" placeholder="Search Student #" value={studentNo} onChange={ e => setStudentNo(e.target.value) } />
+       &nbsp;<select className={styles.sizeFilter}  as="select" value={Class} onChange={ e => setClass(e.target.value) } >
                                          <option value='' defaultValue>Select Class</option>
                                            {   
                                                 classData.map((classIns) => {
@@ -107,9 +105,7 @@ return(
                                                    })
                                            }
                                        </select>
-                                  
-                                       &nbsp;
-                                       <select as="select" value={section} onChange={ e => setSection(e.target.value) } required >
+                                       &nbsp;<select className={styles.sizeFilter} as="select" value={section} onChange={ e => setSection(e.target.value) } >
                                        <option value='' defaultValue>Select Section</option>
                                            {
                                                 sectionData.map((section) => {
@@ -120,12 +116,7 @@ return(
                                                    </option>;
                                                    })
                                            }
-                                       </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                       <input   type="number" placeholder="Search Student Number" value={studentNo} onChange={ e => setStudentNo(e.target.value) } />
-                       &nbsp;<button  onClick={handlePrint} className={styles.formButton} type="submit">
-                                        
-                                        Print
-                                       </button>
+                                       </select>                   
 </div>
     <div ref={componentRef1}>
     <div className={styles.formHeading}>
@@ -139,20 +130,14 @@ return(
 }&nbsp;</h5>
 <br/>
        <div className='table-responsive'>
-    
-       
        <Table striped bordered hover size='sm' >
-       
   <thead >
     <tr>
-      <th>Student Number</th>
+      <th>Student #</th>
       <th> Name</th>
-      <th>Guardian</th>
       <th>Class</th>
       <th>Section</th>
-    
-      <th>Phone Number</th>
-      <th>Address</th>
+      <th>Phone #</th>
       <th className={styles.noprint}></th>
       <th className={styles.noprint}></th>
       <th className={styles.noprint}></th>
@@ -161,30 +146,24 @@ return(
     </tr>
   </thead>
   <tbody >
-  {gdata.map((item,idx) => {  
+  {gdata.map((item) => {  
                         return <tr key={item._id}>
-                          
                             <td>{item.studentNo}</td> 
                             <td>{item.studentName}</td>  
-                            <td>{item.parentName}</td>  
                             <td>{item.Class}</td>  
                             <td>{item.section}</td>  
                             <td>{item.phoneNo}</td>  
-                            <td>{item.address}</td>
-                              {role=='superAdmin'?
+                              {role==='superAdmin'&&
                           <td className={styles.noprint}><Link  to={`/updateStudent/${item._id}`}>  
-                            <Button className={styles.sideButton1}  >
-                            Edit</Button></Link></td>:''}
-                            {role=='superAdmin'?  <td className={styles.noprint}>
+                            <Button className={styles.sideButton1}>Edit</Button></Link></td>}
+                            {role==='superAdmin'&& <td className={styles.noprint}>
                            <Button className={styles.sideButton2}  onClick={() => removeData(item._id)}>
-                             Delete
-                            </Button></td>:''}
-                            
+                             Delete</Button></td>}
                             <td className={styles.noprint}> <Link to={ `/viewStudent/${item._id}` }> <Button className={styles.sideButton3}  >
                             View</Button></Link></td>
-                            {role=='superAdmin'|| role=='finance'||role=='financeTeacher'||role=='adminFinance'? <td className={styles.noprint}>
+                            {role==='superAdmin'|| role==='finance'||role==='financeTeacher'||role==='adminFinance' ? <td className={styles.noprint}>
                             <Link to={`/addFeeStudent/${item.studentNo}`}>
-                        <Button className={styles.sideButton1}>Fee</Button></Link></td> :''}
+                        <Button className={styles.sideButton1}>Fee</Button></Link></td>:''}
                         <td className={styles.noprint}>
                           <Link to={`/viewGradesStudent/${item.studentNo}`}>
                         <Button className={styles.sideButton3} >
@@ -193,9 +172,7 @@ return(
                         </tr>  
                     })}  
     
-  </tbody>
- 
-                            
+  </tbody>                        
 </Table>
 </div>    
 </div>

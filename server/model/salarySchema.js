@@ -9,11 +9,7 @@ const SalarySchema=mongoose.Schema({
         trim:true,
         
     },
-    type:{
-        type:String,
-        trim:true,
-        
-    },
+    
     username:{
         type:String,
         trim:true,
@@ -60,12 +56,7 @@ const SalarySchema=mongoose.Schema({
         trim:true,
        
     },
-    key:{
-        type:Number,
-        trim:true,
-        
-    },
 });
-SalarySchema.plugin(autoIncrement.plugin, { model: 'Salary', field: 'invoiceNo' });
+SalarySchema.plugin(autoIncrement.plugin, { model: 'Salary', field: 'invoiceNo',startAt: 1,  });
 var Salary = mongoose.model('Salary', SalarySchema);
 module.exports=Salary

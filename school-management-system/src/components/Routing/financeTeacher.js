@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import {BrowserRouter as Router, Route} from "react-router-dom"
 
 
-
+import Blank from '../Screens/blank'
 import  Sidebar  from '../Screens/privateScreen';
 import AddNotice from '../Screens/addNotice'
 import Notices from '../Screens/notices'
@@ -102,6 +102,7 @@ import * as RiIcons from 'react-icons/ri';
       <Route exect path="/register" component={RegisterScreen}/>
       <Route exect path="/forgotpassword" component={forgotPasswordScreen}/>
       <Route exect path="/passwordreset/:resetToken" component={resetPasswordScreen}/>
+      <Route  path="/blank" component={Blank}/>
      
       <Route  path="/profile" component={Profile}/>
       <Route  path="/addNotice" component={AddNotice}/>

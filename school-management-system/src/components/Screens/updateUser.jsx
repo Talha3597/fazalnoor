@@ -22,6 +22,7 @@ const UpdateUser =({match,history})=>{
     const [ section, setSection ] = useState('')
     const [ classData, setClassData ] = useState([])
     const [ sectionData, setSectionData ] = useState([])
+    const [message, setMessage]=useState("")
     
     
     
@@ -76,11 +77,22 @@ const UpdateUser =({match,history})=>{
     if(role==='teacher' || role==='adminTeacher' || role==='financeTeacher' && Class!=''&& section!=''){
 
         await axios.put(`/api/auth/updateUser/${id}`,{id,employeeNo,username,email,address,cnic,phoneNo,description,salary,role,Class,section})
-        history.push(`/updateUser/${id}`) 
+        setTimeout(()=>{
+            setMessage("")
+            history.push(`/updateUser/${id}`)
+            
+            },4000)
+           return setMessage("User Updated")
     }  else{
         await axios.put(`/api/auth/updateUser/${id}`,{id,employeeNo,username,email,address,cnic,phoneNo,description,salary,role})
-        history.push(`/updateUser/${id}`)  
+        setTimeout(()=>{
+            setMessage("")
+            history.push(`/updateUser/${id}`)
+            
+            },4000)
+           return setMessage("User Updated")  
     }        }
+
                         
                       
                             
@@ -99,7 +111,8 @@ const UpdateUser =({match,history})=>{
                         
                         <div className={styles.formStyle}>
                             <div className={styles.Border}>
-                                <br/>
+    {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+                            
                                  
                                 <form className={styles.formMargin} onSubmit={onSubmit} >
                                 {error && <span className='error-message'>{error}</span>}             

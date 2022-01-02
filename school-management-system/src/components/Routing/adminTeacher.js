@@ -7,7 +7,7 @@ import {BrowserRouter as Router, Route} from "react-router-dom"
 import  Sidebar  from '../Screens/privateScreen';
 import AddNotice from '../Screens/addNotice'
 import Notices from '../Screens/notices'
-
+import Blank from '../Screens/blank'
 import ViewNotice from '../Screens/viewNotice'
 
 import ViewHomework from '../Screens/viewHomework'
@@ -104,6 +104,8 @@ import * as RiIcons from 'react-icons/ri';
       <Route  path="/homeworks" component={Homeworks}/>
       <Route  path="/updateHomework/:id" component={UpdateHomework}/>
       <Route  path="/email" component={Email}/>
+      <Route  path="/blank" component={Blank}/>
+
           <Route exact path="/addSection/:id">
             <AddSection />
           </Route>

@@ -1,4 +1,5 @@
 const Salary =require('../../model/salarySchema');
+const SalaryDeposite =require('../../model/salaryDepositeSchema');
 const UserAttendance =require('../../model/attendanceSchemaUser');
 const User =require('../../model/user');
 
@@ -12,9 +13,8 @@ try{
     const salary=parseInt(req.body.amount,10)
     const person=req.body.createdBy
     let status='Unpaid'
-    let type='salary'
     let pending=0
-    let date= new Date()
+    let date= req.body.date
     
     await User.find({employeeNo:employeeNo},(error,sdata) => {
          if (error) {
@@ -26,15 +26,11 @@ try{
          }else{
             if(sdata[0]){
                 username=sdata[0].username;
-                  const newSalary=  Salary.create({title,type,username,employeeNo,salary,pending,date,status,person})
+                  const newSalary=  Salary.create({title,username,employeeNo,salary,pending,date,status,person})
                  return res.status(200).json({
                   success: true,
                   token: "Salary add successfully",
-              })
-                   
- 
-                 
-             
+              })   
      }else{
          return res.status(200).json({
                  success: true,
@@ -73,18 +69,15 @@ module.exports.getSalary = async(req,res)=>
 module.exports.getSalaryDeposite = async(req,res)=>
 {  
     
-      if(req.query.key !='')  {
-       const {key}=req.query
+      if(req.query.invoiceNo !='')  {
+       const {invoiceNo}=req.query
       
-      await Salary.find({type:'deposite',key:key}, (error, data) => {
+      await SalaryDeposite.find({invoiceNo:invoiceNo}, (error, data) => {
         if (error) {
             
             throw error;
         } else {
-            
-           
             res.send(data)
-          
         }
     });
 }
@@ -95,12 +88,11 @@ module.exports.salaries = async(req,res)=>
        const month=req.query.month
        const status=req.query.status
        const employeeNo=req.query.employeeNo
-       let type='salary'
        const year=req.query.year
     
        if(employeeNo!='')
        {
-        await Salary.find({employeeNo:employeeNo,date: { $regex: month+'.*'+year },status: { $regex: status },type:type}).sort({_id:-1}).limit(120)
+        await Salary.find({employeeNo:employeeNo,date: { $regex: month+'-'+year },status: { $regex: status }}).sort({_id:-1}).limit(120)
         .then((data)=>{
             
             return res.send(data)})
@@ -108,7 +100,7 @@ module.exports.salaries = async(req,res)=>
             return res.status(200).json({success:true, token:'Error Loading Data'})
         })
        }else{
-       await Salary.find({date: { $regex: month+'.*'+year },status: { $regex: status },type:type}).sort({_id:-1}).limit(120)
+       await Salary.find({date: { $regex: month+'-'+year },status: { $regex: status }}).sort({_id:-1}).limit(120)
         .then((data)=>{
             
             return res.send(data)})
@@ -137,13 +129,22 @@ module.exports.deleteSalaryRecord=async(req,res)=>{
     const month=req.query.month
     const year=req.query.year
     
-   await Salary.deleteMany({date: { $regex: month+'.*'+year }},(error, data) => {
-        if (error) {
+   await Salary.deleteMany({date: { $regex: month+'-'+year }},(error, data) => {
+         if (error) {
             
             throw error;
         } else {
             
-            res.status(204).json(data);
+            SalaryDeposite.deleteMany({date: { $regex: month+'-'+year }},(error, data) => {
+                if (error) {
+                   
+                   throw error;
+               } else {
+                   
+                   res.status(204).json(data);
+                   
+               }
+           });
             
         }
     });
@@ -172,15 +173,20 @@ const salaryDeduction=(employeeNo,salary,attendanceData)=>{
 module.exports.generateSalary = async(req,res)=>
 { 
     let person=req.body.createdBy
-    let type='salary'
     let employeeNo=0
     let pending=0
     let status='Unpaid'
     let title='Monthly Salary'
     let salary=0
-    let date=new Date()
-    let year=date.getFullYear()
-    let month=date.getMonth()
+    let date=req.body.date
+    let d=date.split('-')
+    let year=d[2]
+    let month=d[1]
+    if(month==1){
+        month=12
+        year=year-1
+      
+    }
     let attendanceData=[]
     let username=''
     await UserAttendance.find({date:{ $regex: year+'-'+month+'-' }}, (error,data) => {
@@ -194,8 +200,7 @@ module.exports.generateSalary = async(req,res)=>
             attendanceData=data
         }})
         if(attendanceData[2]){
-            console.log("Second Checked")
-            await User.find({}, (error,data) => {
+             User.find({}, (error,data) => {
                 if (error) {
                     return res.status(200).json({
                         success: true,
@@ -206,7 +211,6 @@ module.exports.generateSalary = async(req,res)=>
                     data.map(item => { 
                       let deduct=salaryDeduction(item.employeeNo,item.salary,attendanceData)
                      if(deduct){
-                        console.log("Fourth Checked")
                         employeeNo=item.employeeNo;
                         username=item.username
                         salary=item.salary
@@ -215,8 +219,7 @@ module.exports.generateSalary = async(req,res)=>
                         title='Monthly Salary'
                         status='Unpaid'
                         
-                        //const newFee=   Salary.create({title,type,username,employeeNo,salary,pending,date,status,person})
-                       let key=0
+                       let invoiceNo=0
                         var newFee= new  Salary()
                         newFee.title=title
                         newFee.type=type
@@ -228,26 +231,24 @@ module.exports.generateSalary = async(req,res)=>
                         newFee.status=status
                         newFee.person=person
                         newFee.save(function(err,data) {
-                            key=data.invoiceNo
-                            type='deposite'
+                            invoiceNo=data.invoiceNo
                             title='Leave Deduction'
                             status='Paid'
-                            pending=deduct    
-                            const newFee1=   Salary.create({title,type,username,employeeNo,salary,pending,date,status,person,key})
+                            pending=deduct 
+                            salary=deduct   
+                            const newFee1=   SalaryDeposite.create({title,username,employeeNo,salary,pending,date,status,person,invoiceNo})
                        
                          });
                           
                      }
                      else{
-                        console.log("Third Checked")
                         employeeNo=item.employeeNo;
                         username=item.username
                         salary=item.salary
-                        type='salary'
                         title='Monthly Salary'
                         status='Unpaid'
                         pending=0
-                        const newFee2=  Salary.create({title,type,username,employeeNo,salary,pending,date,status,person})    
+                        const newFee2=  Salary.create({title,username,employeeNo,salary,pending,date,status,person})    
                         
                      
                     }   
@@ -260,8 +261,7 @@ module.exports.generateSalary = async(req,res)=>
                
             }) 
         }else{
-            console.log("First Checked")
-            await User.find({}, (error,data) => {
+             User.find({}, (error,data) => {
                 if (error) {
                     return res.status(200).json({
                         success: true,
@@ -273,7 +273,7 @@ module.exports.generateSalary = async(req,res)=>
                         employeeNo=item.employeeNo;
                         username=item.username
                         salary=item.salary
-                        const newFee3=  Salary.create({title,type,username,employeeNo,salary,pending,date,status,person})    
+                        const newFee3=  Salary.create({title,username,employeeNo,salary,pending,date,status,person})    
                      } )  
                        
                 return res.status(200).json({
@@ -285,10 +285,7 @@ module.exports.generateSalary = async(req,res)=>
             }) 
         }
    
-        return res.status(200).json({
-            success: true,
-            token: "Salary Not add successfully",
-        })
+      
     
 }
 module.exports.paySalary=async(req,res)=>
@@ -302,13 +299,12 @@ module.exports.paySalary=async(req,res)=>
     let person=req.body.receivedBy
     let username=req.body.name
     let status='Unpaid'
-    let type='deposite'
-    let key=req.body.key
+    let invoiceNo=req.body.invoiceNo
     pending=parseInt(pending,10)+parseInt(payAmount,10)
     if(pending==salary){
         status='Paid'
     }
-    let date=new Date()
+    let date=req.body.date
     
         await Salary.updateOne({_id: id}, {$set:{salary:salary,pending:pending,status:status}}, {upsert: true}, function(err, data) {
         if (err) {
@@ -316,7 +312,8 @@ module.exports.paySalary=async(req,res)=>
         } else {           
           pending=payAmount
            status='Paid'
-            const newFee=  Salary.create({title,type,username,employeeNo,salary,pending,date,status,person,key})
+           salary=payAmount
+            const newFee=  SalaryDeposite.create({title,username,employeeNo,salary,pending,date,status,person,invoiceNo})
             return res.status(200).json({success:true,message:`${payAmount} Rs  PAID` });
          
            
@@ -327,18 +324,17 @@ module.exports.salaryDashboard=async(req,res)=>{
     
     const month=req.query.month
     const status=req.query.status
-    let type='salary'
     const year=req.query.year
     
-    await Salary.find({date: { $regex: month+'.*'+year },status: { $regex: status },type:type})
+    await Salary.find({date: { $regex: month+'-'+year },status: { $regex: status },})
     .then((data)=>{
            
             const sum3=data.map(item=>item.pending).reduce((a,item)=>item+a)
             const sum4=data.map(item=>item.salary).reduce((a,item)=>item+a)
-            Salary.countDocuments({type:type,status:"Paid",date: { $regex: month+'.*'+year }}
+            Salary.countDocuments({status:"Paid",date: { $regex: month+'-'+year }}
             ,function(error,count) {
                
-                Salary.countDocuments({type:type,status:"Unpaid",date: { $regex: month+'.*'+year }}
+                Salary.countDocuments({status:"Unpaid",date: { $regex: month+'-'+year }}
                 ,function(error,count1)  {
                     
                    
@@ -356,10 +352,10 @@ module.exports.salaryDashboard=async(req,res)=>{
 
     module.exports.salaryReport=async(req,res)=>{
         const month=req.query.month
-        let type='deposite'
+       
         const year=req.query.year
     
-       await Salary.aggregate([{ $match: {date: { $regex: month+'.*'+year },type:type} },
+       await SalaryDeposite.aggregate([{ $match: {date: { $regex: month+'-'+year }} },
         {$group: {_id:"$title",amount:{"$sum":"$pending"}} }
     ])
         .then((data)=>{
@@ -372,11 +368,11 @@ module.exports.salaryDashboard=async(req,res)=>{
     
     }
     module.exports.salaryR2f1=async(req,res)=>{
-        let type='deposite'
+       
         const month=req.query.month
         const year=req.query.year
     
-       await Salary.aggregate([{ $match: {date: { $regex: month+'.*'+year},type:type} },
+       await SalaryDeposite.aggregate([{ $match: {date: { $regex: month+'-'+year},} },
         {$group: {_id:"$role",amount:{"$sum":"$pending"}} }
     ])
         .then((data)=>{
@@ -390,10 +386,9 @@ module.exports.salaryDashboard=async(req,res)=>{
     
     module.exports.salaryReportRole=async(req,res)=>{
         const month=req.query.month
-        let type='deposite'
         const year=req.query.year
     
-       await Salary.aggregate([{ $match: {date: { $regex: month+'.*'+year },type:type} },
+       await SalaryDeposite.aggregate([{ $match: {date: { $regex: month+'-'+year }} },
         {$group: {_id:"$person",amount:{"$sum":"$pending"}} }
     ])
         .then((data)=>{
@@ -405,12 +400,12 @@ module.exports.salaryDashboard=async(req,res)=>{
     
     }
     module.exports.salaryGeneralReport=async(req,res)=>{
-        let type='deposite'
+      
         const month=req.query.month
         const year=req.query.year
     
     
-    await Salary.find({date: { $regex: month+'.*'+year },type:type})
+    await SalaryDeposite.find({date: { $regex: month+'-'+year }})
         .then((data)=>{    
                const sum3=data.map(item=>item.pending).reduce((a,item)=>item+a)
                return res.send((sum3).toString())
@@ -423,8 +418,7 @@ module.exports.salaryDashboard=async(req,res)=>{
         const month=req.query.month
         const year=req.query.year
     
-        let type2='deposite'
-        await Salary.aggregate([{ $match: {date: { $regex: month+'.*'+year },type:type2} },
+        await SalaryDeposite.aggregate([{ $match: {date: { $regex: month+'-'+year },} },
             {$group: {_id:"$username",amount:{"$sum":"$pending"}} }
         ])
             .then((data)=>{

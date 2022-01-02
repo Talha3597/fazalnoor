@@ -1,4 +1,5 @@
 const Exam =require('../../model/examSchema');
+const gradeSchema = require('../../model/SD_model/gradeSchema')
 
 
 
@@ -65,6 +66,16 @@ module.exports.exams = async(req,res)=>
             return res.status(200).json({success:true, token:'Error Loading Data'})
         })
     } 
+    else if(Class=='' && section !='') 
+    {
+        await Exam.find({section:section}).sort({_id:-1})
+        .then((data)=>{
+           
+            return res.send(data)})
+        .catch( (err)=>{
+            return res.status(200).json({success:true, token:'Error Loading Data'})
+        })
+    } 
     else 
     {
         await Exam.find({Class:Class,section:section}).sort({_id:-1})
@@ -86,7 +97,16 @@ module.exports.deleteExam=(req,res)=>{
             throw error;
         } else {
             
-            res.status(204).json(data);
+             gradeSchema.deleteMany({section:data.section,stdclass:data.Class,title:data.title},(error, data) => {
+                if (error) {
+                    
+                    throw error;
+                } else {
+                    
+                    res.status(204).json(data);
+                    
+                }
+            });
         }
     });
 }

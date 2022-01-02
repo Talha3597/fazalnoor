@@ -62,19 +62,20 @@ const LoginScreen =({history})=>{
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ml-auto'>
+            <Link to='/home'>
+                
+                <FaIcons.FaHome  /> Home
+               
+              </Link>
               <Link to='/noticeB'>
                 
                 <FaIcons.FaClipboardCheck  /> Notices
                
               </Link>
-              <Link to='/home'>
-                
-                <FaIcons.FaHome  /> Home
-               
-              </Link>
+              
                 <Link to='/login'>
                  
-                  <FaIcons.FaSignInAlt/>  Sign In
+                  <FaIcons.FaSignInAlt/> Sign In
                   
                 </Link>
              

@@ -99,7 +99,7 @@ const Profile =()=>{
                                      
                                     <Form.Group controlId="formBasicEmail">
                                         <Form.Label>CNIC  Format: XXXXX-XXXXXXX-X</Form.Label>
-                                        <Form.Control  readOnly disabled pattern="[0-9]{5}-[0-9]{7}-[0-9]{1}"  className={styles.formField} type="text" placeholder="Enter CNIC" value={cnic} onChange={ e => setCnic(e.target.value)  }/>
+                                        <Form.Control required readOnly disabled pattern="[0-9]{5}-[0-9]{7}-[0-9]{1}"  className={styles.formField} type="text" placeholder="Enter CNIC" value={cnic} onChange={ e => setCnic(e.target.value)  }/>
                                     </Form.Group>
                                     <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Phone Number *</Form.Label>
@@ -110,10 +110,10 @@ const Profile =()=>{
                                         <Form.Control readOnly disabled  className={styles.formField} required  type="email" placeholder="Enter Email" value={email} onChange={ e => setEmail(e.target.value) }/>
                                     </Form.Group>
                                     <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>New Password *</Form.Label>
+                                        <Form.Label>New Password (if want to change) </Form.Label>
                                         <Form.Control  className={styles.formField} type="password" placeholder="Enter Password" value={password} onChange={ e => setPassord(e.target.value) }  />
                                     </Form.Group><Form.Group controlId="formBasicEmail">
-                                        <Form.Label>Confirm Password *</Form.Label>
+                                        <Form.Label>Confirm Password </Form.Label>
                                         <Form.Control className={styles.formField} type="password" placeholder="Enter Confirm Password" value={confirmPassword} onChange={ e => setConfirmPassord(e.target.value) } />
                                     </Form.Group>
                                     

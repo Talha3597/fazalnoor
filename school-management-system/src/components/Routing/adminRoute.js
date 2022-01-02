@@ -10,7 +10,7 @@ import AddNotice from '../Screens/addNotice'
 import Notices from '../Screens/notices'
 import UpdateNotice from '../Screens/updateNotice'
 import ViewNotice from '../Screens/viewNotice'
-
+import Blank from '../Screens/blank'
 import ViewHomework from '../Screens/viewHomework'
 // homework
 import AddHomework from '../Screens/addHomework'
@@ -78,6 +78,7 @@ export const App2=()=> {
   <Route exect path="/register" component={RegisterScreen}/>
   <Route exect path="/forgotpassword" component={forgotPasswordScreen}/>
   <Route exect path="/passwordreset/:resetToken" component={resetPasswordScreen}/>
+  <Route  path="/blank" component={Blank}/>
  
   
   <Route  path="/addNotice" component={AddNotice}/>

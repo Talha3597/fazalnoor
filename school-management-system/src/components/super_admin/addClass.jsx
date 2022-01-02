@@ -8,9 +8,15 @@ import $ from 'jquery';
 
 function SAdashboard() {
     const [ title, setTitle ] = useState('')
+    const [ message, setMessage ] = useState('')
     const [ description, setDescription ] = useState('')
     const [ incharge, setIncharge ] = useState('')
-
+const spaceClean=()=>{
+   setDescription('')
+   setIncharge('')
+   setTitle('')
+   setMessage('')
+}
     const onSubmit = (e) => {
         e.preventDefault()
 
@@ -36,8 +42,11 @@ function SAdashboard() {
 
             axios.post('/api/addClass', classObj)
                 .then(res => {
-                    console.log(res.data)
-                    window.location = '/classData'
+                    setTimeout(() => {
+                         spaceClean()
+                      }, 4000);
+                      return setMessage("Class Added");
+                    
                 })
                 .catch(err => console.log('error : ' + err))
         }else{
@@ -64,7 +73,8 @@ function SAdashboard() {
                         
                         <div className={styles.formStyle}>
                             <div className={styles.Border}>
-                                <br/>
+                            {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+
                                 <form name='classForm' className={[styles['formMargin'] , 'needs-validation'].join(' ')} onSubmit={onSubmit} noValidate>
 
                                     <Form.Group controlId="formBasicEmail">

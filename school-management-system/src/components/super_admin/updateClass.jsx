@@ -10,14 +10,33 @@ function UpdateClass(){
 
     const { id_1 } = useParams()
     const [ title, setTitle ] = useState('')
+    const [ message, setMessage ] = useState('')
     const [ description, setDescription ] = useState('')
     const [ teacher, setTeacher ] = useState('')
     const [ sectionClass, setSectionClass ] = useState({})
     const [ stclassData, setClassTitle ] = useState([])
     const [ currentClass, setClass ] = useState('')
-
+    const spaceClean=()=>{
+        setDescription('')
+        setTeacher('')
+        setTitle('')
+        setMessage('')
+     }
+     async function fetchClassData(){ 
+        await axios.get('/api/singleClass/' + id_1)
+             .then((res) => {
+                 console.log(res.data)
+                 setTitle(res.data.title)
+                 setDescription(res.data.description)
+                 setTeacher(res.data.incharge)
+                 
+             })
+             .catch(err => {
+                 console.log(err)
+             })}
     useEffect(() => {
-        axios.get('/api/singleClass/' + id_1)
+        async function fetchClassData(){ 
+       await axios.get('/api/singleClass/' + id_1)
             .then((res) => {
                 console.log(res.data)
                 setTitle(res.data.title)
@@ -27,9 +46,9 @@ function UpdateClass(){
             })
             .catch(err => {
 				console.log(err)
-			})
+			})}
 
-            
+            fetchClassData()
 
             
     }, [])
@@ -56,8 +75,12 @@ function UpdateClass(){
 
             axios.post('/api/updateCLass/' + id_1 , section)
                 .then(res => {
-                    console.log(res.data)
-                    window.location = '/manageClassData'
+                    setTimeout(() => {
+                        spaceClean()
+                        fetchClassData()
+                     }, 4000);
+                     return setMessage("Class Updated");
+
                 })
                 .catch(err => console.log('error : ' + err))
         }else{
@@ -96,12 +119,13 @@ function UpdateClass(){
                         
                         <div className={styles.formStyle}>
                             <div className={styles.Border}>
-                                <br/>
+                            {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+
                                 <form className={styles.formMargin} onSubmit={onSubmit}>
 
                                     <Form.Group>
                                         <Form.Label>Title</Form.Label>
-                                        <Form.Control className={styles.formField} type="text" placeholder="Enter Title" value={title} onChange={ e => setTitle(e.target.value) }/>
+                                        <Form.Control className={styles.formField} type="text" placeholder="Enter Title" value={title} onChange={ e => setTitle(e.target.value) } required />
                                         <Form.Text id="title" className={styles.authtextF1} style={{display: 'none'}}>
                                             Please provide title for Class.
                                         </Form.Text>

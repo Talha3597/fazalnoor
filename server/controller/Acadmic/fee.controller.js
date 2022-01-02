@@ -1,4 +1,5 @@
 const Fee =require('../../model/feeSchema');
+const FeeDeposite =require('../../model/feeDepositeSchema');
 const StudentSchema =require('../../model/studentSchema');
 
 
@@ -15,10 +16,9 @@ try{
            const amount=parseInt(req.body.amount,10)
            const person=req.body.createdBy
            let status='Unpaid'
-           let type='fee'
            let discount=0
            let pending=0
-           let date= new Date()
+           let date=req.body.date
            let studentName=''
            if(studentNo!=='')
            {
@@ -35,11 +35,13 @@ try{
                        const Class=sdata[0].Class;
                        const section=sdata[0].section;
                        studentName=sdata[0].studentName;
-                         const newFee=  Fee.create({title,type,studentName,studentNo,amount,discount,pending,date,status,Class,section,person})
+                       if(amount>0){
+                         const newFee=  Fee.create({title,studentName,studentNo,amount,discount,pending,date,status,Class,section,person})
                         return res.status(200).json({
                          success: true,
                          token: "Fee add successfully",
                      })
+                    }
                           
         
                         
@@ -66,21 +68,13 @@ try{
                 }else{
                    
                     data.map(item => {   
-
-                            
-                        studentNo=item.studentNo;
-                        
-                       
-                               
                                 studentNo=item.studentNo;
                                 studentName=item.studentName;
                                 const Class=item.Class;
                                 const section=item.section
-                               const newFee=  Fee.create({title,type,studentName,studentNo,amount,discount,pending,date,status,Class,section,person})
-                              
-                            
-                        
-                    
+                                if(amount>0){
+                               const newFee=  Fee.create({title,studentName,studentNo,amount,discount,pending,date,status,Class,section,person})
+                                }
                 })
                 return res.status(200).json({
                     success: true,
@@ -106,21 +100,13 @@ try{
                 }else{
                    
                     data.map(item => {   
-
-                            
-                        studentNo=item.studentNo;
-                        
-                       
-                               
                                 studentNo=item.studentNo;
                                 studentName=item.studentName;
                                 const Class=item.Class;
                                 const section=item.section
-                               const newFee=  Fee.create({title,type,studentName,studentNo,amount,discount,pending,date,status,Class,section,person})
-                              
-                            
-                        
-                    
+                                if(amount>0){
+                               const newFee=  Fee.create({title,studentName,studentNo,amount,discount,pending,date,status,Class,section,person})
+                    }
                 })
                 return res.status(200).json({
                     success: true,
@@ -145,22 +131,14 @@ try{
                     
                 }else{
                    
-                    data.map(item => {   
-
-                            
-                        studentNo=item.studentNo;
-                        
-                       
-                               
+                    data.map(item => {      
                                 studentNo=item.studentNo;
                                 studentName=item.studentName;
                                 const Class=item.Class;
                                 const section=item.section
-                               const newFee=  Fee.create({title,type,studentName,studentNo,amount,discount,pending,date,status,Class,section,person})
-                              
-                            
-                        
-                    
+                                if(amount>0){
+                               const newFee=  Fee.create({title,studentName,studentNo,amount,discount,pending,date,status,Class,section,person})
+                    }
                 })
                 return res.status(200).json({
                     success: true,
@@ -207,16 +185,14 @@ module.exports.getFee = async(req,res)=>
 module.exports.getDeposite = async(req,res)=>
 {  
     
-      if(req.query.key !='')  {
-       const {key}=req.query
+      if(req.query.invoiceNo !='')  {
+       const {invoiceNo}=req.query
       
-      await Fee.find({type:'deposite',key:key}, (error, data) => {
+      await FeeDeposite.find({invoiceNo:invoiceNo}, (error, data) => {
         if (error) {
             
             throw error;
         } else {
-            
-           
             res.send(data)
           
         }
@@ -231,11 +207,10 @@ module.exports.fees = async(req,res)=>
     const Class=req.query.Class
     const section=req.query.section
     const studentNo=req.query.studentNo
-    const type='fee'
     const year=req.query.year
     
     if(studentNo!=''){
-        await  Fee.find({studentNo:studentNo,date: { $regex: month+'.*'+year },status: { $regex: status },type:type}).sort({_id:-1})
+        await  Fee.find({studentNo:studentNo,date: { $regex: month+'-'+year },status: { $regex: status }}).sort({_id:-1})
          .then((data)=>{
              return res.send(data)}
              )
@@ -245,7 +220,7 @@ module.exports.fees = async(req,res)=>
      }
    
    else if(Class !=''&& section !=''){
-        await Fee.find({Class:Class,section:section,date: { $regex: month+'.*'+year },status: { $regex: status },type:type}).sort({_id:-1}).limit(200)
+        await Fee.find({Class:Class,section:section,date: { $regex: month+'-'+year },status: { $regex: status }}).sort({_id:-1})
          .then((data)=>{
              
              return res.send(data)})
@@ -254,7 +229,7 @@ module.exports.fees = async(req,res)=>
          })
        }
    else if(Class!=''&& section==''){
-        await Fee.find({Class:Class,date: { $regex: month+'.*'+year },status: { $regex: status },type:type}).sort({_id:-1}).limit(200)
+        await Fee.find({Class:Class,date: { $regex: month+'-'+year },status: { $regex: status }}).sort({_id:-1})
          .then((data)=>{
              
              return res.send(data)})
@@ -263,7 +238,7 @@ module.exports.fees = async(req,res)=>
          })
        }
     else if(Class==''&& section!=''){
-        await Fee.find({section:section,date: { $regex: month+'.*'+year },status: { $regex: status },type:type}).sort({_id:-1}).limit(200)
+        await Fee.find({section:section,date: { $regex: month+'-'+year },status: { $regex: status }}).sort({_id:-1})
          .then((data)=>{
              
              return res.send(data)})
@@ -272,7 +247,7 @@ module.exports.fees = async(req,res)=>
          })
        }
     else if(Class=='' && section==''){
-       await Fee.find({date: { $regex: month+'.*'+year },status: { $regex: status },type:type}).sort({_id:-1}).limit(200)
+       await Fee.find({date: { $regex: month+'-'+year },status: { $regex: status }}).sort({_id:-1})
         .then((data)=>{
             
             return res.send(data)})
@@ -301,14 +276,21 @@ module.exports.deleteFeeRecord=async(req,res)=>{
     const month=req.query.month
     const year=req.query.year
     
-   await Fee.deleteMany({date: { $regex: month+'.*'+year }},(error, data) => {
+   await Fee.deleteMany({date: { $regex: month+'-'+year }},(error, data) => {
         if (error) {
             
             throw error;
         } else {
-            
-            res.status(204).json(data);
-            
+             FeeDeposite.deleteMany({date: { $regex: month+'-'+year }},(error, data) => {
+                if (error) {
+                    
+                    throw error;
+                } else {
+                    
+                    res.status(204).json(data);
+                    
+                }
+            });
         }
     });
 }
@@ -318,14 +300,13 @@ module.exports.generateFee = async(req,res)=>
 
 {
 let person=req.body.createdBy
-let type='fee'
 let studentNo=0
 let pending=0
 let status='Unpaid'
 let discount=0
 let title='School Fee'
 let amount=0
-let date=new Date()
+let date=req.body.date
 let studentName=''
 await StudentSchema.find({}, (error,data) => {
         if (error) {
@@ -341,7 +322,9 @@ await StudentSchema.find({}, (error,data) => {
             studentName=item.studentName;
             const Class=item.Class;
             const section=item.section
-            const newFee=  Fee.create({title,type,studentName,studentNo,amount,discount,pending,date,status,Class,section,person})
+            if(amount>0){
+            const newFee=  Fee.create({title,studentName,studentNo,amount,discount,pending,date,status,Class,section,person})
+            }
         })
         return res.status(200).json({
             success: true,
@@ -367,13 +350,13 @@ module.exports.payFee=async(req,res)=>
     let person=req.body.receivedBy
     studentName=req.body.studentName
     let status='Unpaid'
-    let type='deposite'
-    let key=req.body.key
+    let invoiceNo=req.body.invoiceNo
     pending=parseInt(pending,10)+parseInt(payAmount,10)
     if(pending==amount){
         status='Paid'
     }
-    let date=new Date()
+    let date=req.body.date
+  
     if(discount>0){
         await Fee.updateOne({_id: id}, {$set:{amount:amount,discount:discount,pending:pending,status:status}}, {upsert: true}, function(err, data) {
         if (err) {
@@ -381,7 +364,7 @@ module.exports.payFee=async(req,res)=>
         } else {           
           pending=payAmount
            status='Paid'
-            const newFee=  Fee.create({title,type,studentName,studentNo,amount,discount,pending,date,status,Class,section,person,key})
+            const newFee=  FeeDeposite.create({title,studentNo,amount,pending,date,status,Class,section,person,invoiceNo})
             return res.status(200).json({success:true,message:`${payAmount} Rs  PAID` });
          
            
@@ -393,22 +376,16 @@ module.exports.payFee=async(req,res)=>
             } else {           
               pending=payAmount
                status='Paid'
-                const newFee=  Fee.create({title,type,studentName,studentNo,amount,discount,pending,date,status,Class,section,person,key})
+                const newFee=  FeeDeposite.create({title,studentNo,amount,pending,date,status,Class,section,person,invoiceNo})
                 return res.status(200).json({success:true,message:`${payAmount} Rs  PAID` });
              
                
             }
         }); 
-    }
-
-    
-  
-   
-            
+    }            
 }
 //{$match:{}},{$group:{_id:"$balance",balance:{$sum:"$balance"}}}
 module.exports.feeDashboard=async(req,res)=>{
-    let type='fee'
 const month=req.query.month
 const status=req.query.status
     const Class=req.query.Class
@@ -416,16 +393,16 @@ const status=req.query.status
     const year=req.query.year
     
     if(Class!=''&& section=='')
-    {await Fee.find({Class:Class ,date: { $regex: month+'.*'+year },status: { $regex: status },type:type})
+    {await Fee.find({Class:Class ,date: { $regex: month+'-'+year },status: { $regex: status }})
     .then((data)=>{
        
         
            const sum3=data.map(item=>item.pending).reduce((a,item)=>item+a)
            const sum4=data.map(item=>item.amount).reduce((a,item)=>item+a)
-           Fee.countDocuments({Class:Class,type:type,status:"Paid",date: { $regex: month+'.*'+year }}
+           Fee.countDocuments({Class:Class,status:"Paid",date: { $regex: month+'-'+year }}
            ,function(error,count) {
               
-               Fee.countDocuments({Class:Class,type:type,status:"Unpaid",date: { $regex: month+'.*'+year }}
+               Fee.countDocuments({Class:Class,status:"Unpaid",date: { $regex: month+'-'+year }}
                ,function(error,count1)  {
                    
                   
@@ -441,16 +418,16 @@ const status=req.query.status
     })
     }
     else if(Class==''&& section!='')
-    {await Fee.find({section:section ,date: { $regex: month+'.*'+year },status: { $regex: status },type:type})
+    {await Fee.find({section:section ,date: { $regex: month+'-'+year },status: { $regex: status }})
     .then((data)=>{
        
         
            const sum3=data.map(item=>item.pending).reduce((a,item)=>item+a)
            const sum4=data.map(item=>item.amount).reduce((a,item)=>item+a)
-           Fee.countDocuments({section:section,type:type,status:"Paid",date: { $regex: month+'.*'+year }}
+           Fee.countDocuments({section:section,status:"Paid",date: { $regex: month+'-'+year }}
            ,function(error,count) {
               
-               Fee.countDocuments({section:section,type:type,status:"Unpaid",date: { $regex: month+'.*'+year }}
+               Fee.countDocuments({section:section,status:"Unpaid",date: { $regex: month+'-'+year }}
                ,function(error,count1)  {
                    
                   
@@ -466,14 +443,14 @@ const status=req.query.status
     })
     }
   else  if(Class!=''&& section!=''){
-await Fee.find({Class:Class,section:section ,date: { $regex: month+'.*'+year },status: { $regex: status },type:type})
+await Fee.find({Class:Class,section:section ,date: { $regex: month+'-'+year },status: { $regex: status },})
 .then((data)=>{
        const sum3=data.map(item=>item.pending).reduce((a,item)=>item+a)
         const sum4=data.map(item=>item.amount).reduce((a,item)=>item+a)
-        Fee.countDocuments({Class:Class,section:section,type:type,status:"Paid",date: { $regex: month+'.*'+year }}
+        Fee.countDocuments({Class:Class,section:section,status:"Paid",date: { $regex: month+'-'+year }}
         ,function(error,count) {
            
-            Fee.countDocuments({Class:Class,section:section,type:type,status:"Unpaid",date: { $regex: month+'.*'+year }}
+            Fee.countDocuments({Class:Class,section:section,status:"Unpaid",date: { $regex: month+'-'+year }}
             ,function(error,count1)  {
                 
                
@@ -489,16 +466,16 @@ await Fee.find({Class:Class,section:section ,date: { $regex: month+'.*'+year },s
 })
     }
   else if(Class==''&& section=='')
-    {await Fee.find({date: { $regex: month+'.*'+year },status: { $regex: status },type:type})
+    {await Fee.find({date: { $regex: month+'-'+year },status: { $regex: status }})
     .then((data)=>{
            
            
            const sum3=data.map(item=>item.pending).reduce((a,item)=>item+a)
             const sum4=data.map(item=>item.amount).reduce((a,item)=>item+a)
-            Fee.countDocuments({type:type,status:"Paid",date: { $regex: month+'.*'+year }}
+            Fee.countDocuments({status:"Paid",date: { $regex: month+'-'+year }}
             ,function(error,count) {
                
-                Fee.countDocuments({type:type,status:"Unpaid",date: { $regex: month+'.*'+year }}
+                Fee.countDocuments({status:"Unpaid",date: { $regex: month+'-'+year }}
                 ,function(error,count1)  {
                     
                    
@@ -518,11 +495,11 @@ await Fee.find({Class:Class,section:section ,date: { $regex: month+'.*'+year },s
   
 }
 module.exports.feeGeneralReport=async(req,res)=>{
-    let type='deposite'
+   
 const month=req.query.month
 const year=req.query.year
     
-await Fee.find({date: { $regex: month+'.*'+year },type:type})
+await FeeDeposite.find({date: { $regex: month+'-'+year }})
     .then((data)=>{    
            const sum3=data.map(item=>item.pending).reduce((a,item)=>item+a)
            return res.send((sum3).toString())
@@ -534,9 +511,8 @@ module.exports.feeFineReport=async(req,res)=>{
     let type='deposite'
     let title='Fine'
     const year=req.query.year
-    
 const month=req.query.month
-await Fee.find({date: { $regex: month+'.*'+year},type:type,title:title})
+await FeeDeposite.find({date: { $regex: month+'-'+year},title:title})
     .then((data)=>{    
            const sum3=data.map(item=>item.pending).reduce((a,item)=>item+a)
            return res.send((sum3).toString())
@@ -546,10 +522,9 @@ await Fee.find({date: { $regex: month+'.*'+year},type:type,title:title})
 }
 module.exports.feeReport=async(req,res)=>{
     const month=req.query.month
-    let type='deposite' 
     const year=req.query.year
     
-   await Fee.aggregate([{ $match: {date: { $regex: month+'.*'+year },type:type} },
+   await FeeDeposite.aggregate([{ $match: {date: { $regex: month+'-'+year }} },
     {$group: {_id:"$title",amount:{"$sum":"$pending"}} }
 ])
     .then((data)=>{
@@ -561,11 +536,10 @@ module.exports.feeReport=async(req,res)=>{
 
 }
 module.exports.feeR2f1=async(req,res)=>{
-    let type='deposite'
     const month=req.query.month
     const year=req.query.year
     
-   await Fee.aggregate([{ $match: {date: { $regex: month+'.*'+year },type:type} },
+   await FeeDeposite.aggregate([{ $match: {date: { $regex: month+'-'+year }} },
     {$group: {_id:"$Class",amount:{"$sum":"$pending"}} }
 ])
     .then((data)=>{
@@ -580,8 +554,7 @@ module.exports.feeReportRole=async(req,res)=>{
     const month=req.query.month
     const year=req.query.year
     
-    let type="deposite"
-   await Fee.aggregate([{ $match: {date: { $regex: month+'.*'+year },type:type} },
+   await FeeDeposite.aggregate([{ $match: {date: { $regex: month+'-'+year }} },
     {$group: {_id:"$person",amount:{"$sum":"$pending"}} }
 ])
     .then((data)=>{
@@ -596,9 +569,8 @@ module.exports.feeReportExpensive= async(req,res)=>
 {        
     const month=req.query.month
     const year=req.query.year
-    const type='deposite'
    
-        await Fee.aggregate([{ $match: {date: { $regex: month+'.*'+year  },type:type} },
+        await FeeDeposite.aggregate([{ $match: {date: { $regex: month+'-'+year  }} },
             {$group: {_id:"$studentNo",pending:{"$sum":"$pending"},amount:{"$sum":"$amount"}} }
         ])
             .then((data)=>{

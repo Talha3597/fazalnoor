@@ -87,6 +87,8 @@ import ViewUserAttendance from '../Screens/viewUserAttendance'
 //Exam
 import Exam from '../Screens/exam'
 import Dashboard from '../Screens/adminDashboard'
+import Blank from '../Screens/blank'
+
 
 
 //
@@ -152,8 +154,10 @@ import * as RiIcons from 'react-icons/ri';
       <Route exect path="/register" component={RegisterScreen}/>
       <Route exect path="/forgotpassword" component={forgotPasswordScreen}/>
       <Route exect path="/passwordreset/:resetToken" component={resetPasswordScreen}/>
+
      
       <Route  path="/exam" component={Exam}/>
+      <Route  path="/blank" component={Blank}/>
       
       <Route  path="/addNotice" component={AddNotice}/>
       <Route  path="/notices" component={Notices}/>

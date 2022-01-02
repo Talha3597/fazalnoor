@@ -15,7 +15,8 @@ const UpdateNotice =  ({match,history})=> {
    const [ status, setStatus ] = useState('')
    const [ classData, setClassData ] = useState([])
    const [ sectionData, setSectionData ] = useState([])
-  
+   const [message, setMessage]=useState("")
+   
    useEffect(() => {
     axios.get('/api/getClasses')
         .then((res) => {
@@ -61,9 +62,13 @@ const UpdateNotice =  ({match,history})=> {
     const onSubmit = async() => {
        
           
-       const {data}= await axios.put(`/api/updateNotice/${id}`,{id,title,notice,url,Class,section,status})
-      
-        history.push(`/notices`)
+        await axios.put(`/api/updateNotice/${id}`,{id,title,notice,url,Class,section,status})
+        setTimeout(()=>{
+            setMessage("")
+            history.push(`/updateNotice/${id}`)
+            
+            },4000)
+           return setMessage("Notice Updated")
     }
 
     return (
@@ -79,8 +84,8 @@ const UpdateNotice =  ({match,history})=> {
                         
                         <div className={styles.formStyle}>
                             <div className={styles.Border}>
-                                <br/>
-                                 
+   {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+                               
                                 <form className={styles.formMargin} onSubmit={onSubmit}>
                                
                                 <Form.Group controlId="formBasicEmail">

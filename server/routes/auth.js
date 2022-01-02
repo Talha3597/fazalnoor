@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router();
 
-const{register,login,forgotpassword,updateProfile,resetpassword,users,deleteUser,updateUser,getUser,findUser,usersData,totalUsers}=require('../controller/auth')
+const{register,login,forgotpassword,updateProfile,resetpassword,users,deleteUser,updateUser,getUser,findUser,usersData,totalUsers,userNames}=require('../controller/auth')
 router.route('/findUser').get(findUser)
 router.route('/users').get(users)
 router.route('/totalUsers').get(totalUsers)
+router.route('/userNames').get(userNames)
 
 router.route('/usersData').get(usersData)
 router.route('/user').get(getUser)

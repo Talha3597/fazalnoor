@@ -16,7 +16,8 @@ const AddNotice =  ({history})=> {
    const [ status, setStatus ] = useState('')
    const [ classData, setClassData ] = useState([])
    const [ sectionData, setSectionData ] = useState([])
-  
+   const [message, setMessage]=useState("")
+   
    useEffect(() => {
     axios.get('/api/getClasses')
         .then((res) => {
@@ -45,11 +46,13 @@ const AddNotice =  ({history})=> {
         e.preventDefault()
              
                const{data} =await axios.post('/api/addNotice',{notice,url,Class,section,status,title})
-                 alert(data.token) 
-                 history.push(`/notices`)
-                 history.push(`/addNotice`)
+                 setTimeout(()=>{
+                    setMessage("")
+                    history.push('/notices')
+                    history.push(`/addNotice`)
             
-                
+                    },4000)
+                   return setMessage(data.token)
 
 
     }
@@ -66,9 +69,10 @@ const AddNotice =  ({history})=> {
                         </div>
                         
                         <div className={styles.formStyle}>
+            
                             <div className={styles.Border}>
-                                <br/>
-                                 
+                            {message && <Button  className={styles.sideButton4} autoFocus >{message}</Button>}             
+                         <br/>
                                 <form className={styles.formMargin} onSubmit={onSubmit}>
                                
                                 <Form.Group controlId="formBasicEmail">
@@ -87,7 +91,7 @@ const AddNotice =  ({history})=> {
                                     
                                     <Form.Group controlId="formBasicstudentClass">
                                         <Form.Label>Class</Form.Label>
-                                        <Form.Control required className={styles.formField} as="select" value={Class} onChange={ e => setClass(e.target.value) } >
+                                        <Form.Control  className={styles.formField} as="select" value={Class} onChange={ e => setClass(e.target.value) } >
                                           <option defaultValue> Class</option>
                                             {   
                                                  classData.map((classIns,idx) => {
@@ -103,7 +107,7 @@ const AddNotice =  ({history})=> {
 
                                     <Form.Group controlId="formBasicstudentClass">
                                         <Form.Label>Section</Form.Label>
-                                        <Form.Control className={styles.formField} as="select" value={section} onChange={ e => setSection(e.target.value) } required >
+                                        <Form.Control className={styles.formField} as="select" value={section} onChange={ e => setSection(e.target.value) } >
                                         <option defaultValue> Section</option>
                                             {
                                                  sectionData.map((section,idx) => {

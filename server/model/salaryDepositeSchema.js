@@ -1,36 +1,31 @@
 const mongoose=require('mongoose') 
-var autoIncrement = require('mongoose-auto-increment');
-autoIncrement.initialize(mongoose.connection); 
-
-const FeeSchema=mongoose.Schema({
+const SalaryDepositeSchema=mongoose.Schema({
     title:{
         type:String,
         required:true,
         trim:true,
         
     },
-    studentName:{
+    
+    username:{
         type:String,
         trim:true,
         
     },
-    studentNo:{
+    employeeNo:{
         type:Number,
         trim:true,
         
     }, 
 
-    amount:{
+    salary:{
         type:Number,
         required:true,
 
         trim:true,
         
     }, 
-    discount:{
-        type:Number,
-        trim:true,
-    },
+   
     pending:{
         type:Number,
         required:true,
@@ -53,22 +48,12 @@ const FeeSchema=mongoose.Schema({
         trim:true,
         
     },
-    Class:{
-        type:String,
-        trim:true,
-        
-    },section:{
-        type:String,
-        trim:true,
-        
-    },
     person:{
         type:String,
         trim:true,
        
     },
-   
 });
-FeeSchema.plugin(autoIncrement.plugin, { model: 'Fee', field: 'invoiceNo',startAt: 1,  });
-var Fee = mongoose.model('Fee', FeeSchema);
-module.exports=Fee
+
+var SalaryDeposite = mongoose.model('SalaryDeposite', SalaryDepositeSchema);
+module.exports=SalaryDeposite

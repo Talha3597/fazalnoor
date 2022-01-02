@@ -1,35 +1,13 @@
 
 import React, { useState,useEffect } from 'react'
 import styles from '../../assets/css/style.module.css'
-import { Row, Col, Table } from 'react-bootstrap'
+import { Row, Col, Table,Button } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link,useParams } from 'react-router-dom';
 import axios from 'axios'
 
 
-const ClassVar = props => (
-      
-    <tbody>
-        <tr>
-            <td>{props.classIns.title}</td>
-            <td>{props.classIns.totalMarks}</td>
-            <td>{props.classIns.obtainedMarks}</td>
-            <td>{props.classIns.percentage}</td>
-            <td>{props.classIns.testGrade}</td>
-            <td><Link to={'/updateGrade/' + props.classIns._id}><span className={[styles['Edel'], 'fas fa-pencil-alt'].join(' ')}></span></Link>
-            <button onClick={() =>  {
-                   axios.delete('/api/deleteGrade/'+props.classIns._id)
-                   .then(response => { 
-                       console.log(response.data)
-                       window.location = '/viewGrades'
-                    });
-            }} className={styles.Edel2}><span className={[styles['Edel3'], 'fas fa-trash'].join(' ')}></span></button></td>
-        </tr>
 
-    </tbody>
-        
-    
-)
 
 function ViewGradesStudent({match}){
     const {id} = useParams();
@@ -42,6 +20,31 @@ function ViewGradesStudent({match}){
           return <ClassVar classIns={currentclass} key={currentclass._id}/>;
         })
     }
+    const ClassVar = props => (
+      
+        <tbody>
+            <tr>
+                <td>{props.classIns.title}</td>
+                <td>{props.classIns.totalMarks}</td>
+                <td>{props.classIns.obtainedMarks}</td>
+                <td>{props.classIns.percentage}</td>
+                <td>{props.classIns.testGrade}</td>
+                <td><Link to={'/updateGrade/' + props.classIns._id}><Button className={styles.sideButton1}>Edit</Button></Link>
+               </td><td> <Button onClick={() =>  { let flag= window.confirm("Delete  record!")
+      if(flag)
+      {  axios.delete('/api/deleteGrade/'+props.classIns._id)
+                       .then(res => { 
+                        const del = studentGrades.filter(studentGrades => props.classIns._id !== studentGrades._id)
+                        setStudentGrades(del)
+                        })
+                    }
+                }} className={styles.sideButton2}>Delete</Button></td>
+            </tr>
+    
+        </tbody>
+            
+        
+    )
 useEffect(()=>{
     axios.get('/api/singleStudentByRoll/' + admin_no)
     .then(res => {
@@ -94,7 +97,7 @@ useEffect(()=>{
 
 
                                 <div className={styles.tableMargin}>
-                                    <Table className={styles.tableWidth} hover responsive='sm'>
+                                    <Table className={styles.tableWidth} bordered hover responsive='sm'>
                                         <thead>
                                             <tr>
                                                 <th>Exam Title</th>
@@ -102,7 +105,8 @@ useEffect(()=>{
                                                 <th>Obtained Marks</th>
                                                 <th>Percentage</th>
                                                 <th>Grade</th>
-                                                <th>Actions</th>
+                                                <th></th>
+                                                <th></th>
                                             </tr>
                                         </thead>
 
