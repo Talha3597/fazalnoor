@@ -21,6 +21,10 @@ useEffect(()=>{
   history.push('/home')
   history.push('/home')
   history.push('/home')
+  history.push('/home')
+  history.push('/home')
+  history.push('/home')
+  
 },[])
       return (
         
