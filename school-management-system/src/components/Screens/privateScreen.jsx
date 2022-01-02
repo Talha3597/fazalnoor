@@ -2,7 +2,8 @@ import styles from '../../assets/style.module.css'
 import { Navbar } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useState,useEffect} from 'react'
-import {BrowserRouter as Router, Route,} from "react-router-dom"
+
+import {BrowserRouter as Router, Route,useHistory} from "react-router-dom"
 import axios from 'axios'
 
 import {Link} from 'react-router-dom'
@@ -113,12 +114,12 @@ const PrivateScreen = ({history}) =>{
     
      
  },[history])
-   const logoutHandler=({})=>{
+   const LogoutHandler=()=>{
        localStorage.removeItem("authToken")
        localStorage.removeItem("role")
        localStorage.removeItem("username")
-       
-       window.location='/login'}
+       document.location.href = '/login'
+       }
  return error ?  (
     <span className="error-message">{error}</span>):
      (
@@ -130,8 +131,8 @@ const PrivateScreen = ({history}) =>{
           <NavIcon to='#'>
             <FaIcons.FaBars onClick={showSidebar}  />
           </NavIcon>
-          <NavIconLogout  to='/home' >
-            <FaIcons.FaSignOutAlt onClick={logoutHandler} />
+          <NavIconLogout  to='/sss' >
+            <FaIcons.FaSignOutAlt onClick={LogoutHandler} />
           </NavIconLogout> 
          
           
