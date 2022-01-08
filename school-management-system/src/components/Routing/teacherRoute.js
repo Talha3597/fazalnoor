@@ -48,6 +48,7 @@ import ViewTitmetable from '../super_admin/viewTimetable'
 import UpdateTitmetable from '../super_admin/updateTimetable'
 import Profile from '../Screens/profile'
 import Exam from '../Screens/exam'
+import ExamData from '../Screens/examData'
 
 import ViewGradesByClass from '../super_admin/viewGradesByClass'
 import ViewGradesBySection from '../super_admin/viewGradesBySection'
@@ -59,8 +60,10 @@ import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import * as RiIcons from 'react-icons/ri';
+let section=localStorage.getItem('section')
  export const App4=()=> {
    const role=localStorage.getItem('role')
+   
     return (
       
          
@@ -85,9 +88,8 @@ import * as RiIcons from 'react-icons/ri';
       <Route  path="/homeworks" component={Homeworks}/>
       <Route  path="/updateHomework/:id" component={UpdateHomework}/>
       <Route  path="/exam" component={Exam}/>
-      <Route exact path="/viewGradesBySection">
-            <ViewGradesBySection />
-          </Route>
+      <Route  path="/examData" component={ExamData}/>
+     
           <Route exact path="/viewGradesByClass">
             <ViewGradesByClass />
           </Route>
@@ -165,36 +167,11 @@ import * as RiIcons from 'react-icons/ri';
 const i='true'
 export const SidebarData4 = [
   {
-    title: 'Dashboard',
-    path: '#',
+    title: `${section}`,
+    path: `/viewStudents/${section}`,
     icon: <FaIcons.FaSchool />
   },
-    { 
-      title: 'Academic',
-      path: '#',
-      icon:  <IoIcons.IoIosPaper />,
-      iconClosed: <RiIcons.RiArrowDownSFill />,
-      iconOpened: <RiIcons.RiArrowUpSFill />,
-       
-      subNav: [
-        {
-          title: 'Dashboard',
-          path: '#',
-          icon: <AiIcons.AiOutlineDashboard />
-        },
-        {
-         
-          title: 'Academic Section',
-          path: '/classData',
-          icon: <IoIcons.IoMdBook />
-        
-        },
-        
-      ]
-    
-    },
-   
-    { 
+  { 
       title: 'Work',
       path: '#',
       icon: <IoIcons.IoIosPaper />,
@@ -264,9 +241,9 @@ export const SidebarData4 = [
     
     },
     { status:i,
-      title: 'Grades',
+      title: 'Exam',
       path: '#',
-      icon: <FaIcons.FaCalendarTimes />,
+      icon: <IoIcons.IoIosPaper />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
        
@@ -279,62 +256,22 @@ export const SidebarData4 = [
         },
         {
           
-          title: 'View Grades',
-          path: '/viewGrades',
+          title: 'Exams',
+          path: '/examData',
           icon: <IoIcons.IoIosPaper />
         },
-        {
-          
-          title: 'Section Grades',
-          path: '/viewGradesBySection',
-          icon: <AiIcons.AiOutlineAppstoreAdd />
-        },
-        {
-          
-          title: 'Class Grades',
-          path: '/viewGradesByClass',
-          icon: <AiIcons.AiOutlineAppstoreAdd />
-        },
-       
         
       ]
     
     },
    
-    {
-      title: 'Attendance',
-      path: '/attendance',
-      icon: <IoIcons.IoIosPerson />
-    },
+    
     {
       title: 'Email',
       path: '/email',
       icon: <IoIcons.IoIosSend />,
     },
-    {
-      title: 'Reports',
-      path: '#',
-      icon: <IoIcons.IoIosPaper />,
-      iconClosed : <RiIcons.RiArrowDownSFill />,
-      iconOpened: <RiIcons.RiArrowUpSFill />,
   
-      subNav: [{
-        title: 'Grade Report',
-        path: '/gradeReport/:admin_no',
-        icon: <IoIcons.IoIosPaper />,
-        
-      }, {
-        title: 'Grade Class',
-        path: '/gradeReportByClass/:classTitle/:examTitle',
-        icon: <IoIcons.IoIosPaper />,
-        
-      },{
-        title: 'Grade Section',
-        path: '/gradeReportBySection/:classTitle/:examTitle/:sectionTitle',
-        icon: <IoIcons.IoIosPaper />,
-        
-      },
-      ]},
     {
       title: 'Profile',
       path: '#',

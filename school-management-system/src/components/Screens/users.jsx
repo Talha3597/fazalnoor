@@ -84,11 +84,11 @@ return(
                             {role==='superAdmin'&&
                             <td className={styles.noprint}>  <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
                              Delete
-                            </Button></td>}
+                           </Button></td>} 
                             <td className={styles.noprint}><Link to={`/viewUser/${item._id}`}>  <Button className={styles.sideButton3}   >
                             View</Button></Link></td>
-                            {role==='superAdmin'&&
-                            <td className={styles.noprint}><Link to={ `/addSalaryUser/${item.employeeNo}` }><Button className={styles.sideButton1}  >Salary</Button></Link></td>}
+                            {role==='superAdmin'?
+                            <td className={styles.noprint}><Link to={ `/addSalaryUser/${item.employeeNo}` }><Button className={styles.sideButton1}  >Salary</Button></Link></td>:''}
                         </tr>  
                     })}  
   </tbody>

@@ -7,11 +7,7 @@ import * as FaIcons from 'react-icons/fa';
 
 const HomePage =  ({history})=> {
   
-useEffect(()=>{
-  history.push('/blank')
-  history.push('/home')
-  
-},[])
+
       return (
         
         <>
@@ -37,11 +33,12 @@ useEffect(()=>{
                
               </Link>
              
-                <Link to='/login'>
+              <Link to='/login'>
                  
-                  <FaIcons.FaSignInAlt/> Sign In
-                  
-                </Link>
+                 <FaIcons.FaSignInAlt/> Sign In
+                 
+               </Link>
+               
              
             </Nav>
           </Navbar.Collapse>

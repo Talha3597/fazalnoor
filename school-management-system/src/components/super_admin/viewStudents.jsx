@@ -12,8 +12,11 @@ const ClassVar = props => (
         <tr>
             <td>{props.classIns.studentNo}</td>
             <td>{props.classIns.studentName}</td>
-            <td><Link to={'/manageGrades/' + props.classIns._id}><Button className={styles.sideButton1}  >Grade</Button></Link></td>
-            
+            <td><Link to={'/manageGrades/' + props.classIns._id}><Button className={styles.sideButton1}  >Add</Button></Link></td>
+            <td ><Link to={`/viewGradesStudent/${props.classIns.studentNo}`}>
+                        <Button className={styles.sideButton3} >
+                         View
+                        </Button></Link></td>  
         </tr>
 
     </tbody>
@@ -69,12 +72,13 @@ function ViewStudents() {
                         <Row>
                             <Col>
                                 <div className={styles.tableMargin}>
-                                    <Table className={styles.tableWidth} hover responsive='sm'>
+                                    <Table className={styles.tableWidth}bordered hover responsive='sm'>
                                         <thead>
                                             <tr>
                                                 <th className={styles.tableHeading}>Admin No</th>
                                                 <th className={styles.tableHeading}>Name</th>
-                                                <th className={styles.tableHeading}>Grade</th>
+                                                <th className={styles.tableHeading}>Add Grades</th>
+                                                <th className={styles.tableHeading}>View Grades</th>
                                                 
                                             </tr>
                                         </thead>

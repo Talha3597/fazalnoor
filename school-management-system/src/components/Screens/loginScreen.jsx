@@ -38,7 +38,7 @@ const LoginScreen =({history})=>{
                 localStorage.setItem("role",data.role)
                 localStorage.setItem("username",data.username)
                 localStorage.setItem("id",data.id)
-                history.push('/')
+                history.push('/adminDashboard')
                 }}
                 
             } catch (error) {

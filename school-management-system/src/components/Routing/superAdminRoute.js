@@ -83,9 +83,12 @@ import ReportRoleSalary from '../Screens/reportRoleSalary'
 import MessageList from '../Screens/messageList'
 //User Attendance
 import MarkUserAttendance from '../Screens/markUserAttendance'
+import MarkStudentAttendance from '../Screens/markStudentAttendance'
 import ViewUserAttendance from '../Screens/viewUserAttendance'
+import ViewStudentAttendance from '../Screens/viewStudentAttendance'
 //Exam
 import Exam from '../Screens/exam'
+import ExamData from '../Screens/examData'
 import Dashboard from '../Screens/adminDashboard'
 import Blank from '../Screens/blank'
 
@@ -157,6 +160,7 @@ import * as RiIcons from 'react-icons/ri';
 
      
       <Route  path="/exam" component={Exam}/>
+      <Route  path="/examData" component={ExamData}/>
       <Route  path="/blank" component={Blank}/>
       
       <Route  path="/addNotice" component={AddNotice}/>
@@ -210,17 +214,12 @@ import * as RiIcons from 'react-icons/ri';
     <Route  path="/reportFinanceRole" component={ReportFinanceRole}/>
     <Route  path="/messageList" component={MessageList}/>
     <Route  path="/markUserAttendance" component={MarkUserAttendance}/>
+    <Route  path="/markStudentAttendance" component={MarkStudentAttendance}/>
     <Route  path="/viewUserAttendance" component={ViewUserAttendance}/>
+    <Route  path="/viewStudentAttendance" component={ViewStudentAttendance}/>
       <Route exact path="/addClass">
             <SuperAdminDashboard />
           </Route>
-          
-          {/* <Route exact path="/">
-            <SuperAdminDashboard />
-          </Route> */}
-          {/* <Route exact path="/addStudent">
-            <AddStudent />
-          </Route> */}
           <Route exact path="/addSection/:id">
             <AddSection />
           </Route>
@@ -626,6 +625,12 @@ export const SidebarData2 =
         },
         {
           
+          title: 'Exams',
+          path: '/examData',
+          icon: <IoIcons.IoIosPaper />
+        },
+        {
+          
           title: 'View Grades',
           path: '/viewGrades',
           icon: <IoIcons.IoIosPaper />
@@ -647,11 +652,31 @@ export const SidebarData2 =
       ]
     
     },
-   {
+    { status:i,
       title: 'Attendance',
-      path: '/attendance',
-      icon: <IoIcons.IoIosPerson />
+      path: '#',
+      icon: <IoIcons.IoIosPerson />,
+      iconClosed: <RiIcons.RiArrowDownSFill />,
+      iconOpened: <RiIcons.RiArrowUpSFill />,
+       
+      subNav: [
+        {
+          
+          title: 'Mark',
+          path: '/markStudentAttendance',
+          icon: <IoIcons.IoMdAddCircleOutline />
+        },
+        {
+          
+          title: 'View',
+          path: '/viewStudentAttendance',
+          icon: <IoIcons.IoIosPeople />
+        },
+      
+      ]
+    
     },
+  
     {
       title: 'Transfer',
       path: '/transfer',
@@ -753,8 +778,8 @@ export const SidebarData2 =
           icon: <IoIcons.IoIosPaper />
         },
         {
-          title: 'Reset Password',
-          path: '/passwordreset:resetToken',
+          title: 'My Class',
+          path: '/viewStudents/Two%20Blue',
           icon: <IoIcons.IoIosPaper />
         }
       ]

@@ -45,6 +45,9 @@ import ViewTitmetable from '../super_admin/viewTimetable'
 import UpdateTitmetable from '../super_admin/updateTimetable'
 import Profile from '../Screens/profile'
 import Exam from '../Screens/exam'
+import ExamData from '../Screens/examData'
+import Students from '../Screens/students'
+import Users from '../Screens/users'
 import ViewGradesByClass from '../super_admin/viewGradesByClass'
 import ViewGradesBySection from '../super_admin/viewGradesBySection'
 import ExpenseDashboard from "../Screens/expenseDashboard"
@@ -83,10 +86,12 @@ import ReportFinanceRole from '../Screens/reportFinanceRole'
 import ReportClassFee from '../Screens/reportClassFee'
 import MessageList from '../Screens/messageList'
 
+
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import * as RiIcons from 'react-icons/ri';
+const section=localStorage.getItem('section')
  export const App8=()=> {
    const role=localStorage.getItem('role')
     return (
@@ -103,6 +108,8 @@ import * as RiIcons from 'react-icons/ri';
       <Route exect path="/forgotpassword" component={forgotPasswordScreen}/>
       <Route exect path="/passwordreset/:resetToken" component={resetPasswordScreen}/>
       <Route  path="/blank" component={Blank}/>
+      <Route  path="/students" component={Students}/>
+      <Route  path="/users" component={Users}/>
      
       <Route  path="/profile" component={Profile}/>
       <Route  path="/addNotice" component={AddNotice}/>
@@ -154,7 +161,9 @@ import * as RiIcons from 'react-icons/ri';
           
           <Route exact path="/updateTimetable">
             <UpdateTitmetable />
-          </Route> <Route  path="/exam" component={Exam}/>
+          </Route> 
+          <Route  path="/exam" component={Exam}/>
+           <Route  path="/examData" component={ExamData}/>
       <Route exact path="/viewGradesBySection">
             <ViewGradesBySection />
           </Route>
@@ -216,35 +225,24 @@ import * as RiIcons from 'react-icons/ri';
 const i='true'
 export const SidebarData8 = [
   {
-    title: 'Dashboard',
-    path: '#',
+    title: `${section}`,
+    path: `/viewStudents/${section}`,
     icon: <FaIcons.FaSchool />
   },
-    { 
-      title: 'Academic',
-      path: '#',
-      icon:  <IoIcons.IoIosPaper />,
-      iconClosed: <RiIcons.RiArrowDownSFill />,
-      iconOpened: <RiIcons.RiArrowUpSFill />,
-       
-      subNav: [
-        {
-          title: 'Dashboard',
-          path: '#',
-          icon: <AiIcons.AiOutlineDashboard />
-        },
-        {
-         
-          title: 'Academic Section',
-          path: '/classData',
-          icon: <IoIcons.IoMdBook />
-        
-        },
-        
-      ]
+  { 
+    title: 'Students',
+    path: '/students',
+    icon: <IoIcons.IoMdSchool/>,
     
-    },
+    
+  },
+  { status:i,
+    title: 'Team',
+    path: '/users',
+    icon: <IoIcons.IoMdPeople />,
    
+  },
+ 
     { 
       title: 'Work',
       path: '#',
@@ -314,9 +312,9 @@ export const SidebarData8 = [
     
     },
     { status:i,
-      title: 'Grades',
+      title: 'Exam',
       path: '#',
-      icon: <FaIcons.FaCalendarTimes />,
+      icon: <IoIcons.IoMdAddCircleOutline />,
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
        
@@ -329,33 +327,16 @@ export const SidebarData8 = [
         },
         {
           
-          title: 'View Grades',
-          path: '/viewGrades',
+          title: 'Exams',
+          path: '/examData',
           icon: <IoIcons.IoIosPaper />
         },
-        {
-          
-          title: 'Section Grades',
-          path: '/viewGradesBySection',
-          icon: <AiIcons.AiOutlineAppstoreAdd />
-        },
-        {
-          
-          title: 'Class Grades',
-          path: '/viewGradesByClass',
-          icon: <AiIcons.AiOutlineAppstoreAdd />
-        },
-       
+        
         
       ]
     
     },
 
-    {
-      title: 'Attendance',
-      path: '/attendance',
-      icon: <IoIcons.IoIosPerson />
-    },
     { 
         title: 'Income',
         path: '#',
@@ -473,35 +454,6 @@ export const SidebarData8 = [
       
       },
       
-      {
-        title: 'Reports',
-        path: '#',
-        icon: <IoIcons.IoIosPaper />,
-        iconClosed : <RiIcons.RiArrowDownSFill />,
-        iconOpened: <RiIcons.RiArrowUpSFill />,
-    
-        subNav: [
-          {
-            title: 'Finance Report',
-            path: '/reportFinance',
-            icon: <IoIcons.IoIosPaper />,
-            
-          },
-          {
-            title: ' Report Role',
-            path: '/reportFinanceRole',
-            icon: <IoIcons.IoIosPaper />,
-            
-          },
-          {
-            title: 'Class Fee',
-            path: '/reportClassFee',
-            icon: <IoIcons.IoIosPaper />,
-            
-          },
-         
-        ]
-      },
      
     {
       title: 'Email',
@@ -511,24 +463,8 @@ export const SidebarData8 = [
    
     {
       title: 'Profile',
-      path: '#',
+      path: '/profile',
       icon: <IoIcons.IoMdPerson/>,
-  
-      iconClosed: <RiIcons.RiArrowDownSFill />,
-      iconOpened: <RiIcons.RiArrowUpSFill />,
-  
-      subNav: [
-        {
-          title: 'Info ',
-          path: '/profile',
-          icon: <IoIcons.IoIosPaper />
-        },
-        {
-          title: 'Reset Password',
-          path: '/passwordreset:resetToken',
-          icon: <IoIcons.IoIosPaper />
-        }
-      ]
     },
     
     

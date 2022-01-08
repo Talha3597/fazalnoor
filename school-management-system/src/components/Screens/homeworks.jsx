@@ -22,8 +22,9 @@ const removeData = async(id) => {
         }) }
 }
 
-useEffect(()=>{
-    async function fetchSelectedData(){ 
+useEffect(async()=>{
+   
+        if(role=='teacher' || role=='financeTeacher'){
         const Class= localStorage.getItem("Class")  
         const section= localStorage.getItem("section")  
         await axios.get('/api/homeworks', { params: {Class,section} })
@@ -31,8 +32,8 @@ useEffect(()=>{
             setData(res.data)
             
         })
-       }
-    async function fetchData(){ 
+       }else{
+   
         const Class= '' 
         const section= ''
        
@@ -42,11 +43,7 @@ useEffect(()=>{
             
         })
        }
-       if(role!="student" && role!="teacher"){
-        fetchData()
-       }else{
-        fetchSelectedData()
-       }      
+         
  
 
 },[sam]

@@ -137,57 +137,21 @@ export const App3=()=> {
       icon: <FaIcons.FaSchool />
     },
       { 
-        title: 'Student',
-        path: '#',
+        title: 'Students',
+        path: '/students',
         icon: <IoIcons.IoMdSchool/>,
         iconClosed: <RiIcons.RiArrowDownSFill />,
         iconOpened: <RiIcons.RiArrowUpSFill />,
          
-        subNav: [
-          {
-            title: 'Dashboard',
-            path: '/students',
-            icon: <AiIcons.AiOutlineDashboard />
-          },
-          {
-            
-            title: 'Students',
-            path: '/students',
-            icon: <IoIcons.IoIosPeople />
-          
-          },{
-            status:'true',
-            title: 'Add Student',
-            path: '/addStudent',
-            icon: <AiIcons.AiOutlineUserAdd />
-          },
-          
-        ]
-      
+        
       },
       { status:i,
         title: 'Team',
-        path: '#',
+        path: '/users',
         icon: <IoIcons.IoMdPeople />,
         iconClosed: <RiIcons.RiArrowDownSFill />,
         iconOpened: <RiIcons.RiArrowUpSFill />,
-         
-        subNav: [
-          {
-            
-            title: 'Users',
-            path: '/users',
-            icon: <IoIcons.IoIosPeople />
-          },
-          {
-            status:'true',
-            title: 'Register',
-            path: '/register',
-            icon: <AiIcons.AiOutlineUserAdd />
-          },
-          
-        ]
-      
+       
       },
      
       
@@ -321,52 +285,11 @@ export const App3=()=> {
             path: '/salaries',
             icon: <IoIcons.IoIosPaper />
           },
-          {
-            status:'true',
-            title: 'Add salary',
-            path: '/addSalary',
-            icon: <IoIcons.IoMdAddCircleOutline />
-          },
          
         ]
       
       },
       
-      {
-        title: 'Reports',
-        path: '#',
-        icon: <IoIcons.IoIosPaper />,
-        iconClosed : <RiIcons.RiArrowDownSFill />,
-        iconOpened: <RiIcons.RiArrowUpSFill />,
-    
-        subNav: [
-          {
-            title: 'Fee Report',
-            path: '/feeReport',
-            icon: <IoIcons.IoIosPaper />,
-            
-          },
-          {
-            title: 'Finance Report',
-            path: '/reportFinance',
-            icon: <IoIcons.IoIosPaper />,
-            
-          },
-          {
-            title: ' Report Role',
-            path: '/reportFinanceRole',
-            icon: <IoIcons.IoIosPaper />,
-            
-          },
-          {
-            title: 'Class Fee',
-            path: '/reportClassFee',
-            icon: <IoIcons.IoIosPaper />,
-            
-          },
-         
-        ]
-      },
       {
         title: 'Email',
         path: '/email',

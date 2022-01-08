@@ -2,6 +2,8 @@ import React, { useState,useEffect } from 'react'
 import styles from '../../assets/style.module.css'
 import { Row, Col, Form, Button,Table } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {Link} from 'react-router-dom'
+
 
 import axios from 'axios'
 
@@ -9,7 +11,7 @@ const Exam =  ({history})=> {
    // const [message, setMessage]=useState("")
    const [ classData, setClassData ] = useState([])
     const [ sectionData, setSectionData ] = useState([])
-    const [ examData, setExamData ] = useState([])
+   
 
     const [error, setError]=useState("")
     const [title,setTitle]= useState('')
@@ -17,18 +19,7 @@ const Exam =  ({history})=> {
     const [ section, setSection ] = useState('')
     const [message, setMessage]=useState("")
     
-    const removeData = async(id) => {
-        let flag= window.confirm("Delete All grades with this title record!")
-        if(flag)
-        { 
-          await axios.delete(`/api/exam`, { params: {id} }) 
-              .then(res => {
-                  const del = examData.filter(gdata => id !== gdata._id)
-                  setExamData(del)
-                 
-              }) }
-      }
-      
+  
   
    useEffect(() => {
     axios.get('/api/getClasses')
@@ -49,15 +40,7 @@ const Exam =  ({history})=> {
         .catch(err => {
             console.log(err)
         })
-        axios.get('/api/exams' ,{ params: {Class,section} })
-        .then((res) => {
-            
-            setExamData(res.data)
-            
-        })
-        .catch(err => {
-            console.log(err)
-        })
+        
 
         
 }, [])
@@ -152,29 +135,7 @@ const Exam =  ({history})=> {
                                     <br/>
                                              <br/>
                                 </form>
-                                <Table striped bordered hover size='sm'>
-                                    <thead>
-                                     <th>Exam Title</th>
-                                     <th>Class</th>
-                                     <th>Section</th>
-                                     <th></th>
-                                    </thead>
-                                    <tbody>
-                                    
-                                        {
-                                            examData.map(item=>{return(<tr key={item._id}>
-                                                <td>{item.title}</td>
-                                                <td>{item.Class}</td>
-                                                <td>{item.section}</td>
-                                                <td> <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
-                         Delete
-                        </Button></td>
-                                            </tr>)})
-                                        }
-
-                                    </tbody>
-                                </Table>
-                                <br/>
+                               
                             </div>
                             
                         </div>

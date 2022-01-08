@@ -10,6 +10,8 @@ import Notices from '../Screens/notices'
 import Blank from '../Screens/blank'
 import ViewNotice from '../Screens/viewNotice'
 
+import MarkStudentAttendance from '../Screens/markStudentAttendance'
+import ViewStudentAttendance from '../Screens/viewStudentAttendance'
 import ViewHomework from '../Screens/viewHomework'
 // homework
 import AddHomework from '../Screens/addHomework'
@@ -37,7 +39,7 @@ import ViewStudents from '../super_admin/viewStudents'
 import ManageGrades from '../super_admin/manageGrades'
 import ViewGrades from '../super_admin/viewGrades'
 import ViewGradesStudent from '../super_admin/viewGradesStudent'
-
+import RegisterScreen from "../Screens/registerScreen"
 import UpdateGrade from '../super_admin/updateGrade'
 import ManageTitmetable from '../super_admin/manageTimetable'
 import ViewTitmetable from '../super_admin/viewTimetable'
@@ -59,6 +61,7 @@ import Transfer from '../Screens/transfer'
 //screen
 
 import Exam from '../Screens/exam'
+import ExamData from '../Screens/examData'
 import ViewGradesByClass from '../super_admin/viewGradesByClass'
 import ViewGradesBySection from '../super_admin/viewGradesBySection'
 
@@ -82,6 +85,8 @@ import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import * as RiIcons from 'react-icons/ri';
+const section=localStorage.getItem('section')
+
  export const App7=()=> {
    const role=localStorage.getItem('role')
     return (
@@ -96,6 +101,8 @@ import * as RiIcons from 'react-icons/ri';
         
       
       <Route  path="/profile" component={Profile}/>
+  <Route exect path="/register" component={RegisterScreen}/>
+
       <Route  path="/addNotice" component={AddNotice}/>
       <Route  path="/notices" component={Notices}/>
       <Route  path="/viewNotice/:id" component={ViewNotice}/>
@@ -105,7 +112,10 @@ import * as RiIcons from 'react-icons/ri';
       <Route  path="/updateHomework/:id" component={UpdateHomework}/>
       <Route  path="/email" component={Email}/>
       <Route  path="/blank" component={Blank}/>
-
+      <Route  path="/markStudentAttendance" component={MarkStudentAttendance}/>
+      <Route  path="/viewStudentAttendance" component={ViewStudentAttendance}/>
+      <Route  path="/examData" component={ExamData}/>
+     
           <Route exact path="/addSection/:id">
             <AddSection />
           </Route>
@@ -199,10 +209,9 @@ import * as RiIcons from 'react-icons/ri';
 
 const i='true'
 export const SidebarData7 = [
-    {
-        title: 'Dashboard',
-        path: '#',
-        icon: <FaIcons.FaSchool />
+    {title: `${section}`,
+    path: `/viewStudents/${section}`,
+    icon: <FaIcons.FaSchool />
       },
         { 
           title: 'Student',
@@ -212,11 +221,7 @@ export const SidebarData7 = [
           iconOpened: <RiIcons.RiArrowUpSFill />,
            
           subNav: [
-            {
-              title: 'Dashboard',
-              path: '/students',
-              icon: <AiIcons.AiOutlineDashboard />
-            },
+            
             {
               
               title: 'Students',
@@ -266,11 +271,6 @@ export const SidebarData7 = [
           iconOpened: <RiIcons.RiArrowUpSFill />,
            
           subNav: [
-            {
-              title: 'Dashboard',
-              path: '#',
-              icon: <AiIcons.AiOutlineDashboard />
-            },
             {
              
               title: 'Academic Section',
@@ -391,6 +391,12 @@ export const SidebarData7 = [
           title: 'Add Exam',
           path: '/exam',
           icon: <IoIcons.IoMdAddCircleOutline />
+        }, 
+        {
+          
+          title: 'Exams',
+          path: '/examData',
+          icon: <IoIcons.IoIosPaper />
         },
         {
           
@@ -416,10 +422,29 @@ export const SidebarData7 = [
     
     },
 
-    {
+    { status:i,
       title: 'Attendance',
-      path: '/attendance',
-      icon: <IoIcons.IoIosPerson />
+      path: '#',
+      icon: <IoIcons.IoIosPerson />,
+      iconClosed: <RiIcons.RiArrowDownSFill />,
+      iconOpened: <RiIcons.RiArrowUpSFill />,
+       
+      subNav: [
+        {
+          
+          title: 'Mark',
+          path: '/markStudentAttendance',
+          icon: <IoIcons.IoMdAddCircleOutline />
+        },
+        {
+          
+          title: 'View',
+          path: '/viewStudentAttendance',
+          icon: <IoIcons.IoIosPeople />
+        },
+      
+      ]
+    
     },
     {
       title: 'Email',
@@ -437,67 +462,12 @@ export const SidebarData7 = [
         icon: <RiIcons.RiFolderTransferLine />
       },
       
-      {
-        title: 'Reports',
-        path: '#',
-        icon: <IoIcons.IoIosPaper />,
-        iconClosed : <RiIcons.RiArrowDownSFill />,
-        iconOpened: <RiIcons.RiArrowUpSFill />,
-    
-        subNav: [
-          
-          {
-            title: 'Class Fee',
-            path: '/reportClassFee',
-            icon: <IoIcons.IoIosPaper />,
-            
-          },
-         
-        ]
-      },
-     
-      {
-        title: 'Messages',
-        path: '#',
-        icon: <FaIcons.FaEnvelopeOpenText />,
-    
-        iconClosed: <RiIcons.RiArrowDownSFill />,
-        iconOpened: <RiIcons.RiArrowUpSFill />,
-    
-        subNav: [
-          {
-            title: 'Message ',
-            path: '/messageList',
-            icon: <IoIcons.IoIosPaper />
-          },
-          {
-            title: 'Compose Message',
-            path: '/messages',
-            icon: <IoIcons.IoIosPaper />
-          }
-        ]
-      },
-    
+      
+   
     {
       title: 'Profile',
-      path: '#',
+      path: '/profile',
       icon: <IoIcons.IoMdPerson/>,
-  
-      iconClosed: <RiIcons.RiArrowDownSFill />,
-      iconOpened: <RiIcons.RiArrowUpSFill />,
-  
-      subNav: [
-        {
-          title: 'Info ',
-          path: '/profile',
-          icon: <IoIcons.IoIosPaper />
-        },
-        {
-          title: 'Reset Password',
-          path: '/passwordreset:resetToken',
-          icon: <IoIcons.IoIosPaper />
-        }
-      ]
     },
     
     

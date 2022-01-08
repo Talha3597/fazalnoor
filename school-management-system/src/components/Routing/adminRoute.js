@@ -12,6 +12,8 @@ import UpdateNotice from '../Screens/updateNotice'
 import ViewNotice from '../Screens/viewNotice'
 import Blank from '../Screens/blank'
 import ViewHomework from '../Screens/viewHomework'
+import MarkStudentAttendance from '../Screens/markStudentAttendance'
+import ViewStudentAttendance from '../Screens/viewStudentAttendance'
 // homework
 import AddHomework from '../Screens/addHomework'
 import Homeworks from '../Screens/homeworks'
@@ -62,6 +64,8 @@ import EditTitmetable from '../super_admin/editTimetable'
 import UpdateTitmetable from '../super_admin/updateTimetable'
 import UpdateClass from '../super_admin/updateClass'
 import ManageClassData from '../super_admin/manageClassData'
+import ViewGradesStudent from '../super_admin/viewGradesStudent'
+
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
@@ -80,7 +84,9 @@ export const App2=()=> {
   <Route exect path="/passwordreset/:resetToken" component={resetPasswordScreen}/>
   <Route  path="/blank" component={Blank}/>
  
-  
+  <Route  path="/markStudentAttendance" component={MarkStudentAttendance}/>
+    <Route  path="/viewStudentAttendance" component={ViewStudentAttendance}/>
+     
   <Route  path="/addNotice" component={AddNotice}/>
   <Route  path="/notices" component={Notices}/>
   <Route  path="/updateNotice/:id" component={UpdateNotice}/>
@@ -101,7 +107,9 @@ export const App2=()=> {
 <Route  path="/viewUser/:id" component={ViewUser}/>
 <Route  path="/reportClassFee" component={ReportClassFee}/>
 <Route  path="/messageList" component={MessageList}/>
-
+<Route exact path="/viewGradesStudent/:id">
+            <ViewGradesStudent />
+          </Route>
   <Route exact path="/addClass">
         <SuperAdminDashboard />
       </Route>
@@ -160,6 +168,15 @@ export const App2=()=> {
       <Route exact path="/updateClass/:id_1">
         <UpdateClass />
       </Route>
+      <Route exact path="/sectionAttendance/:id_s/:id_c">
+            <SectionAttendance />
+          </Route>
+          <Route exact path="/viewAttendance/:title_s/:title_c">
+            <ViewAttendance />
+          </Route>
+          <Route exact path="/editAttendance/:title_s/:title_c">
+            <EditAttendance />
+          </Route>
      
    </Router>
   )
@@ -181,11 +198,7 @@ export const SidebarData1 = [
       iconOpened: <RiIcons.RiArrowUpSFill />,
        
       subNav: [
-        {
-          title: 'Dashboard',
-          path: '/students',
-          icon: <AiIcons.AiOutlineDashboard />
-        },
+        
         {
           
           title: 'Students',
@@ -235,11 +248,7 @@ export const SidebarData1 = [
       iconOpened: <RiIcons.RiArrowUpSFill />,
        
       subNav: [
-        {
-          title: 'Dashboard',
-          path: '#',
-          icon: <AiIcons.AiOutlineDashboard />
-        },
+       
         {
          
           title: 'Academic Section',
@@ -354,6 +363,30 @@ export const SidebarData1 = [
       path: '/viewGrades',
       icon: <AiIcons.AiOutlineStock />
     },
+    { status:i,
+      title: 'Attendance',
+      path: '#',
+      icon: <IoIcons.IoIosPerson />,
+      iconClosed: <RiIcons.RiArrowDownSFill />,
+      iconOpened: <RiIcons.RiArrowUpSFill />,
+       
+      subNav: [
+        {
+          
+          title: 'Mark',
+          path: '/markStudentAttendance',
+          icon: <IoIcons.IoMdAddCircleOutline />
+        },
+        {
+          
+          title: 'View',
+          path: '/viewStudentAttendance',
+          icon: <IoIcons.IoIosPeople />
+        },
+      
+      ]
+    
+    },
     {
       title: 'Transfer',
       path: '/transfer',
@@ -365,72 +398,24 @@ export const SidebarData1 = [
       icon: <RiIcons.RiFolderTransferLine />
     },
     
-    {
-      title: 'Reports',
-      path: '#',
-      icon: <IoIcons.IoIosPaper />,
-      iconClosed : <RiIcons.RiArrowDownSFill />,
-      iconOpened: <RiIcons.RiArrowUpSFill />,
-  
-      subNav: [
-        
-        {
-          title: 'Class Fee',
-          path: '/reportClassFee',
-          icon: <IoIcons.IoIosPaper />,
-          
-        },
-       
-      ]
-    },
+   
     {
       title: 'Email',
       path: '/email',
       icon: <IoIcons.IoIosSend />,
     },
    
-    {
-      title: 'Messages',
-      path: '#',
-      icon: <FaIcons.FaEnvelopeOpenText />,
-  
-      iconClosed: <RiIcons.RiArrowDownSFill />,
-      iconOpened: <RiIcons.RiArrowUpSFill />,
-  
-      subNav: [
-        {
-          title: 'Message ',
-          path: '/messageList',
-          icon: <IoIcons.IoIosPaper />
-        },
-        {
-          title: 'Compose Message',
-          path: '/messages',
-          icon: <IoIcons.IoIosPaper />
-        }
-      ]
-    },
+    
     
     {
       title: 'Profile',
-      path: '#',
+      path: '/profile',
       icon: <IoIcons.IoMdPerson/>,
   
       iconClosed: <RiIcons.RiArrowDownSFill />,
       iconOpened: <RiIcons.RiArrowUpSFill />,
   
-      subNav: [
-        {
-          title: 'Info ',
-          path: '/profile',
-          icon: <IoIcons.IoIosPaper />
-        },
-        {
-          title: 'Reset Password',
-          path: '/passwordreset:resetToken',
-          icon: <IoIcons.IoIosPaper />
-        }
-      ]
+      
     },
     
     

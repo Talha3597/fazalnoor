@@ -128,7 +128,7 @@ useEffect(()=>{
                       </div><br/>   
                       <div className="container1">
                        <div className="box2">
-                       <Table bordered  size='lg'>
+                       {role=='superAdmin'?<Table bordered  size='lg'>
   <tbody>
  <tr > 
 <td>    
@@ -146,7 +146,7 @@ useEffect(()=>{
 </tr>
 
 </tbody>
-</Table>
+</Table>:''}
                 <Table striped bordered hover size='sm'>
                 <thead>
                 <tr>

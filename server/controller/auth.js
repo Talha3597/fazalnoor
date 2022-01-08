@@ -85,11 +85,17 @@ exports.forgotpassword=async(req,res,next) =>{
         const resetToken= await user.getResetPasswordToken()
         
         await user.save();
-        const resetUrl = `https://fazalnoorschool.herokuapp.com/passwordreset/${resetToken}`
+        const resetUrl = `https://fazalnoor.com/passwordreset/${resetToken}`
         const message = `
-        <h1> You have requested a password reset <h1/>
+        <h1> We heard that you lost your fazalnoor account password. Sorry about that!
+
+        But don’t worry! <h1/>
         <p>Please go to this link to reset your password<p/>
         <a href=${resetUrl} clickTracking=off>${resetUrl}<a/>
+        <h3>If you don’t use this link within 24 hours, it will expire. To get a new password reset link, visit: https://fazalnoor.com/forgotpassword
+
+        </h3><h3>Thanks,</h3>
+       <h3> The FazalNoor Team</h3>
         `
         
         try {

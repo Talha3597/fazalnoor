@@ -92,7 +92,11 @@ import PaySalary from "../Screens/paySalary"
 import UpdateClass from '../super_admin/updateClass'
 import ManageClassData from '../super_admin/manageClassData'
 //User
-
+import MarkStudentAttendance from '../Screens/markStudentAttendance'
+import ViewStudentAttendance from '../Screens/viewStudentAttendance'
+//Exam
+import Exam from '../Screens/exam'
+import ExamData from '../Screens/examData'
 //report
 import ReportFinance from '../Screens/reportFinance'
 import ReportFinanceRole from '../Screens/reportFinanceRole'
@@ -210,7 +214,8 @@ export const App6=()=> {
             <GradeReportBySection />
           </Route>
          
-        
+          <Route  path="/markStudentAttendance" component={MarkStudentAttendance}/>
+    <Route  path="/viewStudentAttendance" component={ViewStudentAttendance}/>
       <Route exect path="/register" component={RegisterScreen}/>
       <Route exect path="/forgotpassword" component={forgotPasswordScreen}/>
       <Route exect path="/passwordreset/:resetToken" component={resetPasswordScreen}/>
@@ -223,7 +228,8 @@ export const App6=()=> {
       <Route  path="/income" component={Income}/>
       
       <Route  path="/addIncome" component={AddIncome}/>
-      
+      <Route  path="/exam" component={Exam}/>
+      <Route  path="/examData" component={ExamData}/>
       <Route  path="/fees" component={Fee}/>
       <Route  path="/feeDashboard" component={FeeDashboard}/>
       <Route  path="/salaryDashboard" component={SalaryDashboard}/>
@@ -268,11 +274,7 @@ export const SidebarData6 = [
       iconOpened: <RiIcons.RiArrowUpSFill />,
        
       subNav: [
-        {
-          title: 'Dashboard',
-          path: '/students',
-          icon: <AiIcons.AiOutlineDashboard />
-        },
+        
         {
           
           title: 'Students',
@@ -322,11 +324,7 @@ export const SidebarData6 = [
       iconOpened: <RiIcons.RiArrowUpSFill />,
        
       subNav: [
-        {
-          title: 'Dashboard',
-          path: '#',
-          icon: <AiIcons.AiOutlineDashboard />
-        },
+       
         {
          
           title: 'Academic Section',
@@ -446,6 +444,18 @@ export const SidebarData6 = [
       subNav: [
         {
           
+          title: 'Add Exam',
+          path: '/exam',
+          icon: <IoIcons.IoMdAddCircleOutline />
+        },
+        {
+          
+          title: 'Exams',
+          path: '/examData',
+          icon: <IoIcons.IoMdAddCircleOutline />
+        },
+        {
+          
           title: 'View Grades',
           path: '/viewGrades',
           icon: <IoIcons.IoIosPaper />
@@ -464,6 +474,30 @@ export const SidebarData6 = [
         },
        
         
+      ]
+    
+    },
+    { status:i,
+      title: 'Attendance',
+      path: '#',
+      icon: <IoIcons.IoIosPerson />,
+      iconClosed: <RiIcons.RiArrowDownSFill />,
+      iconOpened: <RiIcons.RiArrowUpSFill />,
+       
+      subNav: [
+        {
+          
+          title: 'Mark',
+          path: '/markStudentAttendance',
+          icon: <IoIcons.IoMdAddCircleOutline />
+        },
+        {
+          
+          title: 'View',
+          path: '/viewStudentAttendance',
+          icon: <IoIcons.IoIosPeople />
+        },
+      
       ]
     
     },
@@ -595,83 +629,19 @@ export const SidebarData6 = [
       
       },
       
-      {
-        title: 'Reports',
-        path: '#',
-        icon: <IoIcons.IoIosPaper />,
-        iconClosed : <RiIcons.RiArrowDownSFill />,
-        iconOpened: <RiIcons.RiArrowUpSFill />,
     
-        subNav: [
-          {
-            title: 'Finance Report',
-            path: '/reportFinance',
-            icon: <IoIcons.IoIosPaper />,
-            
-          },
-          {
-            title: ' Report Role',
-            path: '/reportFinanceRole',
-            icon: <IoIcons.IoIosPaper />,
-            
-          },
-          {
-            title: 'Class Fee',
-            path: '/reportClassFee',
-            icon: <IoIcons.IoIosPaper />,
-            
-          },
-         
-        ]
-      },
       {
       title: 'Email',
       path: '/email',
       icon: <IoIcons.IoIosSend />,
     },
    
-    {
-      title: 'Messages',
-      path: '#',
-      icon: <FaIcons.FaEnvelopeOpenText />,
   
-      iconClosed: <RiIcons.RiArrowDownSFill />,
-      iconOpened: <RiIcons.RiArrowUpSFill />,
-  
-      subNav: [
-        {
-          title: 'Message ',
-          path: '/messageList',
-          icon: <IoIcons.IoIosPaper />
-        },
-        {
-          title: 'Compose Message',
-          path: '/messages',
-          icon: <IoIcons.IoIosPaper />
-        }
-      ]
-    },
     
     {
       title: 'Profile',
-      path: '#',
+      path: '/profile',
       icon: <IoIcons.IoMdPerson/>,
-  
-      iconClosed: <RiIcons.RiArrowDownSFill />,
-      iconOpened: <RiIcons.RiArrowUpSFill />,
-  
-      subNav: [
-        {
-          title: 'Info ',
-          path: '/profile',
-          icon: <IoIcons.IoIosPaper />
-        },
-        {
-          title: 'Reset Password',
-          path: '/passwordreset:resetToken',
-          icon: <IoIcons.IoIosPaper />
-        }
-      ]
     },
     
     
