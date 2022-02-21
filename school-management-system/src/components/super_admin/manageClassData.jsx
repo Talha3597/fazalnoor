@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import styles from '../../assets/css/style.module.css'
-import { Row, Col, Navbar, Nav, Table,Button } from 'react-bootstrap'
+import { Row, Col, Table} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
-
-
-
-
+import * as AiIcons from 'react-icons/ai';
 function ManageClassData() {
 
     const [ timetableData, settimetableData ] = useState([])
-
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
     useEffect(() => {
         axios.get('/api/getClasses')
         .then((res) => {
@@ -35,10 +37,9 @@ function ManageClassData() {
                     <td>{timetable.title}</td>
                     <td>{timetable.incharge}</td>
                     
-                    <td><Link to={ '/updateClass/' + timetable._id }><Button className={styles.sideButton1}  >
-                            Edit</Button></Link></td>
+                    <td><Link to={ '/updateClass/' + timetable._id }><AiIcons.AiOutlineEdit className={styles.sideButton1}  /></Link></td>
 
-                    <td><Button onClick={() =>  {
+                    <td><AiIcons.AiFillDelete onClick={() =>  {
                         let flag= window.confirm("Delete  record!")
                         if(flag)
                         {
@@ -47,7 +48,7 @@ function ManageClassData() {
                             console.log(response.data)
                             window.location = '/manageClassData'
                             });}
-                    }} className={styles.sideButton2}>Delete</Button></td>
+                    }} className={styles.sideButton2}/></td>
                 </tr>
         
             </tbody>

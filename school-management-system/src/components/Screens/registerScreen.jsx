@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import axios from 'axios'
 
-const RegisterScreen =({history})=>{
+const RegisterScreen =()=>{
     const [username, setUserName]=useState('')
     const [email, setEmail]=useState('')
     const [password, setPassword]=useState('')
@@ -37,8 +37,38 @@ const RegisterScreen =({history})=>{
         
         
     }
-   useEffect(async()=>{
-    await axios.get('/api/getClasses')
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+        const config= {
+            headers:{
+                
+                Authorization:`Bearer ${localStorage.getItem("authToken")}`,
+                role:localStorage.getItem("role")
+            }
+       }
+        const fetchPrivateData=async()=>
+        {
+           
+           try {
+            const {data}=  (await axios.get('/api/private',config))
+            console.log(data.data)
+    
+                 
+            } catch (error) {
+                localStorage.removeItem("authToken")
+                localStorage.removeItem("role")
+                window.location="/login"
+            }
+        }
+        
+        fetchPrivateData()
+        
+    },[])
+   useEffect(()=>{
+    axios.get('/api/getClasses')
     .then((res) => {
        
         setClassData(res.data)
@@ -47,7 +77,7 @@ const RegisterScreen =({history})=>{
         console.log(err)
     })
 
-    await axios.get('/api/getSections')
+     axios.get('/api/getSections')
     .then((res) => {
         
         setSectionData(res.data)

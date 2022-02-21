@@ -1,6 +1,6 @@
 import React, { useState,useEffect,useRef } from 'react'
 import styles from '../../assets/style.module.css'
-import { Table, Button, } from 'react-bootstrap'
+import { Table } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as AiIcons from 'react-icons/ai';
 import { useReactToPrint } from 'react-to-print';
@@ -11,14 +11,13 @@ import DatePicker from 'react-datepicker';
 
  
 const Salary =  ()=> {
-  var [today,setToday] =useState( new Date)
+  var [today,setToday] =useState( new Date())
   var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
-  
   const [ employeeNo, setEmployeeNo] = useState('')
  let role=localStorage.getItem("role") 
 let[gdata,setData] =useState([]) 
 let[status,setStatus] =useState('') 
-let[month,setMonth] =useState('') 
+let[month,setMonth] =useState(parseInt(today.getMonth()+1)) 
 let createdBy=localStorage.getItem("username")
 let[year,setYear] =useState( today.getFullYear())
 const minusYear=()=>{
@@ -35,12 +34,34 @@ const handlePrint = useReactToPrint({
 const removeData = async(id) => {
   let flag= window.confirm("Delete  record!")
   if(flag)
-  { 
+  {  const config= {
+    headers:{
+        
+        Authorization:`Bearer ${localStorage.getItem("authToken")}`,
+        role:localStorage.getItem("role")
+    }
+  }
+  const fetchPrivateData=async()=>
+  {
+   
+   try {
+    const {data}=  (await axios.get('/api/private',config))
     await axios.delete(`/api/salary`, { params: {id} }) 
-        .then(res => {
-            const del = gdata.filter(gdata => id !== gdata._id)
-            setData(del)
-          }) 
+    .then(res => {
+        const del = gdata.filter(gdata => id !== gdata._id)
+        setData(del)
+      }) 
+    } catch (error) {
+        localStorage.removeItem("authToken")
+        localStorage.removeItem("role")
+        window.location="/login"
+    }
+  }
+  
+  fetchPrivateData()
+  
+   
+   
   }     
 }
 async function fetchData(){   
@@ -50,20 +71,50 @@ async function fetchData(){
       
   })
  }
-
+ useEffect(()=>{
+  if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+  {  
+      window.location="/login"
+  }
+},[])
 useEffect(()=>{
-   
-       
- fetchData()
- 
+      
+  axios.get('/api/salaries',{params:{month,status,employeeNo,year}})
+  .then(res=>{
+      setData(res.data)
+      
+  })
 
 },[month,status,employeeNo,year]
 )
 const generateDefaultFee = async()=>{
  let flag= window.confirm(`Generate Default Salary on ${date}`)
  if(flag)
- { await axios.post('/api/generateSalary',{createdBy,date})
- fetchData()
+ {  const config= {
+  headers:{
+      
+      Authorization:`Bearer ${localStorage.getItem("authToken")}`,
+      role:localStorage.getItem("role")
+  }
+}
+const fetchPrivateData=async()=>
+{
+ 
+ try {
+  const {data}=  (await axios.get('/api/private',config))
+  await axios.post('/api/generateSalary',{createdBy,date})
+  fetchData()
+  } catch (error) {
+      localStorage.removeItem("authToken")
+      localStorage.removeItem("role")
+      window.location="/login"
+  }
+}
+
+fetchPrivateData()
+
+ 
+  
  }
   
  
@@ -73,9 +124,30 @@ const deleteRecord = async()=>{
   if(month && year){
   let flag= window.confirm("Delete  record of specific month")
   if(flag)
-  { 
+  {  const config= {
+    headers:{
+        
+        Authorization:`Bearer ${localStorage.getItem("authToken")}`,
+        role:localStorage.getItem("role")
+    }
+  }
+  const fetchPrivateData=async()=>
+  {
+   
+   try {
+    const {data}=  (await axios.get('/api/private',config))
     await axios.delete('/api/deleteSalary', { params: {month,year} })
  fetchData()
+   
+    } catch (error) {
+        localStorage.removeItem("authToken")
+        localStorage.removeItem("role")
+        window.location="/login"
+    }
+  }
+  
+  fetchPrivateData()
+   
   }
 }else{
   window.alert('Select month to delete Paid record')
@@ -111,7 +183,7 @@ return (
                     <div className="text-center">
                    
                     <select   as="select" value={month} onChange={ e => setMonth(e.target.value) } >
-                    <option value=''defaultValue>Select Month</option>
+                    <option value=''>{year}</option>
                     <option value='1'>January</option>
                     <option value='2'>Februry</option>
                     <option value='3'>March</option>
@@ -181,11 +253,8 @@ return (
                             
                             <td className={styles.noprint}>
                            {role=='superAdmin'? 
-                            <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
-                             Delete
-                            </Button>:''}</td><td>
-                           <Link to={`/paySalary/${item._id}` } > <Button className={styles.sideButton1}  >
-                            Pay</Button></Link></td>
+                            <AiIcons.AiFillDelete className={styles.sideButton2} onClick={() => removeData(item._id)}/>:''}</td><td>
+                           <Link to={`/paySalary/${item._id}` } > <AiIcons.AiOutlineDollarCircle className={styles.sideButton3}  /></Link></td>
                         </tr>  
                     })}  
     

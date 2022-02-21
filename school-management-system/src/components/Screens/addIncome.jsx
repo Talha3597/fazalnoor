@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect} from 'react'
 import styles from '../../assets/style.module.css'
 import { Row, Col, Form, Button, } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -6,8 +6,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from 'react-datepicker';
 import axios from 'axios'
 
-const AddIncome =  ({history})=> {
-    var [today,setToday] =useState( new Date)
+const AddIncome =  ({})=> {
+    var [today,setToday] =useState( new Date())
 
      var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
 const [ incomeCategory, setIncomeCategory ] = useState('')
@@ -17,13 +17,43 @@ const [ incomeCategory, setIncomeCategory ] = useState('')
     const receivedBy=localStorage.getItem("username")
     const [message, setMessage]=useState('')
     const [error, setError]=useState('')
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+        const config= {
+            headers:{
+                
+                Authorization:`Bearer ${localStorage.getItem("authToken")}`,
+                role:localStorage.getItem("role")
+            }
+       }
+        const fetchPrivateData=async()=>
+        {
+           
+           try {
+            const {data}=  (await axios.get('/api/private',config))
+            console.log(data.data)
+    
+                 
+            } catch (error) {
+                localStorage.removeItem("authToken")
+                localStorage.removeItem("role")
+                window.location="/login"
+            }
+        }
+        
+        fetchPrivateData()
+        
+    },[])
     const spaceClean=()=>{
         setAmount(0)
         setIncomeCategory('')
         setMessage('')
         setNote('')
         setTitle('')
-        setToday(new Date)
+        setToday(new Date())
     }
     const onSubmit = async(e) => {
         e.preventDefault()

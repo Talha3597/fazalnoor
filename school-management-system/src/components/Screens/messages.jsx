@@ -2,13 +2,9 @@ import React, { useState,useEffect } from 'react'
 import styles from '../../assets/style.module.css'
 import { Row, Col, Form, Button,Table } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import axios from 'axios'
-
 const SendMessage =  ()=> {
-   // const [message, setMessage]=useState("")
     const [ to, setTo ] = useState('')
-   
     const [text,setText]= useState('')
     const [role,setRole]= useState('')
     const [Class,setClass]= useState('')
@@ -22,7 +18,7 @@ const SendMessage =  ()=> {
                 setData(del)
            
     }
-   useEffect(async() => {
+   useEffect(() => {
     axios.get('/api/getClasses')
         .then((res) => {
            
@@ -44,7 +40,7 @@ const SendMessage =  ()=> {
        if(role=='Users')
        {
         
-            await axios.get('/api/auth/usersData')
+             axios.get('/api/auth/usersData')
             .then(res=>{
               
                 setData(res.data)
@@ -56,7 +52,12 @@ const SendMessage =  ()=> {
         
 }, [role])
 
- 
+useEffect(()=>{
+    if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+    {  
+        window.location="/login"
+    }
+},[])
    
    
     const onSubmit = async(e) => {

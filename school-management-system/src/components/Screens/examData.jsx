@@ -1,20 +1,23 @@
 import React, { useState,useEffect } from 'react'
 import styles from '../../assets/style.module.css'
-import { Row, Col, Form, Button,Table } from 'react-bootstrap'
+import { Row, Col, Table } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Link} from 'react-router-dom'
-
-
+import * as AiIcons from 'react-icons/ai';
 import axios from 'axios'
 
-const Exam =  ({history})=> {
-   // const [message, setMessage]=useState("")
+const Exam =  ({})=> {
     const [ examData, setExamData ] = useState([])
     let [ Class, setClass ] = useState('')
     let [ section, setSection ] = useState('')
     let role=localStorage.getItem("role") 
 
-    
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
     const removeData = async(id) => {
         let flag= window.confirm("Delete All grades with this title record!")
         if(flag)
@@ -92,11 +95,8 @@ else{
                                                 <td>{item.title}</td>
                                                 <td>{item.Class}</td>
                                                 <td>{item.section}</td>
-                                                <td> <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
-                         Delete
-                        </Button></td><td>
-                        <Link to={`/gradeReportBySection/${item.Class}/${item.title}/${item.section}` }><Button className={styles.sideButton1}   >
-                            Report</Button></Link>
+                                                <td> <AiIcons.AiFillDelete className={styles.sideButton2} onClick={() => removeData(item._id)}/></td><td>
+                        <Link to={`/gradeReportBySection/${item.Class}/${item.title}/${item.section}` }><AiIcons.AiOutlineFolderView className={styles.sideButton6}   /></Link>
                         </td>
                                             </tr>)})
                                         }

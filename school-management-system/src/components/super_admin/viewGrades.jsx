@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import styles from '../../assets/css/style.module.css'
-import { Row, Col, Navbar, Nav, Button, Form, Table } from 'react-bootstrap'
+import { Row, Col,  Button, Form, Table } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
@@ -44,6 +44,12 @@ function ViewGrades() {
             
         
     )
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
     const onSubmit = (e) => {
         e.preventDefault()
 

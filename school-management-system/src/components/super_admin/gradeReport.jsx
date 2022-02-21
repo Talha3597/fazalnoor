@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styles from '../../assets/css/style.module.css'
-import { Row, Col, Navbar, Nav, Button, Form, Table } from 'react-bootstrap'
+import { Row, Col, Navbar, Nav, Button,  Table } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios'
@@ -39,7 +39,12 @@ function GradeReport() {
           return <ClassVar classIns={currentclass} key={currentclass._id}/>;
         })
     }
-
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
     useEffect(() => {
         axios.get('/api/singleStudentByRoll/' + admin_no)
         .then(res => {
@@ -56,7 +61,7 @@ function GradeReport() {
             })
             .catch(err => console.log('error : ' + err))
 
-    }, [])
+    }, [admin_no])
 
 
     return (

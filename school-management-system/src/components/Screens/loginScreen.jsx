@@ -3,7 +3,10 @@ import axios from 'axios'
 import {Link} from 'react-router-dom'
 import { Navbar, Nav, Container, Image} from 'react-bootstrap'
 import styles from '../../assets/home.css'
+import {BrowserRouter as Router, Route} from "react-router-dom"
 import * as FaIcons from 'react-icons/fa';
+import  App1  from '../Routing/superAdminRoute';
+
 import '../../assets/screen.css'
 
 const LoginScreen =({history})=>{
@@ -11,7 +14,40 @@ const LoginScreen =({history})=>{
     const [email, setEmail]=useState("")
     const [password, setPassword]=useState("")
     const [error, setError]=useState("")
-   
+    useEffect(()=>{
+      if(localStorage.getItem("authToken") && localStorage.getItem("role"))
+      {  
+        const config= {
+          headers:{
+              
+              Authorization:`Bearer ${localStorage.getItem("authToken")}`,
+              role:localStorage.getItem("role")
+          }
+     }
+      const fetchPrivateData=async()=>
+      {
+         
+         try {
+          const {data}=  (await axios.get('/api/private',config))
+          history.push('/')
+         
+          } catch (error) {
+              localStorage.removeItem("authToken")
+              localStorage.removeItem("role")
+              setError("You Are Not Authorized")
+                setTimeout(()=>{
+                setError("")
+                },5000)
+          }
+      }
+      
+      fetchPrivateData()
+      
+      }
+      
+      
+       
+   },[history])
 
      const loginHandler=async(e)=>
     {
@@ -24,22 +60,57 @@ const LoginScreen =({history})=>{
             try {
                 const {data}= await axios.post("/api/auth/login",{email,password},config)
                 if(data.token){localStorage.setItem("authToken",data.token)
-                
-                if(data.role =='teacher'||data.role =='adminTeacher'||data.role =='financeTeacher')
+                if(data.role == 'superAdmin')
                 {
-                localStorage.setItem("role",data.role)
-                localStorage.setItem("username",data.username)
-                localStorage.setItem("Class",data.Class)
-                localStorage.setItem("section",data.section)
-                localStorage.setItem("id",data.id)
-                history.push('/')
-                }
-                else{
-                localStorage.setItem("role",data.role)
-                localStorage.setItem("username",data.username)
-                localStorage.setItem("id",data.id)
+                  localStorage.setItem("role",data.role)
+                  localStorage.setItem("username",data.username)
+                  localStorage.setItem("id",data.id)
                 history.push('/adminDashboard')
-                }}
+                }
+                else if(data.role == 'admin'){
+                  localStorage.setItem("role",data.role)
+                  localStorage.setItem("username",data.username)
+                  localStorage.setItem("id",data.id)
+                history.push('/classData')
+                }
+                else if(data.role == 'finance'){
+                  localStorage.setItem("role",data.role)
+                  localStorage.setItem("username",data.username)
+                  localStorage.setItem("id",data.id)
+                history.push('/fees')
+                }
+                else if(data.role == 'teacher'){
+                  localStorage.setItem("role",data.role)
+                  localStorage.setItem("username",data.username)
+                  localStorage.setItem("id",data.id)
+                  localStorage.setItem("Class",data.Class)
+                localStorage.setItem("section",data.section)
+                history.push(`/viewStudents/${data.section}`)
+                }
+                else if(data.role == 'adminFinance'){
+                  localStorage.setItem("role",data.role)
+                  localStorage.setItem("username",data.username)
+                  localStorage.setItem("id",data.id)
+                history.push(`/classData`)
+                }
+                else if(data.role == 'adminTeacher'){
+                  localStorage.setItem("role",data.role)
+                  localStorage.setItem("username",data.username)
+                  localStorage.setItem("id",data.id)
+                  localStorage.setItem("Class",data.Class)
+                localStorage.setItem("section",data.section)
+                history.push(`/classData`)
+                }
+                else if(data.role == 'financeTeacher'){
+                  localStorage.setItem("role",data.role)
+                  localStorage.setItem("username",data.username)
+                  localStorage.setItem("id",data.id)
+                  localStorage.setItem("Class",data.Class)
+                localStorage.setItem("section",data.section)
+                history.push(`/students`)
+                }
+                   
+              }
                 
             } catch (error) {
                 setError("Incorrect email or password")

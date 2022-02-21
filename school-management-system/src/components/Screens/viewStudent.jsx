@@ -1,6 +1,6 @@
 import React, { useEffect, useState,useRef} from 'react';
 import axios from 'axios';
-import { Row, Col, Form,Button,Table } from 'react-bootstrap'
+import { Row, Col, Table } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../../assets/style.module.css'
 import { useReactToPrint } from 'react-to-print';
@@ -9,7 +9,6 @@ import {Link} from 'react-router-dom'
 
 function ViewUser({match}){
     const id=match.params.id
-     
      const [address, setAddress]=useState('')
     const [ studentNo, setStudentNo ] = useState('')
     let [ studentName, setStudentName ] = useState('')
@@ -29,7 +28,7 @@ function ViewUser({match}){
 let[month,setMonth] =useState('') 
 let[status,setStatus] =useState('') 
 
-let createdBy=localStorage.getItem("username")
+
 let role=localStorage.getItem("role")
 let today=new Date()
 let[year,setYear] =useState( today.getFullYear())
@@ -51,7 +50,38 @@ const removeData = async(id) => {
            
         }) 
 }
+useEffect(()=>{
+  async function fetchData(){   
+      await axios.get('/api/student' ,{ params: {id} })
+      .then(res=>{
+          
+          setStudentName(res.data.studentName)
+          setStudentNo(res.data.studentNo)
+          setParentName(res.data.parentName)
+          setRollNo(res.data.rollNo)
+          setPhoneNo(res.data.phoneNo)
+          setEmail(res.data.email)
+          setParentRelation(res.data.parentRelation)
+          setClass(res.data.Class)
+          setSection(res.data.section)
+          setAddress(res.data.address)
+          setDob(res.data.dob)
+          setCnic(res.data.cnic)
+          setSchoolFee(res.data.fee)
+      })
+     }
+     
+fetchData()
 
+
+},[id]
+)   
+useEffect(()=>{
+  if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+  {  
+      window.location="/login"
+  }
+},[])
 useEffect(()=>{
 
     async function fetchData(){ 
@@ -66,36 +96,10 @@ useEffect(()=>{
  fetchData()
 
 
-},[month,status,studentNo,year]
+},[month,status,studentNo,year,Class,section]
 )
 
       
-useEffect(()=>{
-    async function fetchData(){   
-        await axios.get('/api/student' ,{ params: {id} })
-        .then(res=>{
-            
-            setStudentName(res.data.studentName)
-            setStudentNo(res.data.studentNo)
-            setParentName(res.data.parentName)
-            setRollNo(res.data.rollNo)
-            setPhoneNo(res.data.phoneNo)
-            setEmail(res.data.email)
-            setParentRelation(res.data.parentRelation)
-            setClass(res.data.Class)
-            setSection(res.data.section)
-            setAddress(res.data.address)
-            setDob(res.data.dob)
-            setCnic(res.data.cnic)
-            setSchoolFee(res.data.fee)
-        })
-       }
-       
- fetchData()
- 
-
-},[id]
-)   
      
 return( <>
 
@@ -110,8 +114,8 @@ return( <>
               
               <div className="text-center">
                    
-                   <select required  as="select" value={month} onChange={ e => setMonth(e.target.value) } >
-                   <option value=''defaultValue>Select Month</option>
+                   <select   as="select" value={month} onChange={ e => setMonth(e.target.value) } >
+                   <option value=''defaultValue>{year}</option>
                    <option value='1'>January</option>
                     <option value='2'>Februry</option>
                     <option value='3'>March</option>
@@ -126,7 +130,7 @@ return( <>
                     <option value='12'>December</option>
                    </select>&nbsp;&nbsp;<AiIcons.AiFillPlusCircle onClick={ addYear}/>&nbsp;
                  <AiIcons.AiFillMinusCircle onClick={minusYear}/> &nbsp;
-                  <select required  as="select" value={status} onChange={ e => setStatus(e.target.value) } >
+                  <select  as="select" value={status} onChange={ e => setStatus(e.target.value) } >
                   <option value=''defaultValue>Select status</option>
                   <option value='Paid'>Paid</option>
                   <option value='Unpaid'>Unpaid</option>
@@ -200,12 +204,9 @@ return( <>
                             <td>{item.person}</td>
                             <td>{item.status}</td>
                             <td className={styles.noprint}>  {role=='superAdmin'?
-                        <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
-                         Delete
-                        </Button>:''}<br/>&nbsp;
+                        <AiIcons.AiFillDelete className={styles.sideButton2} onClick={() => removeData(item._id)}/>:''}<br/>
                         {role=='superAdmin'|| role=='finance'|| role=='financeTeacher'||role=='adminFinance'? 
-                        <Link to={`/payFee/${item._id}` } ><Button className={styles.sideButton1}  >
-                        Pay</Button></Link>:''} </td>
+                        <Link to={`/payFee/${item._id}` } ><AiIcons.AiOutlineDollarCircle className={styles.sideButton1}  /></Link>:''} </td>
                          
                         </tr> 
                         

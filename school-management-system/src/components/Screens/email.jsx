@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import styles from '../../assets/style.module.css'
 import { Row, Col, Form, Button, } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link } from 'react-router-dom';
 import axios from 'axios'
-import  Sidebar  from './privateScreen';
+
 const SendEmail =  ()=> {
    // const [message, setMessage]=useState("")
     const [ to, setTo ] = useState('')
@@ -13,7 +12,12 @@ const SendEmail =  ()=> {
     const [ bcc, setBcc ] = useState('')
    
     const [text,setText]= useState('')
-    
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
    
    
     const onSubmit = async() => {

@@ -158,6 +158,43 @@
     text-decoration: none;
     color: #ffffff;
 }
+.sideButton1{
+    background-color:rgb(255, 255, 255) !important;
+    border-color: #46B6B1;
+    border: 2px solid;
+    font-size:24px;
+    
+}
+
+.sideButton2{
+    background-color:#fff!important;
+    border-color:#9E3535;
+    color: #9E3535;
+    border: 2px solid;
+    font-size:24px;
+   
+}
+.sideButton3{
+    background-color:#fff!important;
+    border-color:#2A9539;
+    color: #2A9539 ;
+    border: 2px solid;
+    font-size:24px;
+}
+.sideButton6{
+    background-color:#fff!important;
+    border-color:#c3c548;
+    color:#c3c548;
+    border: 2px solid;
+    font-size:24px;
+}
+.sideButton7{
+    background-color:#fff!important;
+    border-color:#832a95;
+    color:#832a95;
+    border: 2px solid;
+    font-size:24px;
+}
 .sideButton4{
     background-color:rgb(97, 168, 115)!important;
     font-size: 1.5rem;
@@ -173,52 +210,8 @@
     outline: none !important;
 }
 
-.sideButton1{
-    background-color:rgb(255, 255, 255) !important;
-    border-color: #46B6B1;
-    border: 2px solid;
-    color: #46B6B1;
-    min-width: 80px;
-    max-width: 130px;
-    
-}
-.sideButton3{
-    background-color:#fff!important;
-    border-color:#2A9539;
-    color: #2A9539 ;
-    border: 2px solid;
-    min-width: 80px;
-    max-width: 130px;
-}
-.sideButton3:hover {
-    background-color:#fff;
-    border-color:#2A9539;
-    color: #2A9539 ;
-    font-size: 1.1rem;
-  }
-.sideButton2{
-    background-color:#fff!important;
-    border-color:#9E3535;
-    color: #9E3535;
-    border: 2px solid;
-    min-width: 80px;
-    max-width: 130px;
-   
-}
-.sideButton1:hover {
-    background-color:#fff;
-    border-color: #46B6B1;
-    color: #46B6B1;
-    font-size: 1.1rem;
-  }
 
 
-.sideButton2:hover {
-    background-color:#fff;
-    border-color:#9E3535;
-    color: #9E3535;
-    font-size: 1.1rem;
-  }
 
 .timetableButton{
     display: block;

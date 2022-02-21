@@ -4,7 +4,6 @@ import React,{useState,useEffect,useRef} from 'react'
 import styles from '../../assets/style.module.css'
 import { Table} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import * as AiIcons from 'react-icons/ai';
 import { useReactToPrint } from 'react-to-print';
@@ -18,6 +17,12 @@ const ViewUserAttendance =()=>{
     const employeeNo=''
    
 let role=localStorage.getItem("role")
+useEffect(()=>{
+  if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+  {  
+      window.location="/login"
+  }
+},[])
     const [attendanceData, setAttendanceData] = useState([]);
     let[year,setYear] =useState(today.getFullYear())
     const minusYear=()=>{
@@ -74,7 +79,7 @@ return(
    <div className={styles.empty}></div>
 <div className="text-center">{role=='superAdmin'&& <button className={styles.formButton} onClick={() => deleteRecord()}><span>&#9888;</span> Delete Record</button>}
 &nbsp;<button  onClick={handlePrint} className={styles.formButton} type="submit">Print</button> &nbsp;
-                   <select required  as="select" value={month} onChange={ e => setMonth(e.target.value) } >
+                   <select   as="select" value={month} onChange={ e => setMonth(e.target.value) } >
                     <option value=''selected>Select Month</option>
                     <option value='1'>January</option>
                     <option value='2'>Februry</option>

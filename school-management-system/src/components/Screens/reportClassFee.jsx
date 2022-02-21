@@ -7,13 +7,10 @@ import { useReactToPrint } from 'react-to-print';
 import axios from 'axios'
 
 const ReportClassFee =  ()=> {
-   // const [message, setMessage]=useState("")
 let sum1 =0
-
-let[f1data,setFee1Data] =useState([]) 
-
-let[month,setMonth] =useState('') 
 let today =new Date()
+let[f1data,setFee1Data] =useState([]) 
+let[month,setMonth] =useState(parseInt(today.getMonth()+1)) 
 let[year,setYear] =useState( today.getFullYear())
 const minusYear=()=>{
   setYear(year=>year-1)
@@ -25,7 +22,12 @@ const componentRef = useRef();
 const handlePrint = useReactToPrint({
   content: () => componentRef.current,
 });
-
+useEffect(()=>{
+  if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+  {  
+      window.location="/login"
+  }
+},[])
 useEffect(()=>{
  
     async function fetchFee1Data(){   
@@ -57,7 +59,7 @@ return (
                    <div className="text-center">
                    
                    <select required  as="select" value={month} onChange={ e => setMonth(e.target.value) } >
-                    <option value=''selected>Select Month</option>
+                    <option value=''>{year}</option>
                     <option value='1'>January</option>
                     <option value='2'>Februry</option>
                     <option value='3'>March</option>

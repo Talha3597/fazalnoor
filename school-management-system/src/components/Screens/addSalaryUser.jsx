@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import styles from '../../assets/style.module.css'
 import { Row, Col, Form, Button, } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -7,17 +7,47 @@ import DatePicker from 'react-datepicker';
 import axios from 'axios'
 
 
-const AddSalary =  ({match,history})=> {
-   // const [message, setMessage]=useState("")
-   var [today,setToday] =useState( new Date)   
+const AddSalary =  ({match})=> {
+ 
+   var [today,setToday] =useState( new Date())   
    var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
-
     const [ employeeNo, setEmployeeNo] = useState(match.params.id)
     const [title, setTitle]=useState("")
     const [amount, setAmount]=useState(0)
     const [message, setMessage]=useState('')
     const [error, setError]=useState('')
     const createdBy=localStorage.getItem("username")
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+        const config= {
+            headers:{
+                
+                Authorization:`Bearer ${localStorage.getItem("authToken")}`,
+                role:localStorage.getItem("role")
+            }
+       }
+        const fetchPrivateData=async()=>
+        {
+           
+           try {
+            const {data}=  (await axios.get('/api/private',config))
+            console.log(data.data)
+    
+                 
+            } catch (error) {
+                localStorage.removeItem("authToken")
+                localStorage.removeItem("role")
+                window.location="/login"
+            }
+        }
+        
+        fetchPrivateData()
+        
+    
+    },[])
     const spaceClean=()=>{
         setAmount(0)
         setTitle('')

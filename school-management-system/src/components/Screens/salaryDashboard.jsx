@@ -1,6 +1,6 @@
 import React, { useState, useEffect,useRef} from 'react'
 import styles from '../../assets/style.module.css'
-import { Row, Col,Form } from 'react-bootstrap'
+import { Row, Col} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "react-datepicker/dist/react-datepicker.css";
 import * as AiIcons from 'react-icons/ai';
@@ -9,10 +9,10 @@ import { useReactToPrint } from 'react-to-print';
 import axios from 'axios'
 
 const SalaryDashboard =  ()=> {
+    let today=new Date()
    const [data,setData]=useState([])
-   const [month,setMonth]=useState('')
+   const [month,setMonth]=useState(parseInt(today.getMonth()+1))
    let[status,setStatus] =useState('') 
-   let today=new Date()
    let[year,setYear] =useState( today.getFullYear())
    const minusYear=()=>{
      setYear(year=>year-1)
@@ -24,6 +24,12 @@ const SalaryDashboard =  ()=> {
 const handlePrint = useReactToPrint({
   content: () => componentRef.current,
 });
+useEffect(()=>{
+    if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+    {  
+        window.location="/login"
+    }
+},[])
     useEffect(()=>{
         async function fetchData(){   
             await axios.get('/api/salaryDashboard', { params: {month,status,year} })
@@ -60,7 +66,7 @@ return (
                                         Print
                                        </button>&nbsp;
                          <select   as="select" value={month} onChange={ e => setMonth(e.target.value) } >
-                    <option value=''selected>Select Month</option>
+                    <option value=''>{year}</option>
                     <option value='1'>January</option>
                     <option value='2'>Februry</option>
                     <option value='3'>March</option>
@@ -87,24 +93,24 @@ return (
                <h5> &nbsp;{month ? "Month:"+month:''}&nbsp;{"Year:"+year}</h5>
                 
                          <form className={styles.margLeftRowTable} >
-                         <div className={styles.card}>
+                         <div className={styles.cardLarge}>
                                 <h2>Amount</h2>
                                 <h3>{data[1]}</h3> 
                                 </div>
-                                <div className={styles.card}>
+                                <div className={styles.cardLarge}>
                                 <h2>Paid</h2>
                                 <h3>{data[0]}</h3> 
                                 </div>
                                 
-                                <div className={styles.card}>
+                                <div className={styles.cardLarge}>
                                 <h2>Pending</h2>
                                 <h3>{data[1]-data[0]}</h3> 
                                 </div>
-                                <div className={styles.card}>
+                                <div className={styles.cardLarge}>
                                 <h2># of Paid</h2>
                                 <h3>{data[2]}</h3> 
                                 </div>
-                                <div className={styles.card}>
+                                <div className={styles.cardLarge}>
                                 <h2># of UnPaid</h2>
                                 <h3>{data[3]}</h3> 
                                 </div>

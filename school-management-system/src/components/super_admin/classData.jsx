@@ -24,7 +24,12 @@ const ClassVar = props => (
 
 function ClassData() {
     const [ classData, setClassData ] = useState([])
-
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
     useEffect(() => {
         axios.get('/api/classData')
         .then((res) => {

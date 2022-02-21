@@ -2,12 +2,10 @@ import React, { useState,useEffect } from 'react'
 import styles from '../../assets/style.module.css'
 import { Row, Col, Form, Button, } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import axios from 'axios'
 
 const AddNotice =  ({history})=> {
-   // const [message, setMessage]=useState("")
-   const [error, setError]=useState("") 
+  
    const [ notice, setNotice ] = useState('')
     const [ url, setUrl ] = useState('')
     const [title,setTitle]= useState('')
@@ -17,7 +15,12 @@ const AddNotice =  ({history})=> {
    const [ classData, setClassData ] = useState([])
    const [ sectionData, setSectionData ] = useState([])
    const [message, setMessage]=useState("")
-   
+   useEffect(()=>{
+    if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+    {  
+        window.location="/login"
+    }
+},[])
    useEffect(() => {
     axios.get('/api/getClasses')
         .then((res) => {

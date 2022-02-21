@@ -7,7 +7,7 @@ import DatePicker from 'react-datepicker';
 import axios from 'axios'
 
 const AddFee =  ({history})=> {
-    var [today,setToday] =useState( new Date)
+    var [today,setToday] =useState( new Date())
     var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
 
    const [ classData, setClassData ] = useState([])
@@ -27,8 +27,38 @@ const AddFee =  ({history})=> {
         setSection('')
         setStudentNo(0) 
         setTitle('')
-        setToday(new Date)
+        setToday(new Date())
     }
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+        const config= {
+            headers:{
+                
+                Authorization:`Bearer ${localStorage.getItem("authToken")}`,
+                role:localStorage.getItem("role")
+            }
+       }
+        const fetchPrivateData=async()=>
+        {
+           
+           try {
+            const {data}=  (await axios.get('/api/private',config))
+            console.log(data.data)
+    
+                 
+            } catch (error) {
+                localStorage.removeItem("authToken")
+                localStorage.removeItem("role")
+                window.location="/login"
+            }
+        }
+        
+        fetchPrivateData()
+        
+    },[])
     useEffect(() => {
         axios.get('/api/getClasses')
             .then((res) => {

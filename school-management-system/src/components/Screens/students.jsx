@@ -1,10 +1,11 @@
 import React ,{ useState,useEffect,useRef} from 'react'
 import styles from '../../assets/style.module.css'
-import { Row, Col,Table,Button} from 'react-bootstrap'
+import { Table} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Link } from 'react-router-dom'
 import { useReactToPrint } from 'react-to-print';
 import axios from 'axios';
+import * as AiIcons from 'react-icons/ai'; 
 let role=localStorage.getItem("role") 
 
 //import axios from 'axios'
@@ -14,9 +15,12 @@ const [search,setSearch]=useState('')
 const [ studentNo, setStudentNo] = useState('')
 const [ classData, setClassData ] = useState([])
 const [ Class, setClass ] = useState('')
-const [ section, setSection ] = useState('')    
-const [ sectionData, setSectionData ] = useState([])
+const [ section, setSection ] = useState('')
+const [ size, setSize ] = useState(50)
+let [ page, setPage ] = useState(1)
 
+const [ sectionData, setSectionData ] = useState([])
+let number=0;
 const removeData = async(id) => {
   let flag= window.confirm("Delete  record!")
   if(flag)
@@ -26,6 +30,18 @@ const removeData = async(id) => {
             setData(del)
            
         }) }
+}
+const addNum=()=>{
+number=number+1;
+}
+const minusYear=()=>{
+  if(page>1)
+  {
+    setPage(page=>page-1)
+  }
+  }
+const addYear=()=>{
+  setPage(page=>page+1)
 }
 const deleteRecord = async()=>{
   if(section ){
@@ -70,18 +86,26 @@ useEffect(()=>{
 console.log(err)
 })
 },[])
-async function fetchData(){   
-  await axios.get('/api/students', { params: {search,Class,section,studentNo} })
+ function fetchData(){   
+   axios.get('/api/students', { params: {search,Class,section,studentNo,size,page} })
   .then(res=>{
       setData(res.data)
       
   })
  }
+ useEffect(()=>{
+  if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+  {  
+      window.location="/login"
+  }
+},[])
 useEffect(()=>{     
- fetchData()
- 
-
-},[search,Class,section,studentNo]
+  axios.get('/api/students', { params: {search,Class,section,studentNo,size,page} })
+  .then(res=>{
+      setData(res.data)
+      
+  })
+},[search,Class,section,studentNo,size,page]
 )
 return(
     <>
@@ -124,15 +148,24 @@ return(
                      <h3> Students List</h3>
                   </div>
   
-<br/>
+
 <h5>&nbsp; {studentNo ? "Student No:"+studentNo:
 <h5>&nbsp; {Class ? "Class:"+Class:''}&nbsp; {section ? "Section:"+section:''}&nbsp; &nbsp; </h5>
-}&nbsp;</h5>
-<br/>
+}</h5>
+<div className='text-right'>
+  <div className={styles.noprint}>
+page:{page}&nbsp;<AiIcons.AiFillPlusCircle onClick={ addYear}/>&nbsp;
+                  <AiIcons.AiFillMinusCircle onClick={minusYear}/>&nbsp;
+<select   as="select" value={size} onChange={ e => setSize(e.target.value) } >
+                                         <option value='50' defaultValue>50</option>
+                                         <option value='100' >100</option>
+                                         <option value='150' >150</option>
+                                         <option value='200' >200</option></select>&nbsp;</div></div>
        <div className='table-responsive'>
        <Table striped bordered hover size='sm' >
   <thead >
     <tr>
+      <th>#</th>
       <th>Student #</th>
       <th> Name</th>
       <th>Class</th>
@@ -148,6 +181,7 @@ return(
   <tbody >
   {gdata.map((item) => {  
                         return <tr key={item._id}>
+                          <td onClick={addNum()}>{number}</td>
                             <td>{item.studentNo}</td> 
                             <td>{item.studentName}</td>  
                             <td>{item.Class}</td>  
@@ -155,20 +189,16 @@ return(
                             <td>{item.phoneNo}</td>  
                               {role==='superAdmin'&&
                           <td className={styles.noprint}><Link  to={`/updateStudent/${item._id}`}>  
-                            <Button className={styles.sideButton1}>Edit</Button></Link></td>}
+                            <AiIcons.AiOutlineEdit className={styles.sideButton1}/></Link></td>}
                             {role==='superAdmin'&& <td className={styles.noprint}>
-                           <Button className={styles.sideButton2}  onClick={() => removeData(item._id)}>
-                             Delete</Button></td>}
-                            <td className={styles.noprint}> <Link to={ `/viewStudent/${item._id}` }> <Button className={styles.sideButton3}  >
-                            View</Button></Link></td>
+                           <AiIcons.AiFillDelete className={styles.sideButton2}  onClick={() => removeData(item._id)}/></td>}
+                            <td className={styles.noprint}> <Link to={ `/viewStudent/${item._id}` }> <AiIcons.AiOutlineFolderView className={styles.sideButton6}  /></Link></td>
                             {role==='superAdmin'|| role==='finance'||role==='financeTeacher'||role==='adminFinance' ? <td className={styles.noprint}>
                             <Link to={`/addFeeStudent/${item.studentNo}`}>
-                        <Button className={styles.sideButton1}>Fee</Button></Link></td>:''}
+                        <AiIcons.AiOutlineDollarCircle className={styles.sideButton3}/></Link></td>:''}
                         <td className={styles.noprint}>
                           <Link to={`/viewGradesStudent/${item.studentNo}`}>
-                        <Button className={styles.sideButton3} >
-                         Grades
-                        </Button></Link></td>  
+                        <AiIcons.AiOutlinePercentage className={styles.sideButton7} /></Link></td>  
                         </tr>  
                     })}  
     

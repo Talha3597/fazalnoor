@@ -4,7 +4,6 @@ import React,{useState,useEffect,useRef} from 'react'
 import styles from '../../assets/style.module.css'
 import { Table} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import * as AiIcons from 'react-icons/ai';
 import { useReactToPrint } from 'react-to-print';
@@ -47,10 +46,16 @@ let role=localStorage.getItem("role")
       const handlePrint = useReactToPrint({
         content: () => componentRef.current,
       });
-    useEffect(async()=>{
+      useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
+    useEffect(()=>{
         
      if(section!=''){
-            await axios.get('/api/viewStudentAttendance',{ params: {month,year,section}})
+             axios.get('/api/viewStudentAttendance',{ params: {month,year,section}})
             .then(res=>{
                setAttendanceData(res.data)
                

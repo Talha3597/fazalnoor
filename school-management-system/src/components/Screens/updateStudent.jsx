@@ -2,9 +2,7 @@ import React, { useEffect, useState} from 'react';
 import axios from 'axios';
 import { Row, Col, Form, Button, } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import styles from '../../assets/style.module.css'
-import  Sidebar  from './privateScreen';
 
 function UpdateStudent({match,history}){
     const id=match.params.id
@@ -12,7 +10,6 @@ function UpdateStudent({match,history}){
      const [address, setAddress]=useState('')
     const [ studentNo, setStudentNo ] = useState('')
     let [ studentName, setStudentName ] = useState('')
-   
     const [ Class, setClass ] = useState('')
     const [ section, setSection ] = useState('')
     let [ parentName, setParentName ] = useState('')
@@ -20,15 +17,18 @@ function UpdateStudent({match,history}){
     let [ parentRelation, setParentRelation  ] = useState('')
     const [ dob, setDob ] = useState('')
     const [ fee, setFee ] = useState('')
-
    const [ cnic, setCnic ] = useState('')
     let [ email, setEmail ] = useState('')
     let [ description, setDescription ] = useState('')
     const [ classData, setClassData ] = useState([])
     const [message, setMessage]=useState("")
-    
     const [ sectionData, setSectionData ] = useState([])
-   
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
     useEffect(() => {
         axios.get('/api/getClasses')
             .then((res) => {

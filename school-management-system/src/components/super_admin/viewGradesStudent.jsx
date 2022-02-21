@@ -1,14 +1,11 @@
 
 import React, { useState,useEffect } from 'react'
 import styles from '../../assets/css/style.module.css'
-import { Row, Col, Table,Button } from 'react-bootstrap'
+import { Row, Col, Table } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link,useParams } from 'react-router-dom';
 import axios from 'axios'
-
-
-
-
+import * as AiIcons from 'react-icons/ai';
 function ViewGradesStudent({match}){
     const {id} = useParams();
     const [ admin_no, setAdminNo ] = useState(id)
@@ -29,8 +26,8 @@ function ViewGradesStudent({match}){
                 <td>{props.classIns.obtainedMarks}</td>
                 <td>{props.classIns.percentage}</td>
                 <td>{props.classIns.testGrade}</td>
-                <td><Link to={'/updateGrade/' + props.classIns._id}><Button className={styles.sideButton1}>Edit</Button></Link>
-               </td><td> <Button onClick={() =>  { let flag= window.confirm("Delete  record!")
+                <td><Link to={'/updateGrade/' + props.classIns._id}><AiIcons.AiOutlineEdit className={styles.sideButton1}/></Link>
+               </td><td> <AiIcons.AiFillDelete onClick={() =>  { let flag= window.confirm("Delete  record!")
       if(flag)
       {  axios.delete('/api/deleteGrade/'+props.classIns._id)
                        .then(res => { 
@@ -38,13 +35,19 @@ function ViewGradesStudent({match}){
                         setStudentGrades(del)
                         })
                     }
-                }} className={styles.sideButton2}>Delete</Button></td>
+                }} className={styles.sideButton2}/></td>
             </tr>
     
         </tbody>
             
         
     )
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
 useEffect(()=>{
     axios.get('/api/singleStudentByRoll/' + admin_no)
     .then(res => {
@@ -61,7 +64,7 @@ useEffect(()=>{
         })
         .catch(err => console.log('error : ' + err))
 
-},[])
+},[admin_no])
    
 
 

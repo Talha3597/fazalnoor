@@ -2,10 +2,8 @@ import React ,{ useState,useEffect} from 'react'
 import styles from '../../assets/style.module.css'
 import { Row, Col,Table,Button} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import axios from 'axios';
 
-//import axios from 'axios'
 const MessageList =()=>{
 let[gdata,setData] =useState([]) 
 const sam=''
@@ -18,7 +16,12 @@ const removeData = async(id) => {
            
         }) 
 }
-
+useEffect(()=>{
+    if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+    {  
+        window.location="/login"
+    }
+},[])
 useEffect(()=>{
     async function fetchData(){   
         await axios.get('/api/messages')

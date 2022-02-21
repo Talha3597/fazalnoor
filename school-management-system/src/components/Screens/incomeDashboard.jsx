@@ -1,7 +1,6 @@
 import React, { useState, useEffect,useRef } from 'react'
-import DatePicker from "react-datepicker";
 import styles from '../../assets/style.module.css'
-import { Row, Col,Form } from 'react-bootstrap'
+import { Row, Col} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "react-datepicker/dist/react-datepicker.css";
 import * as AiIcons from 'react-icons/ai';
@@ -12,9 +11,9 @@ import { useReactToPrint } from 'react-to-print';
 
 
 const IncomeDashboard =  ()=> {
+    let today=new Date()
    const [data,setData]=useState('')
-   const [month,setMonth]=useState('')
-   let today=new Date()
+   const [month,setMonth]=useState(parseInt(today.getMonth()+1))
    let[year,setYear] =useState( today.getFullYear())
    const minusYear=()=>{
      setYear(year=>year-1)
@@ -26,7 +25,12 @@ const IncomeDashboard =  ()=> {
 const handlePrint = useReactToPrint({
   content: () => componentRef.current,
 });
-   
+useEffect(()=>{
+    if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+    {  
+        window.location="/login"
+    }
+},[])
     useEffect(()=>{
         async function fetchData(){   
             await axios.get('/api/incomeDashboard', { params: {month,year} })
@@ -60,7 +64,7 @@ return (
                          <div className="text-center">
                          &nbsp;<button  onClick={handlePrint} className={styles.formButton} type="submit"> Print </button>
                          &nbsp;<select   as="select" value={month} onChange={ e => setMonth(e.target.value) } >
-                    <option value=''selected>Select Month</option>
+                    <option value=''>{year}</option>
                     <option value='1'>January</option>
                     <option value='2'>Februry</option>
                     <option value='3'>March</option>
@@ -79,7 +83,7 @@ return (
                          <form className={styles.margLeftRowTable} >
                               
                               
-                              <div className={styles.card}>
+                              <div className={styles.cardLarge}>
                                 <h2>Amount</h2>
                                 <h3>{data}</h3> 
                                 </div>

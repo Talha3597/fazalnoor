@@ -20,7 +20,13 @@ function UpdateSection(){
         setDescription('')
         setMessage('')
     }
-    async function fetchClassData(){ 
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
+     function fetchClassData(){ 
         axios.get('/api/singleClass/' + id_2)
             .then((res) => {
               
@@ -31,8 +37,8 @@ function UpdateSection(){
 				console.log(err)
 			})
         }
-        async function fetchSectionData(){ 
-            axios.get('/api/singleSection/' + id_1)
+         function fetchSectionData(){ 
+           axios.get('/api/singleSection/' + id_1)
             .then((res) => {
                
                 setTitle(res.data.title)
@@ -55,10 +61,27 @@ function UpdateSection(){
             .catch(err => {
 				console.log(err)
 			})
-fetchClassData()
-fetchSectionData()
+            axios.get('/api/singleClass/' + id_2)
+            .then((res) => {
+              
+                setSectionClass(res.data)
+                setClass(res.data.title)
+            })
+            .catch(err => {
+				console.log(err)
+			})
+            axios.get('/api/singleSection/' + id_1)
+            .then((res) => {
+               
+                setTitle(res.data.title)
+                setDescription(res.data.description)
+               
+            })
+            .catch(err => {
+				console.log(err)
+			})
             
-    }, [])
+    }, [id_1,id_2])
 
 
     const onSubmit = (e) => {

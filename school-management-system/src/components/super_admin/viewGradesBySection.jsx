@@ -5,9 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 
-
-
-
 function ViewGradesBySection() {
 
     const [ classTitle, setClass ] = useState('')
@@ -53,9 +50,15 @@ let section=sectionTitle
             
         
     )
-    useEffect(async() => {
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
+    useEffect(() => {
         
-       await axios.get('/api/getClasses')
+        axios.get('/api/getClasses')
         .then((res) => {
             console.log(res.data)
             setClassTitle(res.data)
@@ -91,7 +94,7 @@ let section=sectionTitle
 
        
     }, [])
-    useEffect(async() => {
+    useEffect(() => {
         axios.get('/api/exams',{params:{Class,section}})
         .then((res) => {
             console.log(res.data)

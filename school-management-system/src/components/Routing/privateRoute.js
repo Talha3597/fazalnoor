@@ -1,10 +1,10 @@
-import{Redirect,Route,useHistory} from 'react-router-dom'
+import{Redirect,Route,} from 'react-router-dom'
 const privateRoute=({component:Component, ...rest})=>{
     return(
         <Route 
          {...rest} 
           render ={(props)=> 
-          localStorage.getItem("authToken") ?
+          localStorage.getItem("authToken") &&  localStorage.getItem("role") ?
           (<Component {...props}/>):
           (<Redirect to='/home'/>) 
          } 

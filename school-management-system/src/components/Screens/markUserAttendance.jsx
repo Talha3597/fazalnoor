@@ -6,9 +6,8 @@ import React,{useState,useEffect} from 'react'
     import "react-datepicker/dist/react-datepicker.css";
     import axios from 'axios';
     const MarkUserAttendance =()=>{
-        const [todayDate,setTodayDate]=useState(new Date)
+        const [todayDate,setTodayDate]=useState(new Date())
         const [userData,setUserData]=useState([])
-       // console.log(userData)
         const date=todayDate.getFullYear()+'-'+parseInt(todayDate.getMonth()+1)+'-'+todayDate.getDate()
         const search=''
         const employeeNo=''
@@ -19,12 +18,12 @@ import React,{useState,useEffect} from 'react'
              presentUsers.push({"employeeNo":x.employeeNo,"username":x.username})
          })
      }
-    //  const markAll=()=>{
-    //      userData.map(i=>{
-    //         const user={"employeeNo":i.employeeNo,"username":i.username}
-    //         presentUsers.push(user)
-    //      })
-    //  }
+     useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
 
       const handleChange = (employeeNo,username) => {
        

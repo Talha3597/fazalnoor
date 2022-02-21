@@ -1,6 +1,6 @@
 import React, { useState,useEffect,useRef } from 'react'
 import styles from '../../assets/style.module.css'
-import { Table, Button} from 'react-bootstrap'
+import { Table} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as AiIcons from 'react-icons/ai';
 import axios from 'axios'
@@ -8,15 +8,11 @@ import {Link} from 'react-router-dom'
 import { useReactToPrint } from 'react-to-print';
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from 'react-datepicker';
-
- 
-
-
 const Fee =  ()=> {
   var [today,setToday] =useState( new Date)
   var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
   let[gdata,setData] =useState([]) 
-let[month,setMonth] =useState('') 
+let[month,setMonth] =useState(parseInt(today.getMonth()+1)) 
 let[status,setStatus] =useState('') 
 const [ studentNo, setStudentNo] = useState('')
 const [ classData, setClassData ] = useState([])
@@ -25,7 +21,22 @@ const [ section, setSection ] = useState('')
 const [ sectionData, setSectionData ] = useState([])
 let createdBy=localStorage.getItem("username")
 let role=localStorage.getItem("role")
+const [ size, setSize ] = useState(50)
+let [ page, setPage ] = useState(1)
+let number=0
 let[year,setYear] =useState( today.getFullYear())
+const addNum=()=>{
+  number=number+1;
+  }
+const minusPage=()=>{
+  if(page>1)
+  {
+    setPage(page=>page-1)
+  }
+  }
+const addPage=()=>{
+  setPage(page=>page+1)
+}
 const minusYear=()=>{
   setYear(year=>year-1)
   }
@@ -39,23 +50,51 @@ const handlePrint = useReactToPrint({
 const removeData = async(id) => {
   let flag= window.confirm("Delete  record!")
   if(flag)
-  { 
+  {  const config= {
+    headers:{
+        
+        Authorization:`Bearer ${localStorage.getItem("authToken")}`,
+        role:localStorage.getItem("role")
+    }
+}
+const fetchPrivateData=async()=>
+{
+   
+   try {
+    const {data}=  (await axios.get('/api/private',config))
+    console.log(data.data)
     await axios.delete(`/api/fee`, { params: {id} }) 
-        .then(res => {
-            const del = gdata.filter(gdata => id !== gdata._id)
-            setData(del)
-           
-        }) }
+    .then(res => {
+        const del = gdata.filter(gdata => id !== gdata._id)
+        setData(del)
+       
+    }) 
+         
+    } catch (error) {
+        localStorage.removeItem("authToken")
+        localStorage.removeItem("role")
+        window.location="/login"
+    }
+}
+
+fetchPrivateData()
+
+    }
 }
 async function fetchData(){ 
           
-  await axios.get('/api/fees', { params: {month,Class,section,status,studentNo,year} })
+  await axios.get('/api/fees', { params: {size,page,month,Class,section,status,studentNo,year} })
   .then(res=>{
       setData(res.data)
       
   })
  }
-
+ useEffect(()=>{
+  if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+  {  
+      window.location="/login"
+  }
+},[])
 useEffect(()=>{
   axios.get('/api/getClasses')
   .then((res) => {
@@ -76,18 +115,42 @@ console.log(err)
 console.log(err)
 })
 
-       
- fetchData()
+axios.get('/api/fees', { params: {size,page,month,Class,section,status,studentNo,year} })
+.then(res=>{
+    setData(res.data)
+    
+})
 
-
-},[month,status,Class,section,studentNo,year]
+},[month,status,Class,section,studentNo,year,size,page]
 )
 const generateDefaultFee = async()=>{
  let flag= window.confirm(`Generate Default Fee on ${date}`)
  if(flag)
- { 
-   await axios.post('/api/generateFee',{createdBy,date})
-      fetchData()
+ {  const config= {
+  headers:{
+      
+      Authorization:`Bearer ${localStorage.getItem("authToken")}`,
+      role:localStorage.getItem("role")
+  }
+}
+const fetchPrivateData=async()=>
+{
+ 
+ try {
+  const {data}=  (await axios.get('/api/private',config))
+  await axios.post('/api/generateFee',{createdBy,date})
+  fetchData()
+       
+  } catch (error) {
+      localStorage.removeItem("authToken")
+      localStorage.removeItem("role")
+      window.location="/login"
+  }
+}
+
+fetchPrivateData()
+
+   
   }
   
  
@@ -97,9 +160,31 @@ const deleteRecord = async()=>{
   if(month && year ){
   let flag= window.confirm("Delete  record of specific month")
   if(flag)
-  { 
+  {  const config= {
+    headers:{
+        
+        Authorization:`Bearer ${localStorage.getItem("authToken")}`,
+        role:localStorage.getItem("role")
+    }
+  }
+  const fetchPrivateData=async()=>
+  {
+   
+   try {
+    const {data}=  (await axios.get('/api/private',config))
     await axios.delete('/api/deleteFee', { params: {month,year} })
-  fetchData()
+    fetchData()
+         
+    } catch (error) {
+        localStorage.removeItem("authToken")
+        localStorage.removeItem("role")
+        window.location="/login"
+    }
+  }
+  
+  fetchPrivateData()
+  
+    
   }
 }else{
   window.alert('Select month to delete Paid record')
@@ -135,7 +220,7 @@ return (
                                        </button><br/>      
                     <select   as="select" value={month} onChange={ e => setMonth(e.target.value) } >
                    
-                    <option value='' defaultValue>Select Month</option>
+                    <option value='' >{year}</option>
                     <option value='1'>January</option>
                     <option value='2'>Februry</option>
                     <option value='3'>March</option>
@@ -191,6 +276,7 @@ return (
                                                 className={styles.sizeFilter}
                                                  />                     
                    &nbsp;</div>
+
 <div ref={componentRef} >
 <div className={styles.formHeading}>
                      <h3> Al Khidmat Fazal Noor Campus </h3>
@@ -199,12 +285,23 @@ return (
  <h5>&nbsp; {studentNo ? "Student No:"+studentNo:
  <h5>&nbsp; {Class ? "Class:"+Class:''}&nbsp; {section ? "Section:"+section:''}&nbsp; {status? "Status:"+status:''}&nbsp; {month ? "Month:"+month:''}&nbsp;{"Year:"+year}</h5>
  }</h5>
- 
+                    <div className='text-right'>
+                   <div className={styles.noprint}>
+page:{page}&nbsp;<AiIcons.AiFillPlusCircle onClick={ addPage}/>&nbsp;
+                  <AiIcons.AiFillMinusCircle onClick={minusPage}/>&nbsp;
+<select   as="select" value={size} onChange={ e => setSize(e.target.value) } >
+                                         <option value='50' defaultValue>50</option>
+                                         <option value='100' >100</option>
+                                         <option value='150' >150</option>
+                                         <option value='200' >200</option>
+                                         <option value='500' >500</option>
+                                         </select>&nbsp;</div></div>
 <br/>
        <div className='table-responsive'>
        <Table striped bordered hover size='sm'  >
   <thead>
     <tr>
+      <th>#</th>
       <th>Student #</th>
       <th>Student Name</th>
       <th> Title</th>
@@ -220,6 +317,7 @@ return (
   <tbody>
   {gdata.map(item => {  
                         return <tr key={item._id}> 
+                             <td onClick={addNum()}>{number}</td> 
                             <td>{item.studentNo}</td> 
                             <td>{item.studentName}</td> 
                             <td>{item.title}</td>  
@@ -229,11 +327,8 @@ return (
                             <td>{item.pending}</td>
                             <td>{item.status}</td>
                             <td className={styles.noprint}>  {role=='superAdmin'?
-                        <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
-                         Delete
-                        </Button>:''}</td><td>
-                        <Link to={`/payFee/${item._id}` } ><Button className={styles.sideButton1}  >
-                        Pay</Button></Link> </td>
+                        <AiIcons.AiFillDelete className={styles.sideButton2} onClick={() => removeData(item._id)}/>:''}</td><td className={styles.noprint}>
+                        <Link to={`/payFee/${item._id}` } ><AiIcons.AiOutlineDollarCircle className={styles.sideButton3}  /></Link> </td>
                             
                         </tr> 
                         

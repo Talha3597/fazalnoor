@@ -1,16 +1,9 @@
 import styles from '../../assets/style.module.css'
-import { Navbar } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useState,useEffect} from 'react'
-
-import {BrowserRouter as Router, Route,useHistory} from "react-router-dom"
 import axios from 'axios'
-
 import {Link} from 'react-router-dom'
-
-
 import styled from 'styled-components';
-
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import  {SidebarData1}  from '../Routing/adminRoute';
@@ -24,9 +17,6 @@ import  {SidebarData8}  from '../Routing/financeTeacher';
 //import SidebarData4  from '../Routing/teacherRoute';
 import SubMenu from './submenu';
 import { IconContext } from 'react-icons/lib';
-
-
-
 const Nav = styled.div`
   background:#15171c;       // 
   height: 80px;
@@ -74,13 +64,13 @@ const SidebarWrap = styled.div`
 `;
 const PrivateScreen = ({history}) =>{
     const [sidebar, setSidebar] = useState(true);
-    let view1='disable'
+    
     const role=localStorage.getItem("role")
     const username=localStorage.getItem("username")
   const showSidebar = () => setSidebar(!sidebar);
  const [error, setError]= useState('')
- const [privateData, setPrivateData]= useState("")
- const [isDisabled, setIsDisabled] = useState(false);
+ 
+ 
  
  
  useEffect(()=>{
@@ -106,7 +96,8 @@ const PrivateScreen = ({history}) =>{
              
         } catch (error) {
             localStorage.removeItem("authToken")
-             setError("You are not authorized Please Login")
+            localStorage.removeItem("role")
+            window.location="/login"
         }
     }
     
@@ -121,10 +112,7 @@ const PrivateScreen = ({history}) =>{
        setSidebar(false)
        document.location.href = '/login'
        }
- return error ?  (
-    <span className="error-message">{error}</span>):
-     (
-         <>
+ return ( <>
          
         
          <IconContext.Provider value={{ color: '#fff' }}>
@@ -166,7 +154,7 @@ const PrivateScreen = ({history}) =>{
       SidebarData8.map((item, index) => {
        return <SubMenu item={item} key={index} />;
      }): role=="teacher" ? SidebarData4.map((item, index) => {
-          return <SubMenu disabled={isDisabled} item={item} key={index} />;
+          return <SubMenu  item={item} key={index} />;
         }) :''} 
            
           </SidebarWrap>
@@ -177,7 +165,7 @@ const PrivateScreen = ({history}) =>{
      
          </>
          
-     )
+ )
     
 }
 export default PrivateScreen

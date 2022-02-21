@@ -5,8 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
 
 const PromoteClass =  ({history})=> {
-   // const [message, setMessage]=useState("")
-    
     const [ tClass, setTclass ] = useState('')
     const [tSection,setTsection]= useState('')
     const [ fClass, setFclass ] = useState('')
@@ -15,7 +13,12 @@ const PromoteClass =  ({history})=> {
     const [ sectionData, setSectionData ] = useState([])
     const [error, setError]=useState("")
     const [message, setMessage]=useState("")
-    
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
     useEffect(() => {
         axios.get('/api/getClasses')
             .then((res) => {

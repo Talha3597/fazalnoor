@@ -1,11 +1,8 @@
 import React from 'react'
 import "bootstrap/dist/css/bootstrap.min.css"
 import {BrowserRouter as Router, Route} from "react-router-dom"
-import styles from '../../assets/style.module.css'
-import PrivateRoute from "./privateRoute";
 import  {App2}  from './adminRoute';
 import  {App4}  from './teacherRoute';
-import  {App5}  from './ranRoute';
 import  {App3}  from './financeRoute';
 import  {App6}  from './adminFinance';
 import  {App7}  from './adminTeacher';
@@ -29,6 +26,8 @@ import UpdateHomework from '../Screens/updateHomework'
 import PromoteClass from '../Screens/promoteClass'
 //email
 import Email from '../Screens/email'
+import EmailSetting from '../Screens/emailSetting'
+import SchoolInfoSettion from '../Screens/schoolInfoSetting'
 import Message from '../Screens/messages'
 import Upload from '../Screens/upload'
 import Transfer from '../Screens/transfer'
@@ -40,7 +39,7 @@ import RegisterScreen from "../Screens/registerScreen"
 import forgotPasswordScreen from "../Screens/forgotPasswordScreen"
 import resetPasswordScreen from "../Screens/resetPasswordScreen"
 //
-import IncomeCategories from "../Screens/incomeCategories"
+
 import ExpenseDashboard from "../Screens/expenseDashboard"
 import Expense from "../Screens/expense"
 import AddExpense from "../Screens/addExpense"
@@ -101,19 +100,10 @@ import AddSection from '../super_admin/addSection'
 import ClassData from '../super_admin/classData'
 import SectionData from '../super_admin/sectionData'
 import UpdateSection from '../super_admin/updateSection'
-import Attendance from '../super_admin/attendance'
-import SectionAttendance from '../super_admin/sectionAttendance'
-import ViewAttendance from '../super_admin/viewAttendance'
-import EditAttendance from '../super_admin/editAttendance'
 import ViewStudents from '../super_admin/viewStudents'
 import ManageGrades from '../super_admin/manageGrades'
 import ViewGrades from '../super_admin/viewGrades'
 import ViewGradesStudent from '../super_admin/viewGradesStudent'
-// import ViewGradesByClass from '../super_admin/viewGradesByClass'
-// import ViewGradesBySection from '../super_admin/viewGradesBySection'
-// import GradeReport from '../super_admin/gradeReport'
-// import GradeReportByClass from '../super_admin/gradeReportByClass'
-// import GradeReportBySection from '../super_admin/gradeReportBySection'
 import ViewGradesByClass from '../super_admin/viewGradesByClass'
 import ViewGradesBySection from '../super_admin/viewGradesBySection'
 import GradeReport from '../super_admin/gradeReport'
@@ -134,16 +124,15 @@ import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import * as RiIcons from 'react-icons/ri';
- export const App1=()=> {
+export const App1=()=> {
    const role=localStorage.getItem('role')
     return (
       
          
       <Router>  
-        
-     {role==="admin"?<Route  component={App2}/>:role==="finance"?<Route component={App3}/>:role==="teacher"?<Route component={App4}/>:role==="adminFinance"?<Route  component={App6}/>:role==="adminTeacher"?<Route  component={App7}/>:
-     role==="financeTeacher"?<Route  component={App8}/>:role==="superAdmin"?
-
+       {role ==='admin'? <Route component={App2}/>:role ==='finance'? <Route component={App3}/>:role ==='teacher'? <Route component={App4}/>:
+       role ==='adminFinance'? <Route component={App6}/>:role ==='adminTeacher'? <Route component={App7}/>: role ==='financeTeacher'? <Route component={App8}/>:
+       role ==='superAdmin'?         
      <Route>
        
        <Sidebar/>
@@ -175,6 +164,8 @@ import * as RiIcons from 'react-icons/ri';
       
       <Route  path="/promoteClass" component={PromoteClass}/>
       <Route  path="/email" component={Email}/>
+      <Route  path="/emailSetting" component={EmailSetting}/>
+      <Route  path="/schoolInfoSetting" component={SchoolInfoSettion}/>
       <Route  path="/messages" component={Message}/>
       <Route  path="/upload" component={Upload}/>
       <Route  path="/transfer" component={Transfer}/>
@@ -182,7 +173,6 @@ import * as RiIcons from 'react-icons/ri';
       <Route  path="/addExpense" component={AddExpense}/>
       <Route  path="/updateExpense/:id" component={UpdateExpense}/>
       <Route  path="/income" component={Income}/>
-      <Route  path="/incomeCategories" component={IncomeCategories}/>
       <Route  path="/addIncome" component={AddIncome}/>
       <Route  path="/updateIncome/:id" component={UpdateIncome}/>
       <Route  path="/incomeView/:id" component={ViewIncome}/>
@@ -231,18 +221,6 @@ import * as RiIcons from 'react-icons/ri';
           </Route>
           <Route exact path="/updateSection/:id_1/:id_2">
             <UpdateSection />
-          </Route>
-          <Route exact path="/attendance">
-            <Attendance />
-          </Route>
-          <Route exact path="/sectionAttendance/:id_s/:id_c">
-            <SectionAttendance />
-          </Route>
-          <Route exact path="/viewAttendance/:title_s/:title_c">
-            <ViewAttendance />
-          </Route>
-          <Route exact path="/editAttendance/:title_s/:title_c">
-            <EditAttendance />
           </Route>
           <Route exact path="/viewStudents/:title">
             <ViewStudents />
@@ -297,7 +275,7 @@ import * as RiIcons from 'react-icons/ri';
           {/* <Route exact path="/superadminDashboard">
             <SuperadminDashboard />
           </Route> */}
-           </Route> :<App5/>}
+           </Route> :"You Are Not Authorized"}
            </Router>
           
          );
@@ -311,6 +289,11 @@ export const SidebarData2 =
   title: 'Dashboard',
   path: '/adminDashboard',
   icon: <AiIcons.AiOutlineDashboard />
+},
+{
+  title: 'School',
+  path: '/schoolInfoSetting',
+  icon: <AiIcons.AiFillSetting />
 },
 { 
       title: 'Student',
@@ -737,8 +720,23 @@ export const SidebarData2 =
    
     {
       title: 'Email',
-      path: '/email',
+      path: '#',
       icon: <IoIcons.IoIosSend />,
+      iconClosed: <RiIcons.RiArrowDownSFill />,
+      iconOpened: <RiIcons.RiArrowUpSFill />,
+  
+      subNav: [
+        {
+          title: 'Email ',
+          path: '/email',
+          icon: <IoIcons.IoIosPaper />
+        },
+        {
+          title: 'Setting',
+          path: '/emailSetting',
+          icon: <AiIcons.AiFillSetting />
+        }
+      ]
     },
    
     {
@@ -788,3 +786,4 @@ export const SidebarData2 =
     
   ];
   
+ 

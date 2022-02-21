@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import styles from '../../assets/style.module.css'
 import { Row, Col, Form, Button, } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,7 +9,7 @@ import axios from 'axios'
 
 const AddFee =  ({match,history})=> {
    // const [message, setMessage]=useState("")
-   var [today,setToday] =useState( new Date)
+   var [today,setToday] =useState( new Date())
    var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
    
    const [error, setError]=useState('')
@@ -18,11 +18,41 @@ const AddFee =  ({match,history})=> {
     const [amount, setAmount]=useState(0)
     const createdBy=localStorage.getItem("username") 
     const [message, setMessage]=useState("")
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+        const config= {
+            headers:{
+                
+                Authorization:`Bearer ${localStorage.getItem("authToken")}`,
+                role:localStorage.getItem("role")
+            }
+       }
+        const fetchPrivateData=async()=>
+        {
+           
+           try {
+            const {data}=  (await axios.get('/api/private',config))
+            console.log(data.data)
+    
+                 
+            } catch (error) {
+                localStorage.removeItem("authToken")
+                localStorage.removeItem("role")
+                window.location="/login"
+            }
+        }
+        
+        fetchPrivateData()
+        
+    },[])
 const spaceFree=()=>{
     setAmount(0)
     setMessage('')
     setTitle('')
-    setToday(new Date)
+    setToday(new Date())
     
 }    
     const onSubmit = async(e) => {

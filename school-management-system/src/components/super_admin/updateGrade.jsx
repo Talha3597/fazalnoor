@@ -49,8 +49,27 @@ async function fetchSingleGrades(){
             console.log(err)
         })}
     useEffect(() => {
-       fetchGradesTitlesData()
-       fetchSingleGrades()
+         axios.get('/api/getGradestitles/' + id)
+        .then((res) => {
+            console.log(res.data)
+            setGradesTitles(res.data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+          axios.get('/api/singleGrade/' + id)
+        .then((res) => {
+            console.log(res.data)
+            setGrade(res.data)
+            setTitle(res.data.title)
+            setClass(res.data.stdclass)
+            setSection(res.data.section)
+            setTotalMarks(res.data.totalMarks)
+            setObtainedMarks(res.data.obtainedMarks)
+        })
+        .catch(err => {
+            console.log(err)
+        })
        axios.get('/api/exams',{params:{Class,section}})
        .then((res) => {
            console.log(res.data)
@@ -62,8 +81,13 @@ async function fetchSingleGrades(){
 
    
 
-    },[Class,section])
-
+    },[Class,section,id])
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
 
     const onSubmit = (e) => {
         e.preventDefault()

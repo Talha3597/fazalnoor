@@ -1,12 +1,41 @@
-import React,{useEffect,useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import styles from '../assets/home.css'
-import { Navbar, Nav, Container, Image,Row,Col} from 'react-bootstrap'
-import { Link,useHistory} from 'react-router-dom'
+import { Navbar, Nav, Container, Image,} from 'react-bootstrap'
+import { Link,} from 'react-router-dom'
 import * as FaIcons from 'react-icons/fa';
+import axios from 'axios'
+const HomePage =  ()=> {
+  const [principalMessage,setPrincipalMessage]=useState('')
+  const [mission,setMission]=useState('')
+  const [schoolName,setSchoolName]=useState('')
+  const [address,setAddress]=useState('')
+  const [phoneNo,setPhoneNo]=useState('')
+  const [email,setEmail]=useState('')
+  const [facebook,setFacebook]=useState('')
+  const [whatsapp,setWhatsapp]=useState('')
+  const [map,setMap]=useState('')
+ 
+  useEffect(()=>{
+    axios.get('/api/getSchoolInfo')
+    .then((res) => {
+       
+        setPrincipalMessage(res.data[0].principalMessage)
+        setMission(res.data[0].mission)
+        setSchoolName(res.data[0].schoolName)
+        setAddress(res.data[0].address)
+        setPhoneNo(res.data[0].phoneNo)
+        setEmail(res.data[0].email)
+        setWhatsapp(res.data[0].whatsapp)
+        setFacebook(res.data[0].facebook)
+        setMap(res.data[0].map)
+        
 
-const HomePage =  ({history})=> {
-  
+    })
+    .catch(err => {
+        console.log(err)
+    })
+   
+  },[])
 
       return (
         
@@ -18,7 +47,7 @@ const HomePage =  ({history})=> {
         <Image src='/images/fn.jpeg' alt='Fazal Noor School' fluid />
      </div>
          
-     &nbsp;  &nbsp; <Navbar.Brand> Fazal Noor School System</Navbar.Brand>
+     &nbsp;  &nbsp; <Navbar.Brand>{schoolName}</Navbar.Brand>
  
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
@@ -51,11 +80,11 @@ const HomePage =  ({history})=> {
   <div className='container1'>
    
     
-    <div className='box1'  > <h2>Principal's Messge</h2><h4>In life, no one and nothing will help you until you start helping yourself. 
+    <div className='box1'  > <h2>Principal's Messge</h2><h4>{principalMessage} 
     </h4></div>
     
    
-   <div className='box2' ><h2>Our Mission</h2><h5>Our mission is to develop well rounded, confident and responsible individuals who aspire to achieve their full potential. We will do this by providing a welcoming, happy, safe, and supportive learning environment in which everyone is equal and all achievements are celebrated.</h5></div>
+   <div className='box2' ><h2>Our Mission</h2><h5>{mission}</h5></div>
     
   </div>
   <div className='container1'>
@@ -88,17 +117,17 @@ const HomePage =  ({history})=> {
 <div className='empty'/>
 <div className='container1' style={{color:'whitesmoke'}}>
 <div className='box3'>
-<FaIcons.FaLocationArrow></FaIcons.FaLocationArrow>Al Khidmat Schools Fazal Noor Campus opposite Choti Phataki Kot Lakhpat lahore &nbsp;
-<br/><br/><a href="Fnoorschool@gmial.com"><FaIcons.FaMailBulk style={{color:'whitesmoke'}}/>&nbsp;Fnoorschool@gmial.com</a>
+<FaIcons.FaLocationArrow></FaIcons.FaLocationArrow>{address} &nbsp;
+<br/><br/><a href={email}><FaIcons.FaMailBulk style={{color:'whitesmoke'}}/>&nbsp;{email}</a>
  
-<br/><br/> <FaIcons.FaPhone/> &nbsp;0333-4321242 / 0310-4091041 
+<br/><br/> <FaIcons.FaPhone/> &nbsp;{phoneNo} 
   <br/><br/>
-&nbsp;&nbsp;<a href ="https://www.facebook.com/FazalNoorCampus/"> <FaIcons.FaFacebookF style={{fontSize:75}}/></a>
-&nbsp;&nbsp;<a href ="https://api.whatsapp.com/send?phone=923104091041&app=facebook&entry_point=page_cta"> <FaIcons.FaWhatsappSquare style={{color:'greenyellow',fontSize:75}}  /></a>
+&nbsp;&nbsp;<a href ={facebook}> <FaIcons.FaFacebookF style={{fontSize:75}}/></a>
+&nbsp;&nbsp;<a href ={whatsapp}> <FaIcons.FaWhatsappSquare style={{color:'greenyellow',fontSize:75}}  /></a>
 </div>
 
 <div className='box4'> 
-    <iframe   height='200' frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3403.1513742329166!2d74.33696261462947!3d31.465021857022304!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39190747b150cbd3%3A0xf8e73d43ea4f50a1!2sAl%20Khidmat%20School!5e0!3m2!1sen!2s!4v1628706655322!5m2!1sen!2s"></iframe>
+    <iframe   height='200' title='map' frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src={map}></iframe>
     </div>
     
     </div>

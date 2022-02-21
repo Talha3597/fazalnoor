@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import styles from '../../assets/css/style.module.css'
-import { Row, Col, Navbar, Nav, Button, Form } from 'react-bootstrap'
+import { Row, Col,  Button, Form } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link, Redirect, useParams } from 'react-router-dom';
+import {  useParams } from 'react-router-dom';
 import axios from 'axios'
 import $ from 'jquery';
 
@@ -25,7 +25,12 @@ function ManageGrades() {
         setObtainedMarks(0)
         setMessage('')    
 }
-    
+useEffect(()=>{
+    if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+    {  
+        window.location="/login"
+    }
+},[])
     useEffect(() => {
         axios.get('/api/singleStudent/' + id)
         .then((res) => {
@@ -55,7 +60,7 @@ function ManageGrades() {
             console.log(err)
         })
 
-    }, [Class,section])
+    }, [Class,section,id])
 
 
     const onSubmit = (e) => {

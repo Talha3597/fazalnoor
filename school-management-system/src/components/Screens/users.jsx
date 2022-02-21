@@ -1,33 +1,63 @@
 import React ,{ useState,useEffect,useRef} from 'react'
 import styles from '../../assets/style.module.css'
-import { Table,Button} from 'react-bootstrap'
+import { Table} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { useReactToPrint } from 'react-to-print';
 import {Link} from 'react-router-dom'
+import * as AiIcons from 'react-icons/ai';
 const Users =()=>{
 let[gdata,setData] =useState([])
 let role=localStorage.getItem("role") 
 const [search,setSearch]=useState("")
 const [ employeeNo, setEmployeeNo] = useState('')
-
-//const  [query ,setQuery ]= useState('')
+let number=0
+const addNum=()=>{
+  number=number+1
+}
 const removeData = async(id) => {
     let flag= window.confirm("Delete  record!")
   if(flag)
   { 
-    await axios.delete(`/api/auth/user`, { params: {id} }) 
+    const config= {
+        headers:{
+            
+            Authorization:`Bearer ${localStorage.getItem("authToken")}`,
+            role:localStorage.getItem("role")
+        }
+   }
+    const fetchPrivateData=async()=>
+    {
+       
+       try {
+        const {data}=  (await axios.get('/api/private',config))
+        await axios.delete(`/api/auth/user`, { params: {id} }) 
         .then(res => {
             const del = gdata.filter(gdata => id !== gdata._id)
             setData(del)
            
-        })} 
+        })
+        } catch (error) {
+            localStorage.removeItem("authToken")
+            localStorage.removeItem("role")
+            window.location="/login"
+        }
+    }
+    
+    fetchPrivateData()
+   } 
 }
 
 const componentRef = useRef();
 const handlePrint = useReactToPrint({
   content: () => componentRef.current,
 });
+useEffect(()=>{
+  if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+  {  
+      window.location="/login"
+  }
+},[])
 useEffect(()=>{
     async function fetchData(){   
         await axios.get('/api/auth/users', { params: {search,employeeNo} })
@@ -61,6 +91,7 @@ return(
        <Table striped bordered hover size='sm'>
   <thead>
     <tr>
+      <th>#</th>
       <th>Employee #</th>
       <th> Name</th>
       <th>Role</th>
@@ -74,21 +105,18 @@ return(
   <tbody>
   {gdata.map((item) => {  
                         return <tr key={item._id}> 
+                            <td onClick={addNum()}>{number}</td>
                             <td>{item.employeeNo}</td> 
                             <td>{item.username}</td>  
                             <td>{item.role}</td>  
                             <td>{item.phoneNo}</td>  
                             {role==='superAdmin'&&
-                            <td className={styles.noprint}><Link to={ `/updateUser/${item._id}` }><Button className={styles.sideButton1}  >
-                            Edit</Button></Link></td>}
+                            <td className={styles.noprint}><Link to={ `/updateUser/${item._id}` }><AiIcons.AiOutlineEdit className={styles.sideButton1}  /></Link></td>}
                             {role==='superAdmin'&&
-                            <td className={styles.noprint}>  <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
-                             Delete
-                           </Button></td>} 
-                            <td className={styles.noprint}><Link to={`/viewUser/${item._id}`}>  <Button className={styles.sideButton3}   >
-                            View</Button></Link></td>
+                            <td className={styles.noprint}>  <AiIcons.AiFillDelete className={styles.sideButton2} onClick={() => removeData(item._id)}/></td>} 
+                            <td className={styles.noprint}><Link to={`/viewUser/${item._id}`}>  <AiIcons.AiOutlineFolderView className={styles.sideButton6}   /></Link></td>
                             {role==='superAdmin'?
-                            <td className={styles.noprint}><Link to={ `/addSalaryUser/${item.employeeNo}` }><Button className={styles.sideButton1}  >Salary</Button></Link></td>:''}
+                            <td className={styles.noprint}><Link to={ `/addSalaryUser/${item.employeeNo}` }><AiIcons.AiOutlineDollarCircle className={styles.sideButton3}  /></Link></td>:''}
                         </tr>  
                     })}  
   </tbody>

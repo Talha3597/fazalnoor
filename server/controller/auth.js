@@ -303,9 +303,24 @@ module.exports.updateProfile=async(req,res)=>
   
 }
 
-module.exports.updateUser=(req,res)=>
+module.exports.updateUser=async(req,res)=>
 {
-    
+    if(req.body.password){
+        const user = await User.findById(req.params.id)
+        user.password=req.body.password
+        user.username=req.body.username
+        user.email=req.body.email
+        user.address=req.body.address
+        user.cnic=req.body.cnic
+        user.phoneNo=req.body.phoneNo
+        user.description=req.body.description
+        user.salary=req.body.salary
+        user.role=req.body.role
+        user.Class=req.body.Class
+        user.section=req.body.section
+        await user.save()
+    res.send(200)
+    }else{
     User.updateOne({_id: req.body.id}, {$set:req.body}, {upsert: true}, function(err, data) {
         if (err) {
             res.status(500).send({error: "Could not modify student info..."});
@@ -317,7 +332,7 @@ module.exports.updateUser=(req,res)=>
 
            )
         }
-    }); 
+    }); }
 }
 module.exports.totalUsers=(req,res)=>{
     User.countDocuments({}

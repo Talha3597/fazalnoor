@@ -17,6 +17,12 @@ const ViewIncome =  ({match})=> {
     const handlePrint = useReactToPrint({
       content: () => componentRef.current,
     });
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
    useEffect(()=>{
     async function fetchData(){   
         await axios.get('/api/income' ,{ params: {id} })

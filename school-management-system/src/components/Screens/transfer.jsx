@@ -3,9 +3,7 @@ import styles from '../../assets/style.module.css'
 import { Row, Col, Form, Button, } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
-import  Sidebar  from './privateScreen';
 const TransferStudent =  ({history})=> {
-   // const [message, setMessage]=useState("")x
     
     const [ Class, setClass ] = useState('')
     const [section,setSection]= useState('')
@@ -38,7 +36,12 @@ const TransferStudent =  ({history})=> {
             
     }, [])
    
-
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
     const onSubmit = async(e) => {
         e.preventDefault()
         if(Class==''|| section=='')

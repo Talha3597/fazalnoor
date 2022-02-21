@@ -18,7 +18,12 @@ const AddHomework =  ({history})=> {
    const [ status, setStatus ] = useState('')
    const [message, setMessage]=useState("")
    
-   
+   useEffect(()=>{
+    if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+    {  
+        window.location="/login"
+    }
+},[])
   
    useEffect(() => {
     axios.get('/api/getClasses')

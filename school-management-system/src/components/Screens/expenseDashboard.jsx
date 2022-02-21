@@ -13,8 +13,8 @@ import { useReactToPrint } from 'react-to-print';
 
 const ExpenseDashboard =  ()=> {
    const [data,setData]=useState('')
-   const [month,setMonth]=useState('')
    let today=new Date()
+   const [month,setMonth]=useState(parseInt(today.getMonth()+1))
    let[year,setYear] =useState( today.getFullYear())
    const componentRef = useRef();
 const handlePrint = useReactToPrint({
@@ -28,7 +28,12 @@ const addYear=()=>{
 }
 
 const expense=Number(data.toString().split('+')[0])+Number(data.toString().split('+')[1])
-
+useEffect(()=>{
+    if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+    {  
+        window.location="/login"
+    }
+},[])
     useEffect(()=>{
         async function fetchData(){   
             await axios.get('/api/expenseDashboard', { params: {month,year} })
@@ -63,7 +68,7 @@ return (
                          <div className="text-center">
                    
                          <select   as="select" value={month} onChange={ e => setMonth(e.target.value) } >
-                    <option value=''selected>Select Month</option>
+                    <option value=''>{year}</option>
                     <option value='1'>January</option>
                     <option value='2'>Februry</option>
                     <option value='3'>March</option>
@@ -87,8 +92,8 @@ return (
 
                   <br/>
                          <form className={styles.margLeftRowTable} >
-                         <div className={styles.card}>
-                                <h2>Amount</h2>
+                         <div className={styles.cardLarge}>
+                                <h2>Amount </h2>
                                 <h3>{expense}</h3> 
                                 </div>
                                  

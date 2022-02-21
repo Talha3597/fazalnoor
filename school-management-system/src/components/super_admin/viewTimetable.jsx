@@ -21,8 +21,14 @@ function ViewTimetable() {
     const handlePrint = useReactToPrint({
       content: () => componentRef.current,
     });
-    useEffect(async() => {
-        await axios.get('/api/getTimetable',{params:{section}})
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
+    useEffect(() => {
+        axios.get('/api/getTimetable',{params:{section}})
         .then((res) => {
             
             setTimetable(res.data)
@@ -62,7 +68,7 @@ function ViewTimetable() {
         .catch(err => {
             console.log(err)
         })
-       await axios.get('/api/getSections')
+       axios.get('/api/getSections')
         .then((res) => {
             
             setSectionData(res.data)

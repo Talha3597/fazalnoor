@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import axios from 'axios'
 
-const AddStudent =  ({history})=> {
+const AddStudent =  ({})=> {
    // const [message, setMessage]=useState("")
     
     const [ name, setName ] = useState('')
@@ -18,10 +18,7 @@ const AddStudent =  ({history})=> {
     const [ schoolFee, setSchoolFee ] = useState(0)
     const [ cnic, setCnic ] = useState('')
     const [ dob, setDob ] = useState('')
-    const [ paidAmount, setPaidAmount ] = useState('')
     const [ parentRelation, setParentRelation  ] = useState('')
-   // const [ group, setGroup ] = useState('')
-  //const [ photo, setPhoto ] = useState('')
     const [ email, setEmail ] = useState('')
     const [ description, setDescription ] = useState('')
     const createdBy=localStorage.getItem("username")

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import styles from '../../assets/css/style.module.css'
-import { Row, Col,  Table ,Button} from 'react-bootstrap'
+import { Row, Col,  Table } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link,  useParams } from 'react-router-dom';
 import axios from 'axios'
+import * as AiIcons from 'react-icons/ai';
 
 
 const ClassVar = props => (
@@ -12,11 +13,9 @@ const ClassVar = props => (
         <tr>
             <td>{props.classIns.studentNo}</td>
             <td>{props.classIns.studentName}</td>
-            <td><Link to={'/manageGrades/' + props.classIns._id}><Button className={styles.sideButton1}  >Add</Button></Link></td>
+            <td><Link to={'/manageGrades/' + props.classIns._id}><AiIcons.AiOutlineFileAdd className={styles.sideButton1}  /></Link></td>
             <td ><Link to={`/viewGradesStudent/${props.classIns.studentNo}`}>
-                        <Button className={styles.sideButton3} >
-                         View
-                        </Button></Link></td>  
+                        <AiIcons.AiOutlineFolderView className={styles.sideButton5} /></Link></td>  
         </tr>
 
     </tbody>
@@ -28,7 +27,12 @@ function ViewStudents() {
 
     const { title } = useParams()
     const [ classSectionData, setclassSectionData ] = useState([])
-
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
     useEffect(() => {
         axios.get('/api/getStudents/' + title)
         .then((res) => {
@@ -39,7 +43,7 @@ function ViewStudents() {
             console.log(err)
         })
 
-    }, [])
+    }, [title])
 
     const classSectionDataList = () => {
         return classSectionData.map((currentclass) => {

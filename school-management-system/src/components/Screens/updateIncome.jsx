@@ -9,12 +9,39 @@ const UpdateIncome =  ({match,history})=> {
     const [ incomeCategory, setIncomeCategory ] = useState('')
     const [title, setTitle]=useState("")
     const [amount, setAmount]=useState("")
-   
-    
     const receivedBy=localStorage.getItem("username")
     const [note, setNote]=useState("")
     const [message, setMessage]=useState("")
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+        const config= {
+            headers:{
+                
+                Authorization:`Bearer ${localStorage.getItem("authToken")}`,
+                role:localStorage.getItem("role")
+            }
+       }
+        const fetchPrivateData=async()=>
+        {
+           
+           try {
+            const {data}=  (await axios.get('/api/private',config))
+            console.log(data.data)
     
+                 
+            } catch (error) {
+                localStorage.removeItem("authToken")
+                localStorage.removeItem("role")
+                window.location="/login"
+            }
+        }
+        
+        fetchPrivateData()
+        
+    },[])
    useEffect(()=>{
     async function fetchData(){   
         await axios.get('/api/income' ,{ params: {id} })

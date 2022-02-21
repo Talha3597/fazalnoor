@@ -19,7 +19,12 @@ const Profile =()=>{
     const [ description, setDescription ] = useState('')
    const [password,setPassord] = useState('')
    const [confirmPassword,setConfirmPassord] = useState('')
-    
+   useEffect(()=>{
+    if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+    {  
+        window.location="/login"
+    }
+},[])
     useEffect(()=>{
         async function fetchData(){   
             await axios.get('/api/auth/user' ,{ params: {id} })

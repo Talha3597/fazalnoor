@@ -6,7 +6,7 @@ import React,{useState,useEffect} from 'react'
     import "react-datepicker/dist/react-datepicker.css";
     import axios from 'axios';
     const MarkUserAttendance =()=>{
-        const [todayDate,setTodayDate]=useState(new Date)
+        const [todayDate,setTodayDate]=useState(new Date())
         const [userData,setUserData]=useState([])
         const [sectionData,setSectionData]=useState([])
         const [section,setSection]=useState('')
@@ -21,12 +21,12 @@ import React,{useState,useEffect} from 'react'
          presentUsers= attendanceData[0].presentStudents
         
      }
-    //  const markAll=()=>{
-    //      userData.map(i=>{
-    //         const user={"employeeNo":i.employeeNo,"username":i.username}
-    //         presentUsers.push(user)
-    //      })
-    //  }
+     useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
  
       const handleChange = (studentNo) => {
        
@@ -41,11 +41,11 @@ else{
             
        };
   
-        useEffect(async()=>{
+        useEffect(()=>{
            
             if(section !=''){
               
-                await axios.get('/api/getStudentAttendance',{ params: {date,section}})
+                 axios.get('/api/getStudentAttendance',{ params: {date,section}})
                 .then(res=>{
                     
                 setAttendanceData(res.data)
@@ -66,7 +66,7 @@ else{
             }
             
          
-        },[date,section])
+        },[section,date])
         useEffect(()=>{
             axios.get('/api/getSections')
             .then((res) => {
@@ -120,18 +120,7 @@ else{
                                                 selected={todayDate}
                                                 onChange={date => setTodayDate(date)}
                                                 />&nbsp;&nbsp;
-                                                 <select as="select" value={section} onChange={ e => setSection(e.target.value) }>
-                                        <option value='' defaultValue>Select Section</option>
-                                            {
-                                                 sectionData.map((section) => {
-                                                     return <option 
-                                                        key={section._id}
-                                                        value={section.title}>
-                                                            {section.title}
-                                                    </option>;
-                                                    })
-                                            }
-                                        </select>
+                                              
                                         </Form.Group>
                                        
                                        {attendanceData[0]?

@@ -3,10 +3,8 @@ import styles from '../../assets/style.module.css'
 import { Row, Col, Form, Button, } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
-import  Sidebar  from './privateScreen';
 const UpdateHomework =  ({match,history})=> {
     const id=match.params.id
-    // const [message, setMessage]=useState("")
     const [ notice, setNotice ] = useState('')
     const [ url, setUrl ] = useState('')
     const [title,setTitle]= useState('')
@@ -14,7 +12,12 @@ const UpdateHomework =  ({match,history})=> {
     const [ section, setSection ] = useState('')
    const [ status, setStatus ] = useState('')
    const [message, setMessage]=useState("")
-   
+   useEffect(()=>{
+    if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+    {  
+        window.location="/login"
+    }
+},[])
    useEffect(()=>{
     async function fetchData(){   
         await axios.get('/api/homework' ,{ params: {id} })

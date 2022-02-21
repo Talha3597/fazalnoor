@@ -9,9 +9,9 @@ import DatePicker from 'react-datepicker';
 
 
  
-const PaySalary =  ( {match,history})=> {
+const PaySalary =  ( {match})=> {
    // const [message, setMessage]=useState("")
-   var [today,setToday] =useState( new Date)
+   var [today,setToday] =useState( new Date())
    var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
  
      const id=match.params.id
@@ -45,7 +45,10 @@ const PaySalary =  ( {match,history})=> {
        
      }
      useEffect(()=>{
-        fetchDepositeData()
+        axios.get(`/api/salaryDeposite`,{ params: {invoiceNo} } )
+        .then(res=>{
+         setData1(res.data)
+        })
      },[invoiceNo])
      async function fetchSalaryData(){   
         //let data
@@ -66,11 +69,29 @@ const PaySalary =  ( {match,history})=> {
     }
     useEffect(()=>{
        
-     fetchSalaryData()
+         axios.get(`/api/salary`,{ params: {id} } )
+        .then(res=>{
+         setData(res.data)
+        setEmployeeNo(res.data[0].employeeNo)
+        setName(res.data[0].username) 
+        setTitle(res.data[0].title) 
+        setSalary(res.data[0].salary) 
+        setPending(res.data[0].pending)
+        setDate1(res.data[0].date) 
+        setInvoiceNo(res.data[0].invoiceNo) 
+           
+     }
+        )
+       
     
-    
-    },[]
-    )    
+    },[id]
+    )
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])    
     const onSubmit = async(e) => {
         e.preventDefault()
         if(payAmount<=0){
@@ -94,7 +115,7 @@ const PaySalary =  ( {match,history})=> {
         setPayAmount('')
         fetchDepositeData()
         fetchSalaryData()
-        setToday(new Date)
+        setToday(new Date())
         },4000)
        return setMessage(data.message)
 }
@@ -147,6 +168,8 @@ return (
 <td>    
                        <Table  bordered  size='sm'>
   <tbody>
+  <tr ><td>Title</td><td>{title}</td></tr>
+  <tr ><td>Invoice #</td><td>{invoiceNo}</td></tr>
  <tr ><td>Amount</td><td>{salary}</td></tr>
   <tr><td>Paid</td><td>{pending}</td> </tr> 
  <tr><td>Issue Date</td><td>{date1}</td></tr>
@@ -158,9 +181,6 @@ return (
      {gdata1[0]?  <Table  bordered  size='sm'>
   <thead>
     <tr>
-      <th> Title</th>
-      <th>Invoice Number</th>
-      <th>Amount</th>
       <th>Date</th>
       <th>Paid</th>
       <th>person</th>
@@ -170,9 +190,6 @@ return (
   <tbody>
   {gdata1.map(item => {  
                         return <tr key={item._id}> 
-                            <td>{item.title}</td>  
-                            <td>{item.invoiceNo}</td>  
-                            <td>{item.salary}</td>  
                             <td>{item.date}</td> 
                             <td>{item.pending}</td>
                             <td>{item.person}</td>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styles from '../../assets/css/style.module.css'
-import { Row, Col, Navbar, Nav, Button, Form, Table } from 'react-bootstrap'
+import { Row, Col,  Button, Form, Table } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
@@ -11,11 +11,11 @@ import axios from 'axios'
 function ViewGradesByClass() {
 
     const [ classTitle, setClass ] = useState('')
-    const [ sectionTitle, setSection ] = useState('')
+   
     const [ examTitle, setExam ] = useState('')
     const [ studentGrades, setStudentGrades ] = useState([])
     const [ stclassData, setClassTitle ] = useState([])
-    const [ sectionData, setSectionTitle ] = useState([])
+  
     const [ grades, setGrades ] = useState([])
     const [ title, setTitle ] = useState([])
     const Class=classTitle
@@ -52,7 +52,12 @@ function ViewGradesByClass() {
             
         
     )
-
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
     useEffect(() => {
         
         axios.get('/api/getClasses')
@@ -82,7 +87,7 @@ function ViewGradesByClass() {
         
        
     }, [])
-    useEffect(async() => {
+    useEffect(() => {
         axios.get('/api/exams',{params:{Class,section}})
         .then((res) => {
             console.log(res.data)

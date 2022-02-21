@@ -9,8 +9,7 @@ import DatePicker from 'react-datepicker';
 
 
 const PayFee =  ( {match,history})=> {
-   // const [message, setMessage]=useState("")
-   var [today,setToday] =useState( new Date)
+   var [today,setToday] =useState( new Date())
    var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
  
      const id=match.params.id
@@ -42,7 +41,12 @@ const PayFee =  ( {match,history})=> {
             content: () => componentRef.current,
             
           });
-       
+          useEffect(()=>{
+            if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+            {  
+                window.location="/login"
+            }
+        },[])  
  async function fetchDepositeData(){   
             await axios.get(`/api/feeDeposite`,{ params: {invoiceNo} } )
             .then(res=>{
@@ -70,41 +74,52 @@ const PayFee =  ( {match,history})=> {
         }
           
      
-         async function fetchStudentData(){  
-            
-            await axios.get('/api/findstudent' ,{ params: {studentNo} })
-            .then(res=>{
-               if(res.data[0]){ 
-                setName(res.data[0].studentName)
-                setStudentNo(res.data[0].studentNo)
-                setClass(res.data[0].Class)
-                setSection(res.data[0].section)
-                setSchoolFee(res.data[0].fee)}
-                else{
-                   
-                    setName('')
-                    setClass('')
-                    setSection('')
-                    setSchoolFee('')
-                }
-            })
-           
-           }
-        
+       
     
     due=amount-pending
     useEffect(()=>{
-        fetchDepositeData()
+        axios.get(`/api/feeDeposite`,{ params: {invoiceNo} } )
+        .then(res=>{
+         setData1(res.data)
+        })
+     
     },[invoiceNo])
     useEffect(()=>{
-        fetchStudentData()
+        axios.get('/api/findstudent' ,{ params: {studentNo} })
+        .then(res=>{
+           if(res.data[0]){ 
+            setName(res.data[0].studentName)
+            setStudentNo(res.data[0].studentNo)
+            setClass(res.data[0].Class)
+            setSection(res.data[0].section)
+            setSchoolFee(res.data[0].fee)}
+            else{
+               
+                setName('')
+                setClass('')
+                setSection('')
+                setSchoolFee('')
+            }
+        })
+       
     },[studentNo])
 
     useEffect(()=>{
+        axios.get(`/api/fee`,{ params: {id} } )
+        .then(res=>{
+         setData(res.data)
+        setStudentNo(res.data[0].studentNo) 
+        setTitle(res.data[0].title) 
+        setAmount(res.data[0].amount) 
+        setPending(res.data[0].pending)
+        setDate1(res.data[0].date) 
+        setInvoiceNo(res.data[0].invoiceNo) 
+           
+     }
+        )
        
-     fetchFeeData()
      
-    },[]
+    },[id]
     )    
     const onSubmit = async(e) => {
         e.preventDefault()
@@ -141,7 +156,7 @@ const PayFee =  ( {match,history})=> {
           fetchDepositeData()
       setDiscount(0)
        setPayAmount(0)
-        setToday(new Date)
+        setToday(new Date())
         },4000)
        return setMessage(data.message)
       
@@ -193,10 +208,11 @@ return (
 <td>    
                        <Table  bordered size='sm'>
   <tbody>
- <tr > 
- <td>Amount</td><td>{amount}</td>   </tr> <tr>
- <td>Paid</td><td>{pending}</td> </tr> <tr>
- <td>Discount</td><td>{discount}</td> </tr> <tr>
+ <tr ><td>Title</td><td>{title}</td>   </tr>
+ <tr ><td>Amount</td><td>{amount}</td>   </tr> <tr>
+ <td>Paid</td><td>{pending}</td> </tr>
+<tr ><td>Invoice</td><td>{invoiceNo}</td>   </tr>
+ <tr><td>Discount</td><td>{discount}</td> </tr> <tr>
  <td>Issue Date</td><td>{date1}</td>  </tr> <tr>
  <td>Pending</td><td>{due}</td>
 </tr>  
@@ -207,9 +223,6 @@ return (
      {gdata1[0]?  <Table  bordered  size='sm'>
   <thead>
     <tr>
-      <th> Title</th>
-      <th>Invoice Number</th>
-      <th>Amount</th>
       <th>Date</th>
       <th>Paid</th>
       <th>person</th>
@@ -219,9 +232,7 @@ return (
   <tbody>
   {gdata1.map(item => {  
                         return <tr key={item._id}> 
-                            <td>{item.title}</td>  
-                            <td>{item.invoiceNo}</td>  
-                            <td>{item.amount}</td>  
+                              
                             <td>{item.date}</td> 
                             <td>{item.pending}</td>
                             <td>{item.person}</td>

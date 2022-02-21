@@ -85,8 +85,11 @@ module.exports.students = async(req,res)=>
        const Class=req.query.Class
        const section=req.query.section
        const studentNo=req.query.studentNo 
+       let size=Number(req.query.size)
+       let page=Number(req.query.page) 
+
         if(studentNo!=''){
-        await StudentSchema.find({studentNo:studentNo}).sort({_id:-1}).limit(200)
+        await StudentSchema.find({studentNo:studentNo})
         .then((data)=>{
             
             return res.send(data)})
@@ -96,7 +99,7 @@ module.exports.students = async(req,res)=>
         
        }else if(Class!='' && section!=''){
            if(search!=''){
-            await StudentSchema.find({Class:Class,section:section,studentName: { $regex: search,'$options' : 'i' }}).sort({_id:-1}).limit(200)
+            await StudentSchema.find({Class:Class,section:section,studentName: { $regex: search,'$options' : 'i' }})
             .then((data)=>{
                 
                 return res.send(data)})
@@ -105,7 +108,7 @@ module.exports.students = async(req,res)=>
             })
            }
            else{
-            await StudentSchema.find({Class:Class,section:section}).sort({_id:-1}).limit(200)
+            await StudentSchema.find({Class:Class,section:section}).sort({_id:-1}).skip((page-1)*size).limit(size)
             .then((data)=>{
                 
                 return res.send(data)})
@@ -118,7 +121,7 @@ module.exports.students = async(req,res)=>
        }
        else if(Class!='' && section==''){
            if(search !=''){
-            await StudentSchema.find({Class:Class,studentName: { $regex: search,'$options' : 'i' }}).sort({_id:-1}).limit(200)
+            await StudentSchema.find({Class:Class,studentName: { $regex: search,'$options' : 'i' }})
             .then((data)=>{
                 
                 return res.send(data)})
@@ -127,7 +130,7 @@ module.exports.students = async(req,res)=>
             })
            }
            else{
-            await StudentSchema.find({Class:Class}).sort({_id:-1}).limit(200)
+            await StudentSchema.find({Class:Class}).sort({_id:-1}).skip((page-1)*size).limit(size)
             .then((data)=>{
                 
                 return res.send(data)})
@@ -140,7 +143,7 @@ module.exports.students = async(req,res)=>
        }
        else if(Class=='' && section!=''){
        if(search !=''){
-        await StudentSchema.find({section:section,studentName: { $regex: search,'$options' : 'i' }}).sort({_id:-1}).limit(200)
+        await StudentSchema.find({section:section,studentName: { $regex: search,'$options' : 'i' }})
         .then((data)=>{
             
             return res.send(data)})
@@ -150,7 +153,7 @@ module.exports.students = async(req,res)=>
          
        }
        else{
-        await StudentSchema.find({section:section}).sort({_id:-1}).limit(200)
+        await StudentSchema.find({section:section}).sort({_id:-1}).skip((page-1)*size).limit(size)
         .then((data)=>{
             
             return res.send(data)})
@@ -162,16 +165,16 @@ module.exports.students = async(req,res)=>
         
        }  
        else if(search==''){
-        await StudentSchema.find({}).sort({_id:-1}).limit(200)
+        await StudentSchema.find({}).sort({_id:-1}).skip((page-1)*size).limit(size)
          .then((data)=>{
-             
+            
              return res.send(data)})
          .catch( (err)=>{
              return res.status(200).json({success:true, token:'Error Loading Data'})
          })
         }
        else{
-       await StudentSchema.find({studentName: { $regex: search,'$options' : 'i' }}).sort({_id:-1}).limit(200)
+       await StudentSchema.find({studentName: { $regex: search,'$options' : 'i' }}).sort({_id:-1}).skip((page-1)*size).limit(size)
         .then((data)=>{
             
             return res.send(data)})

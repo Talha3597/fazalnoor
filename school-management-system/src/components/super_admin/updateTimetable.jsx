@@ -7,7 +7,7 @@ import axios from 'axios'
 import $ from 'jquery';
 
 
-function UpdateTimetable({history}) {
+function UpdateTimetable() {
 
     const { id } = useParams()
     const [ title, setTitle ] = useState('')
@@ -19,10 +19,15 @@ function UpdateTimetable({history}) {
     const [ timetableData, setTimetable ] = useState([])
     const [ userNamesData, setUserNamesData ] = useState([])
     const [ sectionData, setSectionData ] = useState([])
-   
-    useEffect(async() => {
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
+    useEffect(() => {
       
-        await axios.get('/api/auth/userNames')
+         axios.get('/api/auth/userNames')
         .then((res) => {
             console.log(res.data)
             setUserNamesData(res.data)
@@ -64,7 +69,7 @@ function UpdateTimetable({history}) {
             .catch(err => {
                 console.log(err)
             })
-    }, [section])
+    }, [section,id])
 
     const onSubmit = async(e) => {
         e.preventDefault()

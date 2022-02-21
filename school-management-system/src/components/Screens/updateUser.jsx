@@ -2,7 +2,6 @@ import {useState,useEffect} from 'react'
 import styles from '../../assets/style.module.css'
 import { Row, Col, Form, Button, } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import axios from 'axios'
 
 
@@ -23,11 +22,41 @@ const UpdateUser =({match,history})=>{
     const [ classData, setClassData ] = useState([])
     const [ sectionData, setSectionData ] = useState([])
     const [message, setMessage]=useState("")
+    const [password,setPassord] = useState('')
+   const [confirmPassword,setConfirmPassord] = useState('')
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+        const config= {
+            headers:{
+                
+                Authorization:`Bearer ${localStorage.getItem("authToken")}`,
+                role:localStorage.getItem("role")
+            }
+       }
+        const fetchPrivateData=async()=>
+        {
+           
+           try {
+            const {data}=  (await axios.get('/api/private',config))
+            console.log(data.data)
     
+                 
+            } catch (error) {
+                localStorage.removeItem("authToken")
+                localStorage.removeItem("role")
+                window.location="/login"
+            }
+        }
+        
+        fetchPrivateData()
+        
+    },[])
     
-    
-   useEffect(async()=>{
-    await axios.get('/api/getClasses')
+   useEffect(()=>{
+     axios.get('/api/getClasses')
     .then((res) => {
        
         setClassData(res.data)
@@ -36,7 +65,7 @@ const UpdateUser =({match,history})=>{
         console.log(err)
     })
 
-    await axios.get('/api/getSections')
+     axios.get('/api/getSections')
     .then((res) => {
         
         setSectionData(res.data)
@@ -74,24 +103,57 @@ const UpdateUser =({match,history})=>{
    
 
     const onSubmit=async(e)=>{
-    if(role==='teacher' || role==='adminTeacher' || role==='financeTeacher' && Class!=''&& section!=''){
-
-        await axios.put(`/api/auth/updateUser/${id}`,{id,employeeNo,username,email,address,cnic,phoneNo,description,salary,role,Class,section})
-        setTimeout(()=>{
-            setMessage("")
-            history.push(`/updateUser/${id}`)
-            
-            },4000)
-           return setMessage("User Updated")
-    }  else{
-        await axios.put(`/api/auth/updateUser/${id}`,{id,employeeNo,username,email,address,cnic,phoneNo,description,salary,role})
-        setTimeout(()=>{
-            setMessage("")
-            history.push(`/updateUser/${id}`)
-            
-            },4000)
-           return setMessage("User Updated")  
-    }        }
+    if(password && password === confirmPassword){
+            if(role==='teacher' || role==='adminTeacher' || role==='financeTeacher' ){
+                if( Class!=''&& section!=''){
+                await axios.put(`/api/auth/updateUser/${id}`,{id,employeeNo,password,username,email,address,cnic,phoneNo,description,salary,role,Class,section})
+                setTimeout(()=>{
+                    setMessage("")
+                    history.push(`/updateUser/${id}`)
+                    
+                    },4000)
+                    return setMessage("User Updated")
+                }
+                   
+                    
+            } 
+            else{
+                await axios.put(`/api/auth/updateUser/${id}`,{id,employeeNo,password,username,email,address,cnic,phoneNo,description,salary,role})
+                setTimeout(()=>{
+                    setMessage("")
+                    history.push(`/updateUser/${id}`)
+                    
+                    },4000)
+                    return setMessage("User Updated")  
+            }  } 
+    else if(password !== confirmPassword){
+        alert('password and confirm password not match')}
+    else{
+            if(role==='teacher' || role==='adminTeacher' || role==='financeTeacher' ){
+                if( Class!=''&& section!=''){
+                   await axios.put(`/api/auth/updateUser/${id}`,{id,employeeNo,username,email,address,cnic,phoneNo,description,salary,role,Class,section})
+                   setTimeout(()=>{
+                       setMessage("")
+                       history.push(`/updateUser/${id}`)
+                       
+                       },4000)
+                      return setMessage("User Updated")
+                }
+               
+                   
+            } 
+              
+            else{
+                   await axios.put(`/api/auth/updateUser/${id}`,{id,employeeNo,username,email,address,cnic,phoneNo,description,salary,role})
+                   setTimeout(()=>{
+                       setMessage("")
+                       history.push(`/updateUser/${id}`)
+                       
+                       },4000)
+                      return setMessage("User Updated")  
+               } 
+        }   
+  }
 
                         
                       
@@ -118,7 +180,7 @@ const UpdateUser =({match,history})=>{
                                 {error && <span className='error-message'>{error}</span>}             
                                   <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Employee Number *</Form.Label>
-                                        <Form.Control className={styles.formField} type="number" placeholder="Enter Unique Employee Number" value={employeeNo} onChange={ e => setEmployeeNo(e.target.value) } required />
+                                        <Form.Control className={styles.formField} readOnly type="number" placeholder="Enter Unique Employee Number" value={employeeNo} onChange={ e => setEmployeeNo(e.target.value) } required />
                                     </Form.Group>
                                     <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Employee Name *</Form.Label>
@@ -143,7 +205,13 @@ const UpdateUser =({match,history})=>{
                                         <Form.Label>Email</Form.Label>
                                         <Form.Control className={styles.formField} required  type="email" placeholder="Enter Email" value={email} onChange={ e => setEmail(e.target.value) }/>
                                     </Form.Group>
-                                    
+                                    <Form.Group controlId="formBasicEmail">
+                                        <Form.Label>New Password (if want to change) </Form.Label>
+                                        <Form.Control  className={styles.formField} type="password" placeholder="Enter Password" value={password} onChange={ e => setPassord(e.target.value) }  />
+                                    </Form.Group><Form.Group controlId="formBasicEmail">
+                                        <Form.Label>Confirm Password </Form.Label>
+                                        <Form.Control className={styles.formField} type="password" placeholder="Enter Confirm Password" value={confirmPassword} onChange={ e => setConfirmPassord(e.target.value) } />
+                                    </Form.Group>
                                     
                                     <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Description</Form.Label>

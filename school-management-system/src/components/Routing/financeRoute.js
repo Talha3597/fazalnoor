@@ -118,6 +118,7 @@ export const App3=()=> {
     <Route  path="/reportFinanceRole" component={ReportFinanceRole}/>
     <Route  path="/feeReport" component={FeeReport}/>
     <Route  path="/messageList" component={MessageList}/>
+    <Route  path="/viewStudent/:id" component={ViewStudent}/>
  
 <Route  path="/incomeView/:id" component={ViewIncome}/>
 <Route  path="/expenseView/:id" component={ViewExpense}/>           

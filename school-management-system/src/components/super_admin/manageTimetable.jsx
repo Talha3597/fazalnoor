@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import styles from '../../assets/css/style.module.css'
-import { Row, Col, Navbar, Nav, Button, Form } from 'react-bootstrap'
+import { Row, Col,  Button, Form } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link} from 'react-router-dom';
 import axios from 'axios'
 import $ from 'jquery';
 
 
-function ManageTimetable({history}) {
+function ManageTimetable() {
 
     const [ title, setTitle ] = useState('')
     const [ message, setMessage ] = useState('')
@@ -27,9 +26,15 @@ function ManageTimetable({history}) {
        setTeacherName('')
        setTitle('')
    }
-    useEffect(async() => {
+   useEffect(()=>{
+    if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+    {  
+        window.location="/login"
+    }
+},[])
+    useEffect(() => {
       
-        await axios.get('/api/auth/userNames')
+         axios.get('/api/auth/userNames')
         .then((res) => {
             console.log(res.data)
             setUserNamesData(res.data)

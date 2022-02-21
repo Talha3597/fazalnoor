@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import styles from '../../assets/css/style.module.css'
 import { Row, Col, Form, Button } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,6 +17,12 @@ const spaceClean=()=>{
    setTitle('')
    setMessage('')
 }
+useEffect(()=>{
+    if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+    {  
+        window.location="/login"
+    }
+},[])
     const onSubmit = (e) => {
         e.preventDefault()
 

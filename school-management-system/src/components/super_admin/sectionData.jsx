@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import styles from '../../assets/css/style.module.css'
-import { Row, Col, Table ,Button} from 'react-bootstrap'
+import { Row, Col, Table } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link,  useParams } from 'react-router-dom';
 import axios from 'axios'
+import * as AiIcons from 'react-icons/ai';
 
 
 const ClassVar = props => (
@@ -13,11 +14,9 @@ const ClassVar = props => (
             <td>{props.classIns.title}</td>
             <td>{props.classIns.studentCount}</td>
             <td>{props.classIns.teacher}</td>
-            <td><Link to = {'/viewStudents/' + props.classIns.title}><Button className={styles.sideButton3}  >
-                            View</Button></Link></td>
-            <td><Link to={'/updateSection/' + props.classIns._id + '/' + props.classIns.class_id }><Button className={styles.sideButton1}  >
-                            Edit</Button></Link></td>
-          <td>  <Button onClick={() =>  {
+            <td><Link to = {'/viewStudents/' + props.classIns.title}><AiIcons.AiOutlineFolderView className={styles.sideButton6}  /></Link></td>
+            <td><Link to={'/updateSection/' + props.classIns._id + '/' + props.classIns.class_id }><AiIcons.AiOutlineEdit className={styles.sideButton1}  /></Link></td>
+          <td>  <AiIcons.AiFillDelete onClick={() =>  {
                    let flag= window.confirm("Delete  record!")
                    if(flag)
                    {
@@ -26,7 +25,7 @@ const ClassVar = props => (
                        console.log(response.data)
                        window.location = '/sectionData/' + props.classIns.class_id
                     });}
-            }} className={styles.sideButton2}>Delete</Button></td>
+            }} className={styles.sideButton2}/></td>
         </tr>
 
     </tbody>
@@ -38,7 +37,12 @@ function SectionData() {
 
     const { id } = useParams()
     const [ classSectionData, setclassSectionData ] = useState([])
-
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
     useEffect(() => {
         axios.get('/api/sectionData/' + id)
         .then((res) => {
@@ -49,7 +53,7 @@ function SectionData() {
             console.log(err)
         })
 
-    }, [])
+    }, [id])
 
     const classSectionDataList = () => {
         return classSectionData.map((currentclass) => {

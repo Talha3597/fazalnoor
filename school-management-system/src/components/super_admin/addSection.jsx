@@ -20,6 +20,12 @@ function AddSection(){
           setDescription('')
           setMessage('')
       }
+      useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
     useEffect(() => {
         axios.get('/api/singleClass/' + id)
             .then((res) => {
@@ -31,7 +37,7 @@ function AddSection(){
 			})
 
             
-    }, [])
+    }, [id])
 
 
     const onSubmit = (e) => {

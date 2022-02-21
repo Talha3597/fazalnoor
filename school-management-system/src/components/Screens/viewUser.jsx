@@ -1,6 +1,6 @@
 import {useState,useEffect,useRef} from 'react'
 import styles from '../../assets/style.module.css'
-import { Row, Col, Form,Table,Button} from 'react-bootstrap'
+import { Row, Col,Table,} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
 import * as AiIcons from 'react-icons/ai';
@@ -46,7 +46,12 @@ const removeData = async(id) => {
            
         }) 
 }
-
+useEffect(()=>{
+    if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+    {  
+        window.location="/login"
+    }
+},[])
 useEffect(()=>{
     async function fetchSalaryData(){
         
@@ -95,8 +100,8 @@ useEffect(()=>{
                         </div>
                         <div className="text-center">
                    
-                    <select required  as="select" value={month} onChange={ e => setMonth(e.target.value) } >
-                    <option value=''defaultValue>Select Month</option>
+                    <select  as="select" value={month} onChange={ e => setMonth(e.target.value) } >
+                    <option value=''defaultValue>{year}</option>
                     <option value='1'>January</option>
                     <option value='2'>Februry</option>
                     <option value='3'>March</option>
@@ -111,7 +116,7 @@ useEffect(()=>{
                     <option value='12'>December</option>
                    </select>&nbsp;&nbsp;<AiIcons.AiFillPlusCircle onClick={ addYear}/>&nbsp;
                   <AiIcons.AiFillMinusCircle onClick={minusYear}/> &nbsp;
-                   <select required  as="select" value={status} onChange={ e => setStatus(e.target.value) } >
+                   <select as="select" value={status} onChange={ e => setStatus(e.target.value) } >
                    <option value=''defaultValue>Select status</option>
                    <option value='Paid'>Paid</option>
                    <option value='Unpaid'>Unpaid</option>
@@ -124,7 +129,7 @@ useEffect(()=>{
                                        <div ref={componentRef} >
                    <div className={styles.formHeading}>
                      <h3> Al Khidmat Fazal Noor Campus </h3>
-                     <h3> Employee {username} </h3>
+                     <h3> Employee {username}  </h3>
                       </div><br/>   
                       <div className="container1">
                        <div className="box2">
@@ -150,7 +155,6 @@ useEffect(()=>{
                 <Table striped bordered hover size='sm'>
                 <thead>
                 <tr>
-                <th> Title</th>
                 <th>Invoice Number</th>
                 <th>Amount</th>
                 <th>Date</th>
@@ -163,7 +167,6 @@ useEffect(()=>{
                 <tbody>
                 {gdata.map(item => {  
                                 return <tr key={item._id}> 
-                                    <td>{item.title}</td>  
                                     <td>{item.invoiceNo}</td>   
                                     <td>{item.salary}</td>  
                                     <td>{item.date}</td> 
@@ -172,12 +175,9 @@ useEffect(()=>{
                                     <td>{item.status}</td>
                                     <td className={styles.noprint}>
                                     {role=='superAdmin'? 
-                                    <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
-                                        Delete
-                                    </Button>:''}<br/>&nbsp;
+                                    <AiIcons.AiFillDelete className={styles.sideButton2} onClick={() => removeData(item._id)}/>:''}<br/>
                                     {role=='superAdmin'|| role=='finance'|| role=='financeTeacher'||role=='adminFinance'? 
-                                    <Link to={`/paySalary/${item._id}` } > <Button className={styles.sideButton1}  >
-                                    Pay</Button></Link>:''}</td>
+                                    <Link to={`/paySalary/${item._id}` } > <AiIcons.AiOutlineDollarCircle className={styles.sideButton3}  /></Link>:''}</td>
                                 </tr>  
                             })}  
 

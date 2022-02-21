@@ -1,25 +1,23 @@
 import React, { useState,useEffect } from 'react'
 import styles from '../../assets/style.module.css'
-import { Row, Col, Form, Button,Table } from 'react-bootstrap'
+import { Row, Col, Form, Button, } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Link} from 'react-router-dom'
-
-
 import axios from 'axios'
-
 const Exam =  ({history})=> {
-   // const [message, setMessage]=useState("")
    const [ classData, setClassData ] = useState([])
     const [ sectionData, setSectionData ] = useState([])
-   
-
     const [error, setError]=useState("")
     const [title,setTitle]= useState('')
     const [ Class, setClass ] = useState('')
     const [ section, setSection ] = useState('')
     const [message, setMessage]=useState("")
     
-  
+    useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
   
    useEffect(() => {
     axios.get('/api/getClasses')

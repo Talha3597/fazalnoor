@@ -50,10 +50,6 @@ import AddSection from '../super_admin/addSection'
 import ClassData from '../super_admin/classData'
 import SectionData from '../super_admin/sectionData'
 import UpdateSection from '../super_admin/updateSection'
-import Attendance from '../super_admin/attendance'
-import SectionAttendance from '../super_admin/sectionAttendance'
-import ViewAttendance from '../super_admin/viewAttendance'
-import EditAttendance from '../super_admin/editAttendance'
 import ViewStudents from '../super_admin/viewStudents'
 import ManageGrades from '../super_admin/manageGrades'
 import ViewGrades from '../super_admin/viewGrades'
@@ -126,18 +122,6 @@ export const App2=()=> {
       <Route exact path="/updateSection/:id_1/:id_2">
         <UpdateSection />
       </Route>
-      <Route exact path="/attendance">
-        <Attendance />
-      </Route>
-      <Route exact path="/sectionAttendance/:id">
-        <SectionAttendance />
-      </Route>
-      <Route exact path="/viewAttendance/:title">
-        <ViewAttendance />
-      </Route>
-      <Route exact path="/editAttendance/:title">
-        <EditAttendance />
-      </Route>
       <Route exact path="/viewStudents/:title">
         <ViewStudents />
       </Route>
@@ -168,15 +152,8 @@ export const App2=()=> {
       <Route exact path="/updateClass/:id_1">
         <UpdateClass />
       </Route>
-      <Route exact path="/sectionAttendance/:id_s/:id_c">
-            <SectionAttendance />
-          </Route>
-          <Route exact path="/viewAttendance/:title_s/:title_c">
-            <ViewAttendance />
-          </Route>
-          <Route exact path="/editAttendance/:title_s/:title_c">
-            <EditAttendance />
-          </Route>
+      
+         
      
    </Router>
   )

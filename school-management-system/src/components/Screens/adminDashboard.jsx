@@ -11,12 +11,17 @@ const Dashboard =  ()=> {
     let [userData,setUserData]=useState(0)
     let [classesData,setClassesData]=useState([])
     let [sectionData,setSectionData]=useState([])
-    const month=''
-    const year=''
+    let date=new Date()
+    let month=date.getMonth()+1
+    const year=date.getFullYear()
 const expense=Number(expenseData.toString().split('+')[0])+Number(expenseData.toString().split('+')[1])
 
   
     useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
         async function fetchIncomeData(){   
             await axios.get('/api/incomeDashboard', { params: {month,year}} )
             .then(res=>{
@@ -75,23 +80,25 @@ const expense=Number(expenseData.toString().split('+')[0])+Number(expenseData.to
             <div className={styles.empty}></div>
             {/* STUDENTS AND EMPLOYEES */}
             <div className={styles.container1}>
-            <div className={styles.card}>
+            <div className={styles.cardLarge}>
         <h1>STUDENTS</h1>
         <h4>{studentData}</h4> 
         </div>
-        <div className={styles.card}>
+        <div className={styles.cardLarge}>
         <h1>EMPLOYEES</h1>
         <h4>{userData}</h4> 
         </div>
             </div>
             {/* INCOME AND EXPENSE */}
             <div className={styles.container1}>
-            <div className={styles.card}>
+            <div className={styles.cardLarge}>
         <h1>INCOME</h1>
+        <h4>Month:{month} Year:{year}</h4> 
         <h4>{incomeData}</h4> 
         </div>
-        <div className={styles.card}>
+        <div className={styles.cardLarge}>
         <h1>EXPENSE</h1>
+        <h4>Month:{month} Year:{year}</h4>
         <h4>{expense}</h4> 
         </div>
             </div>

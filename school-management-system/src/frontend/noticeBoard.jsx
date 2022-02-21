@@ -1,6 +1,5 @@
 import React,{useState,useEffect} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import styles from '../assets/home.css'
 import { Navbar, Nav, Container, Image,Row,Col, ListGroup, ListGroupItem,Card} from 'react-bootstrap'
 import { Link} from 'react-router-dom'
 import * as FaIcons from 'react-icons/fa';

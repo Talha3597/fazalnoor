@@ -3,10 +3,8 @@ import styles from '../../assets/style.module.css'
 import { Row, Col, Form, Button, } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
-import  Sidebar  from './privateScreen';
 const UpdateNotice =  ({match,history})=> {
     const id=match.params.id
-    // const [message, setMessage]=useState("")
     const [ notice, setNotice ] = useState('')
     const [ url, setUrl ] = useState('')
     const [title,setTitle]= useState('')
@@ -16,7 +14,12 @@ const UpdateNotice =  ({match,history})=> {
    const [ classData, setClassData ] = useState([])
    const [ sectionData, setSectionData ] = useState([])
    const [message, setMessage]=useState("")
-   
+   useEffect(()=>{
+    if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+    {  
+        window.location="/login"
+    }
+},[])
    useEffect(() => {
     axios.get('/api/getClasses')
         .then((res) => {

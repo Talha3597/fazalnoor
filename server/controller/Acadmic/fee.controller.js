@@ -208,7 +208,8 @@ module.exports.fees = async(req,res)=>
     const section=req.query.section
     const studentNo=req.query.studentNo
     const year=req.query.year
-    
+    let size=Number(req.query.size)
+       let page=Number(req.query.page) 
     if(studentNo!=''){
         await  Fee.find({studentNo:studentNo,date: { $regex: month+'-'+year },status: { $regex: status }}).sort({_id:-1})
          .then((data)=>{
@@ -220,7 +221,7 @@ module.exports.fees = async(req,res)=>
      }
    
    else if(Class !=''&& section !=''){
-        await Fee.find({Class:Class,section:section,date: { $regex: month+'-'+year },status: { $regex: status }}).sort({_id:-1})
+        await Fee.find({Class:Class,section:section,date: { $regex: month+'-'+year },status: { $regex: status }}).sort({_id:-1}).skip((page-1)*size).limit(size)
          .then((data)=>{
              
              return res.send(data)})
@@ -229,7 +230,7 @@ module.exports.fees = async(req,res)=>
          })
        }
    else if(Class!=''&& section==''){
-        await Fee.find({Class:Class,date: { $regex: month+'-'+year },status: { $regex: status }}).sort({_id:-1})
+        await Fee.find({Class:Class,date: { $regex: month+'-'+year },status: { $regex: status }}).sort({_id:-1}).skip((page-1)*size).limit(size)
          .then((data)=>{
              
              return res.send(data)})
@@ -238,7 +239,7 @@ module.exports.fees = async(req,res)=>
          })
        }
     else if(Class==''&& section!=''){
-        await Fee.find({section:section,date: { $regex: month+'-'+year },status: { $regex: status }}).sort({_id:-1})
+        await Fee.find({section:section,date: { $regex: month+'-'+year },status: { $regex: status }}).sort({_id:-1}).skip((page-1)*size).limit(size)
          .then((data)=>{
              
              return res.send(data)})
@@ -247,7 +248,7 @@ module.exports.fees = async(req,res)=>
          })
        }
     else if(Class=='' && section==''){
-       await Fee.find({date: { $regex: month+'-'+year },status: { $regex: status }}).sort({_id:-1})
+       await Fee.find({date: { $regex: month+'-'+year },status: { $regex: status }}).sort({_id:-1}).skip((page-1)*size).limit(size)
         .then((data)=>{
             
             return res.send(data)})
@@ -571,7 +572,7 @@ module.exports.feeReportExpensive= async(req,res)=>
     const year=req.query.year
    
         await FeeDeposite.aggregate([{ $match: {date: { $regex: month+'-'+year  }} },
-            {$group: {_id:"$studentNo",pending:{"$sum":"$pending"},amount:{"$sum":"$amount"}} }
+            {$group: {_id:"$studentNo",pending:{"$sum":"$pending"}} }
         ])
             .then((data)=>{
                

@@ -3,16 +3,20 @@ import styles from '../../assets/style.module.css'
 import { Row, Col, Form, Button, } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
-import  Sidebar  from './privateScreen';
 const ViewHomework =  ({match})=> {
     const id=match.params.id
-    // const [message, setMessage]=useState("")
     const [ notice, setNotice ] = useState('')
     const [ url, setUrl ] = useState('')
     const [title,setTitle]= useState('')
     const [ Class, setClass ] = useState('')
     const [ section, setSection ] = useState('')
    const [ status, setStatus ] = useState('')
+   useEffect(()=>{
+    if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+    {  
+        window.location="/login"
+    }
+},[])
    useEffect(()=>{
     async function fetchData(){   
         await axios.get('/api/homework' ,{ params: {id} })

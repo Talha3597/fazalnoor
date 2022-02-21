@@ -1,6 +1,6 @@
 import React, { useState,useEffect, useRef } from 'react'
 import styles from '../../assets/style.module.css'
-import { Row, Col,Table,Image} from 'react-bootstrap'
+import {Table,Image} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as AiIcons from 'react-icons/ai';
 import axios from 'axios'
@@ -9,7 +9,6 @@ import { useReactToPrint } from 'react-to-print';
 
 
 const ReportFinance =  ()=> {
-   // const [message, setMessage]=useState("")
    var today = new Date()
  let[year,setYear] =useState( today.getFullYear())
  let sum1,sum2 ,iSum,sum3,sum4,eSum,rSub=0
@@ -17,7 +16,7 @@ let[idata,setIncomeData] =useState([0])
 let[fdata,setFeeData] =useState([0]) 
 let[edata,setExpenseData] =useState([0]) 
 let[sdata,setSalaryData] =useState([0]) 
-let[month,setMonth] =useState('') 
+let[month,setMonth] =useState(parseInt(today.getMonth()+1)) 
 
 //const  [query ,setQuery ]= useState('')
 const minusYear=()=>{
@@ -30,7 +29,12 @@ const componentRef = useRef();
 const handlePrint = useReactToPrint({
   content: () => componentRef.current,
 });
-
+useEffect(()=>{
+  if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+  {  
+      window.location="/login"
+  }
+},[])
 
 useEffect(()=>{
  
@@ -86,7 +90,7 @@ return (
                    <div className="text-center">
                    
                    <select required  as="select" value={month} onChange={ e => setMonth(e.target.value) } >
-                    <option value=''defaultValue>Select Month</option>
+                    <option value=''>{year}</option>
                     <option value='1'>January</option>
                     <option value='2'>Februry</option>
                     <option value='3'>March</option>

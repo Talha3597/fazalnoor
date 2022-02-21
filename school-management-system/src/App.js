@@ -10,19 +10,14 @@ import HomeScreen from "./frontend/homepage"
 import NoticeBoard from "./frontend/noticeBoard"
 
 //
-
-
 import  {App1}  from './components/Routing/superAdminRoute';
 const App=()=> {
-  
- 
-
   return (
     
        
      
     <Router>
-        <PrivateRoute  component={App1}/>
+        <PrivateRoute path="/" component={App1}/> 
         <Route exect path="/home" component={HomeScreen}/>
         <Route exect path="/noticeB" component={NoticeBoard}/>
         <Route exect path="/login" component={LoginScreen}/>

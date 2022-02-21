@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import styles from '../../assets/css/style.module.css'
-import { Row, Col, Form, Button, Navbar, Nav } from 'react-bootstrap'
+import { Row, Col, Form, Button } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link, Redirect, useParams } from 'react-router-dom';
+import {  useParams } from 'react-router-dom';
 import axios from 'axios'
 import $ from 'jquery';
 
@@ -13,15 +13,19 @@ function UpdateClass(){
     const [ message, setMessage ] = useState('')
     const [ description, setDescription ] = useState('')
     const [ teacher, setTeacher ] = useState('')
-    const [ sectionClass, setSectionClass ] = useState({})
-    const [ stclassData, setClassTitle ] = useState([])
-    const [ currentClass, setClass ] = useState('')
+    
     const spaceClean=()=>{
         setDescription('')
         setTeacher('')
         setTitle('')
         setMessage('')
      }
+     useEffect(()=>{
+        if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+        {  
+            window.location="/login"
+        }
+    },[])
      async function fetchClassData(){ 
         await axios.get('/api/singleClass/' + id_1)
              .then((res) => {
@@ -51,7 +55,7 @@ function UpdateClass(){
             fetchClassData()
 
             
-    }, [])
+    }, [id_1])
 
 
     const onSubmit = (e) => {

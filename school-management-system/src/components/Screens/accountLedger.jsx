@@ -11,13 +11,12 @@ const ReportFinance =  ()=> {
    // const [message, setMessage]=useState("")
    var today = new Date()
    let[year,setYear] = useState(today.getFullYear())
-
 let[idata,setIncomeData] =useState(0) 
 let[fdata,setFeeData] =useState(0) 
 let[finedata,setFineData] =useState(0) 
 let[edata,setExpenseData] =useState('0+0') 
 
-let[month,setMonth] =useState('') 
+const [month,setMonth] =useState(parseInt(today.getMonth()+1)) 
 const minusYear=()=>{
   setYear(year=>year-1)
   }
@@ -29,7 +28,10 @@ let expense=parseInt(edata.toString().split('+')[0])
 let salary=parseInt(edata.toString().split('+')[1])
 
 useEffect(()=>{
-
+  if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+  {  
+      window.location="/login"
+  }
     function fetchFeeData(){   
      axios.get('/api/feeGeneralReport', { params: {month,year} })
     .then(res=>{
@@ -86,20 +88,20 @@ return (
                    
                    <div className="text-center">
                    
-                   <select required  as="select" value={month} onChange={ e => setMonth(e.target.value) } >
-                    <option value=''defaultValue>Select Month</option>
-                    <option value='Jan'>January</option>
-                    <option value='Feb'>Februry</option>
-                    <option value='Mar'>March</option>
-                    <option value='Apr'>April</option>
-                    <option value='May'>May</option>
-                    <option value='Jun'>June</option>
-                    <option value='Jul'>July</option>
-                    <option value='Aug'>August</option>
-                    <option value='Sep'>September</option>
-                    <option value='Oct'>October</option>
-                    <option value='Nov'>November</option>
-                    <option value='Dec'>December</option>
+                   <select   as="select" value={month} onChange={ e => setMonth(e.target.value) } >
+                    <option value=''>{year}</option>
+                    <option value='1'>January</option>
+                    <option value='2'>Februry</option>
+                    <option value='3'>March</option>
+                    <option value='4'>April</option>
+                    <option value='5'>May</option>
+                    <option value='6'>June</option>
+                    <option value='7'>July</option>
+                    <option value='8'>August</option>
+                    <option value='9'>September</option>
+                    <option value='10'>October</option>
+                    <option value='11'>November</option>
+                    <option value='12'>December</option>
                   </select>&nbsp;<AiIcons.AiFillPlusCircle onClick={ addYear}/>&nbsp;
                   <AiIcons.AiFillMinusCircle onClick={minusYear}/> &nbsp;<button  onClick={handlePrint} className={styles.formButton} type="submit">
                                         

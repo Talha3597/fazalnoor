@@ -1,16 +1,19 @@
 const nodemailer =require('nodemailer')
+const Email =require('../model/emailSchema');
 
 const sendEmail=(options)=>{
+    const data= Email.find({})
+    
     const transporter = nodemailer.createTransport({
-        service:process.env.EMAIL_SERVICE,
+        service:data[0].service,
         auth:{
-            user:process.env.EMAIL_USERNAME,
-            pass:process.env.EMAIL_PASSWORD
+            user:data[0].username,
+            pass:data[0].hashString,
         }
     })
 
     const mailOptions = {
-        from:process.env.EMAIL_FROM,
+        from:data[0].username,
         to:options.to,
         cc:options.cc,
         bcc:options.bcc,

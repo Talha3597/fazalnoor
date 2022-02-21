@@ -1,23 +1,20 @@
 import React, { useState,useEffect,useRef} from 'react'
 import styles from '../../assets/style.module.css'
-import { Table, Button } from 'react-bootstrap'
+import { Table } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as AiIcons from 'react-icons/ai';
 import { useReactToPrint } from 'react-to-print';
 import {Link} from 'react-router-dom'
- 
-
-
 
 import axios from 'axios'
 
-const Expense =({history})=> {
-   // const [message, setMessage]=useState("")
+const Expense =({})=> {
+   
    const today=new Date()
    let[year,setYear] =useState( today.getFullYear())
    
 let[gdata,setData] =useState([]) 
-let [month,setMonth]=useState('')
+let [month,setMonth]=useState(parseInt(today.getMonth()+1))
 let role=localStorage.getItem("role") 
 const componentRef = useRef();
 const handlePrint = useReactToPrint({
@@ -34,14 +31,41 @@ const addYear=()=>{
 const removeData = async(id) => {
   let flag= window.confirm("Delete  record!")
   if(flag)
-  {  
-  await axios.delete(`/api/Expense`, { params: {id} }) 
-        .then(res => {
-            const del = gdata.filter(gdata => id !== gdata._id)
-            setData(del)
-           
-        }) }
+  {  const config= {
+    headers:{
+        
+        Authorization:`Bearer ${localStorage.getItem("authToken")}`,
+        role:localStorage.getItem("role")
+    }
+  }
+  const fetchPrivateData=async()=>
+  {
+   
+   try {
+    const {data}=  (await axios.get('/api/private',config))
+    await axios.delete(`/api/Expense`, { params: {id} }) 
+    .then(res => {
+        const del = gdata.filter(gdata => id !== gdata._id)
+        setData(del)
+       
+    })
+   
+    } catch (error) {
+        localStorage.removeItem("authToken")
+        localStorage.removeItem("role")
+        window.location="/login"
+    }
+  }
+  
+  fetchPrivateData()
+   }
 }
+useEffect(()=>{
+  if(!localStorage.getItem("authToken") || !localStorage.getItem("role"))
+  {  
+      window.location="/login"
+  }
+},[])
 async function fetchData(){ 
     
   await axios.get('/api/Expenses',{params:{month,year}})
@@ -57,9 +81,29 @@ const deleteRecord = async()=>{
   if(month && year){
   let flag= window.confirm("Delete  record of specific month")
   if(flag)
-  { 
+  { const config= {
+    headers:{
+        
+        Authorization:`Bearer ${localStorage.getItem("authToken")}`,
+        role:localStorage.getItem("role")
+    }
+  }
+  const fetchPrivateData=async()=>
+  {
+   
+   try {
+    const {data}=  (await axios.get('/api/private',config))
     await axios.delete('/api/deleteExpense', { params: {month,year} })
  fetchData()
+    } catch (error) {
+        localStorage.removeItem("authToken")
+        localStorage.removeItem("role")
+        window.location="/login"
+    }
+  }
+  
+  fetchPrivateData()
+  
   }
 }else{
   window.alert('Select month to delete Paid record')
@@ -87,7 +131,7 @@ return (
         <span>&#9888; </span> Delete Record
                             </button>:''} &nbsp;
                     <select   as="select" value={month} onChange={ e => setMonth(e.target.value) } >
-                    <option value=''defaultValue>Select Month</option>
+                    <option value=''>{year}</option>
                     <option value='1'>January</option>
                     <option value='2'>Februry</option>
                     <option value='3'>March</option>
@@ -139,14 +183,10 @@ return (
                             <td>{item.createdBy}</td>
                             <td className={styles.noprint}> 
                             {role=='superAdmin'? 
-                            <Link to={`/updateExpense/${item._id}` }><Button className={styles.sideButton1}   >
-                            Edit</Button></Link>:''}</td>
+                            <Link to={`/updateExpense/${item._id}` }><AiIcons.AiOutlineEdit className={styles.sideButton1}   /></Link>:''}</td>
                             <td className={styles.noprint}>    {role=='superAdmin'?
-                            <Button className={styles.sideButton2} onClick={() => removeData(item._id)}>
-                             Delete
-                            </Button>:''}</td>
-                            <td className={styles.noprint}>   <Link to={`/expenseView/${item._id}` }><Button className={styles.sideButton3}   >
-                            View</Button></Link></td>
+                            <AiIcons.AiFillDelete className={styles.sideButton2} onClick={() => removeData(item._id)}/>:''}</td>
+                            <td className={styles.noprint}>   <Link to={`/expenseView/${item._id}` }><AiIcons.AiOutlineFolderView className={styles.sideButton6}   /></Link></td>
                         </tr>  
                     })}  
     
